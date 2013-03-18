@@ -4,3 +4,5 @@
 *.jar
 *.war
 *.ear
+/beyond-web/dist/
+/beyond-web/build/
