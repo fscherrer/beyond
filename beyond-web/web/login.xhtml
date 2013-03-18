@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+  <h:head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="./resources/css/estilo.css" />
+  </h:head>
+  <h:body style="background-image: url('./resources/imagens/background.png'); 
+          background-repeat: repeat-x;
+          background-attachment:fixed;
+          background-position:bottom; ">
+    <h:form>
+
+      <div style="position: absolute; top: 50%; left: 0; width: 100%">
+        <div style="position: absolute; text-align: center; width: 100%; top: -95px">
+
+          <p:ajaxStatus style="height: 11px">
+            <f:facet name="start">
+              <h:graphicImage value="./resources/imagens/processando.gif" />
+            </f:facet>
+
+            <f:facet name="complete">
+              <h:outputText value="" />
+            </f:facet>
+          </p:ajaxStatus>
+          
+          <div style="text-align: left; margin: auto">
+
+            <p:panelGrid  columns="1" style="margin: auto;">  
+              <f:facet name="header">  
+                Login  
+              </f:facet>  
+
+              <p:panelGrid columns="2" styleClass="panelGridLoginCampos" id="panelLogin">  
+                <h:outputLabel for="usuario" value="#{msgs.login_usuario}" />  
+                <p:inputText id="usuario" value="#{loginMB.usuario}" required="true"
+                             requiredMessage="#{msgs.login_usuario_naoInformado}" />  
+
+                <h:outputLabel for="senha" value="#{msgs.login_senha}" />  
+                <p:password id="senha" value="#{loginMB.senha}" required="true" 
+                            requiredMessage="#{msgs.login_senha_naoInformada}" />  
+              </p:panelGrid>
+
+              <f:facet name="footer">  
+                <h:panelGroup styleClass="center-horizontal">
+                  <p:commandButton value="Entrar" icon="ui-icon-check"
+                                   action="#{loginMB.doLogin}"
+                                   update="panelMensagens usuario senha">  
+                  </p:commandButton>
+                </h:panelGroup>
+              </f:facet>  
+            </p:panelGrid>  
+
+            <p:panel id="panelMensagens" style="margin: auto; border: none; width: 386px; 
+                     background: transparent">
+              <p:message for="usuario" display="text"/>
+              <div style="height: 2px;"/>
+              <p:message for="senha" display="text" />
+            </p:panel>
+          </div>
+        </div>
+      </div>
+    </h:form>
+  </h:body>
+</html>
+

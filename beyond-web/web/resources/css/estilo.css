@@ -1,0 +1,21 @@
+root { 
+  display: block;
+}
+
+.center-horizontal{
+  text-align: center;
+  display: block;
+}
+
+.right{
+  text-align: right;
+  display: block;
+}
+
+.panelGridLoginCampos tr{
+  border: none;
+}
+
+.panelGridLoginCampos td{
+  border: none;
+}
