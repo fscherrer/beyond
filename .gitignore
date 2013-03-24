@@ -6,3 +6,5 @@
 *.ear
 /beyond-web/dist/
 /beyond-web/build/
+/beyond-mobile/bin/
+/beyond-mobile/gen/
