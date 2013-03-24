@@ -35,7 +35,7 @@
   
   <application>
     <resource-bundle>
-      <base-name>br.com.beyond.web.mensagens</base-name>
+      <base-name>br.com.einsteinlimeira.beyond.web.mensagens</base-name>
       <var>msgs</var>
     </resource-bundle>
   </application>

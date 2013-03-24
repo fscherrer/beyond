@@ -1,4 +1,4 @@
-package br.com.beyond.web;
+package br.com.einsteinlimeira.beyond.web;
 
 import java.io.Serializable;
 import javax.faces.application.ConfigurableNavigationHandler;
