@@ -5,7 +5,7 @@ public class Cidade extends Entidade {
   private String nome;
 
   private Uf uf;
-
+  
   public Cidade() {
   }
 

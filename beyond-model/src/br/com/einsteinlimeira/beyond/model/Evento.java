@@ -10,14 +10,17 @@ public class Evento extends Entidade {
 
   private Casa casa;
 
+  private Banda banda;
+
   public Evento() {
   }
 
-  public Evento(int id, Date datahora, double valor, Casa casa) {
+  public Evento(int id, Date datahora, double valor, Casa casa, Banda banda) {
     super(id);
     this.datahora = datahora;
     this.valor = valor;
     this.casa = casa;
+    this.banda = banda;
   }
 
   public Date getDatahora() {
@@ -42,5 +45,13 @@ public class Evento extends Entidade {
 
   public void setCasa(Casa casa) {
     this.casa = casa;
+  }
+
+  public Banda getBanda() {
+    return banda;
+  }
+
+  public void setBanda(Banda banda) {
+    this.banda = banda;
   }
 }

@@ -1,5 +1,7 @@
 package br.com.einsteinlimeira.beyond.model;
 
+import java.util.List;
+
 public class Casa extends Entidade {
 
   private String nome;
@@ -12,16 +14,26 @@ public class Casa extends Entidade {
 
   private Casa matriz;
 
+  private List<Evento> eventos;
+
+  private List<Usuario> usuarios;
+
+  private List<Contato> contatos;
+
   public Casa() {
   }
 
-  public Casa(int id, String nome, int cnpj, String responsavel, Endereco endereco, Casa matriz) {
+  public Casa(int id, String nome, int cnpj, String responsavel, Endereco endereco, Casa matriz,
+    List<Evento> eventos, List<Usuario> usuarios, List<Contato> contatos) {
     super(id);
     this.nome = nome;
     this.cnpj = cnpj;
     this.responsavel = responsavel;
     this.endereco = endereco;
     this.matriz = matriz;
+    this.eventos = eventos;
+    this.usuarios = usuarios;
+    this.contatos = contatos;
   }
 
   public String getNome() {
@@ -62,5 +74,29 @@ public class Casa extends Entidade {
 
   public void setMatriz(Casa matriz) {
     this.matriz = matriz;
+  }
+
+  public List<Evento> getEventos() {
+    return eventos;
+  }
+
+  public void setEventos(List<Evento> eventos) {
+    this.eventos = eventos;
+  }
+
+  public List<Usuario> getUsuarios() {
+    return usuarios;
+  }
+
+  public void setUsuarios(List<Usuario> usuarios) {
+    this.usuarios = usuarios;
+  }
+
+  public List<Contato> getContatos() {
+    return contatos;
+  }
+
+  public void setContatos(List<Contato> contatos) {
+    this.contatos = contatos;
   }
 }

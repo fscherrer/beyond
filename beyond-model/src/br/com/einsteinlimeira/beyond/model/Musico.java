@@ -6,7 +6,7 @@ public class Musico extends Entidade {
 
   private String nome;
 
-  private List<ContatoMusico> contatos;
+  private List<Contato> contatos;
 
   public Musico() {
   }
@@ -15,7 +15,7 @@ public class Musico extends Entidade {
     this(id, nome, null);
   }
 
-  public Musico(int id, String nome, List<ContatoMusico> contatos) {
+  public Musico(int id, String nome, List<Contato> contatos) {
     super(id);
     this.nome = nome;
     this.contatos = contatos;
@@ -29,11 +29,11 @@ public class Musico extends Entidade {
     this.nome = nome;
   }
 
-  public List<ContatoMusico> getContatos() {
+  public List<Contato> getContatos() {
     return contatos;
   }
 
-  public void setContatos(List<ContatoMusico> contatos) {
+  public void setContatos(List<Contato> contatos) {
     this.contatos = contatos;
   }
 }

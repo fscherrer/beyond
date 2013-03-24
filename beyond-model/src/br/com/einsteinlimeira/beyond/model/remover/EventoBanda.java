@@ -1,4 +1,8 @@
-package br.com.einsteinlimeira.beyond.model;
+package br.com.einsteinlimeira.beyond.model.remover;
+
+import br.com.einsteinlimeira.beyond.model.Banda;
+import br.com.einsteinlimeira.beyond.model.Entidade;
+import br.com.einsteinlimeira.beyond.model.Evento;
 
 public class EventoBanda extends Entidade {
 
