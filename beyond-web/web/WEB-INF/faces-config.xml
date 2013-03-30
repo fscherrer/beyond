@@ -40,4 +40,8 @@
     </resource-bundle>
   </application>
   
+  <lifecycle>
+    <phase-listener>br.com.einsteinlimeira.beyond.web.LoginPhaseListener</phase-listener>
+  </lifecycle>
+  
 </faces-config>

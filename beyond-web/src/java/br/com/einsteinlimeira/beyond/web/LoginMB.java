@@ -1,12 +1,9 @@
 package br.com.einsteinlimeira.beyond.web;
 
 import java.io.Serializable;
-import javax.faces.application.ConfigurableNavigationHandler;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ComponentSystemEvent;
 import javax.validation.constraints.Size;
 
 /**
@@ -45,28 +42,23 @@ public class LoginMB implements Serializable {
   public String doLogin() throws InterruptedException {
     logado = true;
 
-    // TODO: agora está tratando com atributo required na view
-    if (usuario.isEmpty() || senha.isEmpty()) {
-      FacesContext.getCurrentInstance().addMessage(
-        null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Por favor informe Usuário e Senha",
-        "Os campos Usuário e Senha devem ser preenchidos"));
-
-      return null;
-    }
-
     return "admin";
   }
 
   public String doLogout() {
+    logado = false;
     FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 
     return "logout";
   }
 
-  public void verificaLogin(ComponentSystemEvent event) {
-    if (!logado) {
-      ((ConfigurableNavigationHandler) FacesContext.getCurrentInstance().getApplication().
-        getNavigationHandler()).performNavigation("login");
-    }
+  /**
+   * Retorna se o usuário está logado.
+   * 
+   * @return 
+   *   <code>True</code> se estiver logado.
+   */
+  public boolean isLogado() {
+    return logado;
   }
 }
