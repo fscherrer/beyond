@@ -12,7 +12,7 @@
           background-repeat: repeat-x;
           background-attachment:fixed;
           background-position:bottom; ">
-    <h:form>
+    <h:form id="loginForm">
 
       <div style="position: absolute; top: 50%; left: 0; width: 100%">
         <div style="position: absolute; text-align: center; width: 100%; top: -95px">
@@ -26,7 +26,7 @@
               <h:outputText value="" />
             </f:facet>
           </p:ajaxStatus>
-          
+
           <div style="text-align: left; margin: auto">
 
             <p:panelGrid  columns="1" style="margin: auto;">  
@@ -37,6 +37,7 @@
               <p:panelGrid columns="2" styleClass="panelGridLoginCampos" id="panelLogin">  
                 <h:outputLabel for="usuario" value="#{msgs.login_usuario}" />  
                 <p:inputText id="usuario" value="#{loginMB.usuario}" required="true"
+                             binding="#{loginMB.inputUsuario}"
                              requiredMessage="#{msgs.login_usuario_naoInformado}" />  
 
                 <h:outputLabel for="senha" value="#{msgs.login_senha}" />  
@@ -48,7 +49,7 @@
                 <h:panelGroup styleClass="center-horizontal">
                   <p:commandButton value="Entrar" icon="ui-icon-check"
                                    action="#{loginMB.doLogin}"
-                                   update="panelMensagens usuario senha">  
+                                   update="panelMensagens usuario senha mensagensGlobaisLogin">  
                   </p:commandButton>
                 </h:panelGroup>
               </f:facet>  
@@ -60,6 +61,8 @@
               <div style="height: 2px;"/>
               <p:message for="senha" display="text" />
             </p:panel>
+            
+            <p:messages id="mensagensGlobaisLogin" globalOnly="true" showDetail="true" />
           </div>
         </div>
       </div>

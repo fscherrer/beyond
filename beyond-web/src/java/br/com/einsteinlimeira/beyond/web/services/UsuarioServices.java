@@ -9,14 +9,18 @@ import java.util.List;
  * Serviço relacionados a entidade {@link Usuario}.
  */
 public class UsuarioServices {
-  
-  // TODO: não está legal um serviço lançar DAOException
 
+  // TODO: não está legal um serviço lançar DAOException
+  
   public List<Usuario> getUsuarios() throws DAOException {
     return new UsuarioDAO().listar();
   }
-  
-  public Usuario getUsuario(int id) throws DAOException{
+
+  public Usuario getUsuario(int id) throws DAOException {
     return new UsuarioDAO().getPeloId(id);
+  }
+
+  public Usuario getUsuario(String login, String senha) throws DAOException {
+    return new UsuarioDAO().getUsuario(login, senha);
   }
 }

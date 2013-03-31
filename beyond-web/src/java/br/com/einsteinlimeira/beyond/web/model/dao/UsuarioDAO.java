@@ -1,6 +1,8 @@
 package br.com.einsteinlimeira.beyond.web.model.dao;
 
 import br.com.einsteinlimeira.beyond.model.Usuario;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,6 +42,53 @@ public class UsuarioDAO implements EntidadeDAO<Usuario> {
 
       LOGGER.log(Level.SEVERE, mensagem, bdde);
       throw new DAOException(mensagem, bdde);
+    }
+  }
+
+  private static final String USUARIO_LOGIN_SENHA_QUERY = ""
+      + " select "
+      + "   * "
+      + " from "
+      + "   usuario "
+      + " where "
+      + "   login = ? "
+      + "     and "
+      + "   senha = ? ";
+
+  public Usuario getUsuario(String login, String senha) throws DAOException {
+    final String mensagem = "Falha ao autenticar usuário";
+    Connection conexao = null;
+
+    try {
+      conexao = BancoDeDados.getInstancia().getConexao();
+
+      PreparedStatement preparedStatement = conexao.prepareStatement(USUARIO_LOGIN_SENHA_QUERY);
+      preparedStatement.setString(1, login);
+      preparedStatement.setString(2, senha);
+
+      List<Usuario> usuarios = getUsuarios(preparedStatement.executeQuery());
+
+      if (!usuarios.isEmpty()) {
+        return usuarios.get(0);
+      }
+
+      return null;
+    }
+    catch (BancoDeDadosException bdde) {
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+    catch (SQLException sqle) {
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    }
+    finally {
+      try {
+        conexao.close();
+      }
+      catch (Exception e) {
+        LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+      }
     }
   }
 

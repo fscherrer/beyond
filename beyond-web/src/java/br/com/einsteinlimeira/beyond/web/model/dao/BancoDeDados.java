@@ -106,6 +106,8 @@ public class BancoDeDados {
    */
   public Connection getConexao() throws BancoDeDadosException {
     try {
+      // obs.: JDBC4 não precisa usar Class.forName para carregar a classe para que essa se registre
+      //       já existe o MANIFEST/services/...
       return DriverManager.getConnection(url, propriedadesConexao);
     }
     catch (SQLException ex) {

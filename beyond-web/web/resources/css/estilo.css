@@ -19,3 +19,8 @@ root {
 .panelGridLoginCampos td{
   border: none;
 }
+
+/* para <p:messages não exibir o ícone */
+.ui-messages-error-icon{
+  display: none;
+}
