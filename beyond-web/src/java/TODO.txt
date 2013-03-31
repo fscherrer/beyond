@@ -1,0 +1,3 @@
+
+Para o projeto real: 
+ - usar DataSource e ConnectionPool ao invés de arquivo properties para o banco de dados
