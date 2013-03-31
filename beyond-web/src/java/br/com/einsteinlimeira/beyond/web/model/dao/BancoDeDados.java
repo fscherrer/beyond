@@ -48,7 +48,7 @@ public class BancoDeDados {
 
     try {
       arquivoPropertiesBancoDadosInputStream = getClass().getResourceAsStream(
-         "/" + getClass().getPackage().getName().replaceAll("\\.", "/") + "/bancodados.properties");
+          "/" + getClass().getPackage().getName().replaceAll("\\.", "/") + "/bancodados.properties");
       Properties bancodadosProperties = new Properties();
       bancodadosProperties.load(arquivoPropertiesBancoDadosInputStream);
 
@@ -113,17 +113,50 @@ public class BancoDeDados {
       throw new BancoDeDadosException("SQLException ao obter conexão com a base de dados", ex);
     }
   }
+
+  /**
+   * Executa a <code>query</code>.
+   * 
+   * @param query
+   *   Query a ser executada.
+   * 
+   * @return
+   *   {@link ResultSet} retornado da execução da query.
+   * 
+   * @throws BancoDeDadosException se acontecer algum problema ao executar a query.
+   */
+  public ResultSet executarQuery(String query) throws BancoDeDadosException {
+    Connection conexao = null;
+    
+    try {
+      conexao = getInstancia().getConexao();
+      Statement statement = conexao.createStatement();
+
+      return statement.executeQuery(query);
+    }
+    catch (SQLException sqle) {
+      final String mensagem = "Falha ao executar query: " + query;
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new BancoDeDadosException(mensagem, sqle);
+    }
+    finally {
+      if (conexao != null) {
+        try {
+          conexao.close();
+        }
+        catch (SQLException sqle) {
+          LOGGER.log(Level.WARNING, "Falha ao fechar conexão", sqle);
+        }
+      }
+    }
+  }
+
   // para testar de forma rápida
   public static void main(String[] args) throws BancoDeDadosException, SQLException {
-    Connection conexao = getInstancia().getConexao();
-
-    Statement statement = conexao.createStatement();
-    ResultSet resultSet = statement.executeQuery("select * from uf");
+    ResultSet resultSet = getInstancia().executarQuery("select * from uf");
 
     while (resultSet.next()) {
       System.out.println(resultSet.getString("sigla") + " " + resultSet.getString("nome"));
     }
-
-    conexao.close();
   }
 }

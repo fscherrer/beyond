@@ -7,18 +7,22 @@
                 xmlns:h="http://java.sun.com/jsf/html">
 
   <ui:define name="titulo">
-    <h:outputText value="#{msgs.Uf_tituloPagina}" />
+    <h:outputText value="#{msgs.Usuario_tituloPagina}" />
   </ui:define>
 
   <ui:define name="conteudo">
     <h:form>
-      <p:dataTable id="tableUFs" var="uf" value="#{ufsMB.ufs}">
-        <p:column sortBy="#{uf.sigla}" headerText="#{msgs.Uf_sigla}">
-          <h:outputText value="#{uf.sigla}" />
+      <p:dataTable id="tableUsuarios" var="usuario" value="#{usuariosMB.usuarios}">
+        <p:column sortBy="#{usuario.login}" headerText="#{msgs.Usuario_login}">
+          <h:outputText value="#{usuario.login}" />
         </p:column>
 
-        <p:column sortBy="#{uf.nome}" headerText="#{msgs.Uf_nome}">
-          <h:outputText value="#{uf.nome}" />
+        <p:column sortBy="#{usuario.nome}" headerText="#{msgs.Usuario_nome}">
+          <h:outputText value="#{usuario.nome}" />
+        </p:column>
+
+        <p:column sortBy="#{usuario.casa}" headerText="#{msgs.Usuario_casa}">
+          <h:outputText value="#{usuario.casa}" />
         </p:column>
 
       </p:dataTable>
