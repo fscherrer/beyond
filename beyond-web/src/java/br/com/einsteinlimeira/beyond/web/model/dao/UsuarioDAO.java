@@ -61,11 +61,13 @@ public class UsuarioDAO implements EntidadeDAO<Usuario> {
       throw new DAOException(mensagem, sqle);
     }
     finally {
-      try {
-        conexao.close();
-      }
-      catch (Exception e) {
-        LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+      if (conexao != null) {
+        try {
+          conexao.close();
+        }
+        catch (Exception e) {
+          LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+        }
       }
     }
   }
@@ -84,7 +86,7 @@ public class UsuarioDAO implements EntidadeDAO<Usuario> {
    * Logger para logar mensagens.
    */
   private final static Logger LOGGER = Logger.getLogger(UsuarioDAO.class.getName());
-  
+
   private static final String LISTA_USUARIO_QUERY = ""
       + " select "
       + "   * "
@@ -144,11 +146,13 @@ public class UsuarioDAO implements EntidadeDAO<Usuario> {
       throw new DAOException(mensagem, sqle);
     }
     finally {
-      try {
-        conexao.close();
-      }
-      catch (Exception e) {
-        LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+      if (conexao != null) {
+        try {
+          conexao.close();
+        }
+        catch (Exception e) {
+          LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+        }
       }
     }
   }
@@ -190,11 +194,13 @@ public class UsuarioDAO implements EntidadeDAO<Usuario> {
       throw new DAOException(mensagem, sqle);
     }
     finally {
-      try {
-        conexao.close();
-      }
-      catch (Exception e) {
-        LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+      if (conexao != null) {
+        try {
+          conexao.close();
+        }
+        catch (Exception e) {
+          LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+        }
       }
     }
   }

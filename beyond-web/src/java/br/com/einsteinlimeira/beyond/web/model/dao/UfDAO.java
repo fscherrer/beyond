@@ -44,7 +44,7 @@ public class UfDAO implements EntidadeDAO<Uf> {
   }
 
   @Override
-  public boolean atualizar(Uf entidade) throws DAOException {
+  public void atualizar(Uf entidade) throws DAOException {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

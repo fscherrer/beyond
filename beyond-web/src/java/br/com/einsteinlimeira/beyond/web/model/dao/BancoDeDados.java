@@ -37,6 +37,16 @@ public class BancoDeDados {
    */
   private final static Logger LOGGER = Logger.getLogger(BancoDeDados.class.getName());
 
+  static {
+    // não era para precisar disso
+    try {
+      Class.forName("org.postgresql.Driver");
+    }
+    catch (ClassNotFoundException ex) {
+      Logger.getLogger(BancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
+    }
+  }
+
   /**
    * Construtor privado (Singleton).
    * 
@@ -106,8 +116,6 @@ public class BancoDeDados {
    */
   public Connection getConexao() throws BancoDeDadosException {
     try {
-      // obs.: JDBC4 não precisa usar Class.forName para carregar a classe para que essa se registre
-      //       já existe o MANIFEST/services/...
       return DriverManager.getConnection(url, propriedadesConexao);
     }
     catch (SQLException ex) {
@@ -129,7 +137,7 @@ public class BancoDeDados {
    */
   public ResultSet executarQuery(String query) throws BancoDeDadosException {
     Connection conexao = null;
-    
+
     try {
       conexao = getInstancia().getConexao();
       Statement statement = conexao.createStatement();

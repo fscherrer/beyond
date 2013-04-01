@@ -38,12 +38,14 @@
 
           <f:facet name="footer">
             <!-- obs.: não posso usar && no javascript aqui -->
-            <p:commandButton id="buttonOk" value="#{msgs.global_ok}"
-                             actionListener="#{usuariosMB.salvar()}" 
-                             update="panelEdicao :formListagem:tableUsuarios"
-                             oncomplete="if(!(args.validationFailed || args.exception)) editor.hide()"/>
-            <p:commandButton id="buttonCancelar" value="#{msgs.global_cancelar}"
-                             onclick="editor.hide();"/>
+            <h:panelGrid id="panelEdicaoButtons" columns="2" cellspacing="4">
+              <p:commandButton id="buttonOk" value="#{msgs.global_ok}"
+                               actionListener="#{usuariosMB.salvar()}" 
+                               update="panelEdicao :formListagem:tableUsuarios"
+                               oncomplete="if(!(args.validationFailed || args.exception)) editor.hide()"/>
+              <p:commandButton id="buttonCancelar" value="#{msgs.global_cancelar}"
+                               onclick="editor.hide();"/>
+            </h:panelGrid>
           </f:facet>
         </h:panelGrid>
       </h:form>
