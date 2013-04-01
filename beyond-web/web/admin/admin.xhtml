@@ -2,15 +2,43 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
   <h:head>
     <title>Admin</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/estilo.css" />
   </h:head>
-  <h:body>
-    Área adminsitrativa
-    <h:form>
-      <p:commandButton value="Sair" action="#{loginMB.doLogout}" />
+  <h:body style="background-image: url('../resources/imagens/background.png'); 
+          background-repeat: repeat-x;
+          background-attachment:fixed;
+          background-position:bottom; ">
+    <h:form id="adminForm">
+
+      <div style="position: absolute; top: 50%; left: 0; width: 100%">
+        <div style="position: absolute; text-align: center; width: 100%; top: -95px">
+
+          <p:ajaxStatus style="height: 11px">
+            <f:facet name="start">
+              <h:graphicImage value="../resources/imagens/processando.gif" />
+            </f:facet>
+
+            <f:facet name="complete">
+              <h:outputText value="" />
+            </f:facet>
+          </p:ajaxStatus>
+
+          <div style="text-align: center; margin: auto">
+
+            <p:panelGrid  columns="1" style="margin: auto;">  
+              <p:commandButton value="#{msgs.admin_usuarios}" action="#{adminMB.usuarios()}" />
+              <p:commandButton value="#{msgs.admin_ufs}" action="#{adminMB.ufs()}" />
+              <p:commandButton value="#{msgs.admin_sair}" action="#{loginMB.doLogout}" />
+            </p:panelGrid>  
+
+            <p:messages id="mensagensGlobaisLogin" globalOnly="true" showDetail="true" />
+          </div>
+        </div>
+      </div>
     </h:form>
   </h:body>
 </html>

@@ -23,4 +23,12 @@ public class UsuarioServices {
   public Usuario getUsuario(String login, String senha) throws DAOException {
     return new UsuarioDAO().getUsuario(login, senha);
   }
+  
+  public int inserir(Usuario usuario) throws DAOException{
+    return new UsuarioDAO().inserir(usuario);
+  }
+  
+  public void atualizar(Usuario usuario) throws DAOException{
+    new UsuarioDAO().atualizar(usuario);
+  }
 }

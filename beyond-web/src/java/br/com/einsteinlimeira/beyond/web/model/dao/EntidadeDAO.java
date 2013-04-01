@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface EntidadeDAO<E extends Entidade> {
 
-  public void inserir(E entidade) throws DAOException;
+  public int inserir(E entidade) throws DAOException;
 
   public boolean remover(E entidade) throws DAOException;
 
@@ -13,5 +13,5 @@ public interface EntidadeDAO<E extends Entidade> {
 
   public List<E> listar() throws DAOException;
 
-  public boolean atualizar(E entidade) throws DAOException;
+  public void atualizar(E entidade) throws DAOException;
 }

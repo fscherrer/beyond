@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class UfDAO implements EntidadeDAO<Uf> {
 
   @Override
-  public void inserir(Uf entidade) throws DAOException {
+  public int inserir(Uf entidade) throws DAOException {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

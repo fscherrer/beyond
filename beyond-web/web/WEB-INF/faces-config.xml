@@ -31,6 +31,20 @@
       <to-view-id>/admin/login.xhtml</to-view-id>
       <redirect />
     </navigation-case>
+    
+    <navigation-case>
+      <display-name>Usuários</display-name>
+      <from-outcome>usuarios</from-outcome>
+      <to-view-id>/admin/usuarios.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    
+    <navigation-case>
+      <display-name>UFs</display-name>
+      <from-outcome>ufs</from-outcome>
+      <to-view-id>/admin/ufs.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
   </navigation-rule>
   
   <application>
