@@ -2,7 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 
   <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -15,8 +17,25 @@
   <h:body>
 
     <div id="cabecalho">
-     <img src="../resources/imagens/rock.png" title="A.ROCK !" />
-             
+      <img src="../resources/imagens/rock.png" title="A.ROCK !" />
+
+      <h:form>
+
+        <p:menubar>
+
+          <p:menuitem value="Bandas" />
+          <p:menuitem value="Casas"/>
+          <p:menuitem value="Estilos"/>
+          <p:menuitem value="Eventos"/>
+
+          <f:facet name="options">
+            <p:inputText style="margin-right:10px"/>
+            <p:commandButton type="button" value="Buscar"  />
+          </f:facet>
+
+        </p:menubar>
+
+      </h:form>       
     </div>
 
     <div id="conteudo">
@@ -24,7 +43,9 @@
     </div>
 
     <div id="rodape">
-      <h:outputText value="Rodapé" />
+      A. Rock <br />
+      Loren ipson<br />
+      dollor
     </div>
 
   </h:body>
