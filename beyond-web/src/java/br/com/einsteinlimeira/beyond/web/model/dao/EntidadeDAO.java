@@ -7,7 +7,7 @@ public interface EntidadeDAO<E extends Entidade> {
 
   public int inserir(E entidade) throws DAOException;
 
-  public boolean remover(E entidade) throws DAOException;
+  public void remover(E entidade) throws DAOException;
 
   public E getPeloId(int id) throws DAOException;
 

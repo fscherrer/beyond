@@ -16,7 +16,7 @@ public class UfDAO implements EntidadeDAO<Uf> {
   }
 
   @Override
-  public boolean remover(Uf entidade) throws DAOException {
+  public void remover(Uf entidade) throws DAOException {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

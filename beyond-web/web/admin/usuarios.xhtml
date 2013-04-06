@@ -14,7 +14,7 @@
   <ui:define name="conteudo">
 
     <p:dialog header="#{msgs.Usuario_tituloEditor}" widgetVar="editor"
-              resizable="false" modal="true">  
+              resizable="false" modal="true" onShow="document.getElementById('formEdicao:login').focus();">  
       <h:form id="formEdicao">
         <h:panelGrid id="panelEdicao" columns="1">
           <h:panelGrid id="panelEdicaoCampos" columns="2" cellspacing="4">
@@ -51,6 +51,22 @@
       </h:form>
     </p:dialog>
 
+    <h:form id="formConfirmacaoExclusao">
+      <p:confirmDialog widgetVar="dialogConfirmacaoExclusao" 
+                       header="#{msgs.global_confirmacao_titulo}"
+                       message="#{msgs.global_confirmacao_excluir}">
+        <p:commandButton id="buttonConfirma" value="#{msgs.global_sim}" 
+                         update="exclusaoMessages :formListagem:tableUsuarios" 
+                         oncomplete="if(!args.exception) dialogConfirmacaoExclusao.hide()"  
+                         actionListener="#{usuariosMB.excluir()}" />  
+        <p:commandButton id="decline" value="#{msgs.global_nao}" 
+                         onclick="dialogConfirmacaoExclusao.hide()" />   
+        
+        <p:messages id="exclusaoMessages" showDetail="true" />
+
+      </p:confirmDialog>
+    </h:form>
+
 
     <h:form id="formListagem">
       <p:dataTable id="tableUsuarios" var="usuario" value="#{usuariosMB.usuarios}">
@@ -72,7 +88,8 @@
                            oncomplete="editor.show()" update=":formEdicao:panelEdicao">
             <f:setPropertyActionListener value="#{usuario}" target="#{usuariosMB.usuario}" />
           </p:commandButton>
-          <p:commandButton value="#{msgs.global_excluir}" action="none">
+          <p:commandButton value="#{msgs.global_excluir}" 
+                           onclick="dialogConfirmacaoExclusao.show()">
             <f:setPropertyActionListener value="#{usuario}" target="#{usuariosMB.usuario}" />
           </p:commandButton>
         </p:column>

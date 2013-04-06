@@ -31,4 +31,8 @@ public class UsuarioServices {
   public void atualizar(Usuario usuario) throws DAOException{
     new UsuarioDAO().atualizar(usuario);
   }
+  
+  public void remover(Usuario usuario) throws DAOException{
+    new UsuarioDAO().remover(usuario);
+  }
 }

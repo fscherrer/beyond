@@ -57,6 +57,29 @@ public class UsuariosMB implements Serializable {
 
     RequestContext.getCurrentInstance().addCallbackParam("exception", exception);
   }
+  
+  public void excluir() {
+    boolean exception = false;
+
+    try {
+      new UsuarioServices().remover(usuario);
+      usuarios.remove(usuario);
+    }
+    catch (DAOException daoe) {
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_ERROR, "Não foi possível excluir o Usuário",
+          "Verifique o log da aplicação para mais detalhes"));
+      exception = true;
+    }
+    catch (Exception e) {
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_ERROR, "Ocorreu um erro não esperado",
+          "Verifique o log da aplicação para mais detalhes"));
+      exception = true;
+    }
+
+    RequestContext.getCurrentInstance().addCallbackParam("exception", exception);
+  }
 
   @PostConstruct
   private void carregarUsuarios() {

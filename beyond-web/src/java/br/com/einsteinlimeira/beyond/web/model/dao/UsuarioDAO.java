@@ -37,14 +37,11 @@ public class UsuarioDAO implements EntidadeDAO<Usuario> {
       preparedStatement.setString(3, entidade.getNome());
       preparedStatement.setObject(4, entidade.getCasa() == null ? null : entidade.getCasa().getId());
 
-      int rows = preparedStatement.executeUpdate();
+      preparedStatement.executeUpdate();
 
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet.next()) {
         return resultSet.getInt("id");
-      }
-      else {
-        System.out.println("fodeu");
       }
 
       String mensagemFalhaObterId = "Não foi possível obter o ID do usuário incluído";
@@ -71,10 +68,46 @@ public class UsuarioDAO implements EntidadeDAO<Usuario> {
       }
     }
   }
+  
+  
+  private static final String EXCLUIR_USUARIO_QUERY = ""
+      + " delete "
+      + " from "
+      + "   usuario "
+      + " where "
+      + "   id = ?";
 
   @Override
-  public boolean remover(Usuario entidade) throws DAOException {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public void remover(Usuario entidade) throws DAOException {
+      final String mensagem = "Falha ao remover usuário";
+    Connection conexao = null;
+
+    try {
+      conexao = BancoDeDados.getInstancia().getConexao();
+
+      PreparedStatement preparedStatement = conexao.prepareStatement(EXCLUIR_USUARIO_QUERY);
+      preparedStatement.setInt(1, entidade.getId());
+
+      preparedStatement.executeUpdate();
+    }
+    catch (BancoDeDadosException bdde) {
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+    catch (SQLException sqle) {
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    }
+    finally {
+      if (conexao != null) {
+        try {
+          conexao.close();
+        }
+        catch (Exception e) {
+          LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+        }
+      }
+    }
   }
 
   @Override
