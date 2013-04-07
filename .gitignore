@@ -1,12 +1,26 @@
+# classe compiladas
 *.class
 
-# Package Files #
+# pacotes
 *.jar
 *.war
 *.ear
+
+# diretórios de beyond-web
 /beyond-web/dist/
 /beyond-web/build/
+/beyond-web/build/nbproject/private/
+
+# diretórios de beyond-mobile
 /beyond-mobile/bin/
 /beyond-mobile/gen/
+
+# diretórios de beyond-model
 /beyond-model/dist/
 /beyond-model/build/
+/beyond-model/nbproject/private/
+
+# diretórios de beyond-protocol
+/beyond-protocol/dist/
+/beyond-protocol/build/
+/beyond-protocol/nbproject/private/
