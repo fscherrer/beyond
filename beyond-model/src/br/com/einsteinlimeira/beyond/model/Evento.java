@@ -5,22 +5,21 @@ import java.util.Date;
 public class Evento extends Entidade {
 
   private Date datahora;
-
+  private String nome;
   private double valor;
-
   private Casa casa;
-
   private Banda banda;
 
   public Evento() {
   }
 
-  public Evento(int id, Date datahora, double valor, Casa casa, Banda banda) {
+  public Evento(int id, String nome, Date datahora, double valor, Casa casa, Banda banda) {
     super(id);
     this.datahora = datahora;
     this.valor = valor;
     this.casa = casa;
     this.banda = banda;
+    this.nome = nome;
   }
 
   public Date getDatahora() {
@@ -54,4 +53,12 @@ public class Evento extends Entidade {
   public void setBanda(Banda banda) {
     this.banda = banda;
   }
+
+  public String getNome() {
+    return nome;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }  
 }

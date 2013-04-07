@@ -2,14 +2,41 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./templates/template.xhtml">
+                template="./templates/template.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
 
-  <ui:define name="titulo">
-    Index
-  </ui:define>
-
+ 
+   <ui:define name="titulo">
+     <h:outputText value="#{msgs.Evento_tituloPagina}" />
+   </ui:define>
+  
   <ui:define name="conteudo">
-    conteudo
+   
+    <h:form>
+      <p:commandButton value="#{msgs.global_atualizar}" action="#{eventosMB.carregarEventos()}"
+                       update="tableEventos"/>
+      <p:dataTable id="tableEventos" var="eventos" value="#{eventosMB.eventos}">
+        <p:column sortBy="#{eventos.nome}" headerText="#{msgs.Evento_nome}">
+          <h:outputText value="#{eventos.nome}" />
+        </p:column>
+        <p:column sortBy="#{eventos.datahora}" headerText="#{msgs.Evento_dataHora}">
+          <h:outputText value="#{eventos.datahora}">
+            <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+          </h:outputText>
+        </p:column>
+        
+        <!--<p:column sortBy="#{eventos.casa}" headerText="#{msgs.Evento_casa}">-->
+<!--          <h:outputText value="#{eventos.casa}" />
+        </p:column>
+        
+        <p:column sortBy="#{eventos.banda}" headerText="#{msgs.Evento_banda}">
+          <h:outputText value="#{eventos.banda}" />
+        </p:column>-->
+       
+      </p:dataTable>
+    </h:form>
   </ui:define>
 
 </ui:composition>
