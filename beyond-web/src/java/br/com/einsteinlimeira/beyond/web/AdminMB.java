@@ -20,4 +20,8 @@ public class AdminMB {
   public String ufs(){
     return "ufs";
   }
+  
+  public String musicos(){
+    return "musicos";
+  }
 }
