@@ -18,7 +18,7 @@ public class EventoDAO implements EntidadeDAO<Evento> {
   }
 
   @Override
-  public boolean remover(Evento entidade) throws DAOException {
+  public void remover(Evento entidade) throws DAOException {
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
@@ -66,11 +66,11 @@ public class EventoDAO implements EntidadeDAO<Evento> {
         eventoValor = resultSet.getDouble("valor");
         eventoDataHora = resultSet.getTimestamp("dataHora");
         eventoCasaId = resultSet.getInt("casaid");
-        eventoBandaId = resultSet.getInt("bandaid");
+        //eventoBandaId = resultSet.getInt("bandaid");
         
-        banda = null ; //new BandaDAO().getBanda(eventoBandaId);
+        //banda = null ; //new BandaDAO().getBanda(eventoBandaId);
 
-        eventos.add(new Evento(eventoId, eventoNome, eventoDataHora, eventoValor, null, banda));
+        eventos.add(new Evento(eventoId, eventoNome, eventoDataHora, eventoValor, null, null));
       }
 
       return eventos;
