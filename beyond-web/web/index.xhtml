@@ -19,16 +19,18 @@
                 id="dialogDetalhesEvento"
                 header="#{msgs.global_detalhes}"
                 width="400">
-        <p><h:outputText value="Evento: #{eventosMB.evento.nome}" /></p>
-        <p><h:outputText value="Bandas: "/></p>
+        <p><b><h:outputText value="Evento: "/></b>
+        <h:outputText value="#{eventosMB.evento.nome}" /></p>
+        <p><b><u><h:outputText value="Bandas:"/></u></b></p>
         <ui:repeat value="#{eventosMB.evento.bandas}" var="banda">
-          <p><h:outputText value="&nbsp; &nbsp; #{banda.nome}" /></p>
+          <p><h:outputText value="&nbsp; &nbsp; &nbsp; #{banda.nome}" /></p>
         </ui:repeat>
-        <p><h:outputText value="Local: #{eventosMB.evento.casa.nome}" /></p>
-        <p><h:outputText value="Data - Hora: "/> 
+        <p><b><h:outputText value="Local: "/></b>
+ <h:outputText value="#{eventosMB.evento.casa.nome}" /></p>
+        <p><b><h:outputText value="Data \\ Hora: "/></b> 
           <h:outputText value="#{eventosMB.evento.datahora}">
-            <f:convertDateTime pattern="dd/MM/yyyy  -  HH:mm"/></h:outputText></p>
-        <p><h:outputText value="Valor: R$ "/><h:outputText value="#{eventosMB.evento.valor}"/></p>
+            <f:convertDateTime pattern="dd/MM/yyyy   -   HH:mm"/></h:outputText></p>
+        <p><b><h:outputText value="Valor:  R$ "/></b><h:outputText value="#{eventosMB.evento.valor}"/></p>
 
         <p align="center"><p:commandButton value="#{msgs.global_ok}" onclick="dialogDetalhesEvento.hide()"/>
         </p>
