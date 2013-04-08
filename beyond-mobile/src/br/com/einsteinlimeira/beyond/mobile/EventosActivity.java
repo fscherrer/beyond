@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import br.com.einsteinlimeira.beyond.mobile.model.ListaEvento;
+import br.com.einsteinlimeira.beyond.mobile.util.Constantes;
+import br.com.einsteinlimeira.beyond.mobile.util.EntidadeUtils;
 import br.com.einsteinlimeira.beyond.model.Evento;
 
 public class EventosActivity extends Activity {
@@ -32,7 +34,7 @@ public class EventosActivity extends Activity {
 
 				Evento eventoSelecionado = (Evento) listViewListaEventos.getAdapter().getItem(position);
 				
-				Log.i(Constantes.TAG, "Evento selecionado: "+eventoSelecionado.getBanda());
+				Log.i(Constantes.TAG, "Evento selecionado: " + EntidadeUtils.bandasToString(eventoSelecionado.getBandas()));
 				
 				Intent intent = new Intent(EventosActivity.this, EventoDetalheActivity.class);
 				intent.putExtra("evento", eventoSelecionado);
@@ -63,7 +65,7 @@ public class EventosActivity extends Activity {
 	 * Exibe a Activity para realização de configurações.
 	 */
 	private void exibirActivityConfiguracoes(){
-	  Intent intent = new Intent(this, ConfiguracaoActivity.class);
-	  startActivity(intent);
+//	  Intent intent = new Intent(this, ConfiguracaoActivity.class);
+//	  startActivity(intent);
 	}
 }

@@ -1,3 +1,5 @@
+ - compatibilidade com outros browser (não chrome);
+ - "version='1.0' encoding='UTF-8' ?>" aparecendo após login;
 
 Para o projeto real: 
  - usar DataSource e ConnectionPool ao invés de arquivo properties para o banco de dados

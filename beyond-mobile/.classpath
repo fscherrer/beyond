@@ -6,5 +6,6 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="lib" path="/home/scherrer/git/beyond/beyond-model/dist/beyond-model.jar"/>
 	<classpathentry exported="true" kind="lib" path="/home/scherrer/git/beyond/beyond-protocol/dist/beyond-protocol.jar"/>
+	<classpathentry exported="true" kind="lib" path="/home/scherrer/git/beyond/beyond-web/lib/Google-Gson/gson-2.2.2.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

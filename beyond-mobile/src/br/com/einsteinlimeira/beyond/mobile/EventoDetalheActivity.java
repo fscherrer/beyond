@@ -1,6 +1,7 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
 import br.com.einsteinlimeira.beyond.mobile.util.DateUtils;
+import br.com.einsteinlimeira.beyond.mobile.util.EntidadeUtils;
 import br.com.einsteinlimeira.beyond.model.Evento;
 import android.os.Bundle;
 import android.app.Activity;
@@ -20,12 +21,12 @@ public class EventoDetalheActivity extends Activity {
 
 		Resources resources = getResources();
 
-		((TextView) findViewById(R.id.evento_texto_banda)).setText(evento
-				.getBanda().getNome());
+		((TextView) findViewById(R.id.evento_texto_banda)).setText(
+				EntidadeUtils.bandasToString(evento.getBandas()));
 
 		((TextView) findViewById(R.id.evento_texto_titulo_banda))
-				.setText(resources.getString(R.string.evento_banda, evento
-						.getBanda().getNome()));
+				.setText(resources.getString(R.string.evento_banda, evento,
+				EntidadeUtils.bandasToString(evento.getBandas())));
 
 		((TextView) findViewById(R.id.evento_texto_data)).setText(resources
 				.getString(R.string.evento_data,

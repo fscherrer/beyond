@@ -2,16 +2,16 @@ package br.com.einsteinlimeira.beyond.mobile;
 
 import java.util.List;
 
-import br.com.einsteinlimeira.beyond.mobile.util.DateUtils;
-import br.com.einsteinlimeira.beyond.model.Banda;
-import br.com.einsteinlimeira.beyond.model.Evento;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import br.com.einsteinlimeira.beyond.mobile.util.DateUtils;
+import br.com.einsteinlimeira.beyond.mobile.util.EntidadeUtils;
+import br.com.einsteinlimeira.beyond.model.Banda;
+import br.com.einsteinlimeira.beyond.model.Evento;
 
 public class Adaptador extends BaseAdapter {
 
@@ -47,8 +47,9 @@ public class Adaptador extends BaseAdapter {
 
 		TextView textViewNomeEvento = (TextView) view
 				.findViewById(R.id.nome_banda);
-		Banda banda = eventos.get(positon).getBanda();
-		textViewNomeEvento.setText(banda == null ? "" : banda.getNome());
+		List<Banda> bandas = eventos.get(positon).getBandas();
+		
+		textViewNomeEvento.setText(EntidadeUtils.bandasToString(bandas));
 
 		TextView textViewDataEvento = (TextView) view
 				.findViewById(R.id.data_evento);

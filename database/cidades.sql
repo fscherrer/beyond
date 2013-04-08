@@ -7,7 +7,7 @@ INSERT INTO cidade
 VALUES
 (
   1,
-  'São Paulo',
+  'SÃ£o Paulo',
   26
 );
 
@@ -23,4 +23,5 @@ VALUES
   'Limeira',
   26
 );
+
 
