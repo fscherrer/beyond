@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EventoDetalheActivity"
+    android:background="@android:color/darker_gray" >
+    
+     <TextView
+        android:id="@+id/evento_texto_titulo_banda"
+        style="@style/evento_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/brancoAlpha"
+        android:layout_below="@id/evento_texto_titulo_banda"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/evento_texto_banda"
+            style="@style/evento_banda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/evento_texto_data"
+            style="@style/evento_detalhes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/evento_texto_banda" />
+
+        <TextView
+            android:id="@+id/evento_texto_valor"
+            style="@style/evento_detalhes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/evento_texto_data" />
+
+        </RelativeLayout>
+
+</RelativeLayout>

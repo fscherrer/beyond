@@ -30,7 +30,7 @@ public class Adaptador extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		return position;
+		return eventos.get(position);
 	}
 
 	@Override

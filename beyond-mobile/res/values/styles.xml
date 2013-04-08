@@ -16,5 +16,24 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="evento_titulo">
+        <item name="android:textColor">@color/preto</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@color/cinzaAlpha</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    
+    <style name="evento_detalhes">
+        <item name="android:textColor">@color/cinzaEscuro</item>
+        <item name="android:textSize">18sp</item>
+        
+    </style>
+    
+    <style name="evento_banda" parent="@style/evento_detalhes">
+        <item name="android:textColor">@color/preto</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>

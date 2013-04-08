@@ -2,5 +2,11 @@
 <resources>
 
     <string name="app_name">Beyond</string>
+    <string name="title_activity_evento_detalhe">Detalhe evento</string>
+    
+    <string name="evento_titulo_banda">%s</string>
+    <string name="evento_banda">%s</string>
+    <string name="evento_data">Data: %s</string>
+    <string name="evento_valor">Valor: R$ %s</string>
 
 </resources>
