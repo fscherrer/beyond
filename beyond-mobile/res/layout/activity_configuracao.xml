@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    tools:context=".ConfiguracaoActivity" >
+
+    <TextView
+        android:id="@+id/configuracao_textViewHost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/configuracao_host" />
+    
+    <EditText
+        android:id="@+id/configuracao_editTextHost"
+        android:layout_below="@id/configuracao_textViewHost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/configuracao_host_padrao"
+        android:inputType="text"/>
+    
+    
+    <TextView
+        android:id="@+id/configuracao_textViewPorta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/configuracao_editTextHost"
+        android:text="@string/configuracao_porta" />
+    
+    <EditText
+        android:id="@+id/configuracao_editTextPorta"
+        android:layout_below="@id/configuracao_textViewPorta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/configuracao_porta_padrao"
+        android:inputType="number"/>
+
+</RelativeLayout>
