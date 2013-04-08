@@ -19,54 +19,73 @@
                 id="dialogDetalhesEvento"
                 header="#{msgs.global_detalhes}"
                 width="400">
-        <p><b><h:outputText value="Evento: "/></b>
-          <h:outputText value="#{eventosMB.evento.nome}" /></p>
-        <p><b><u><h:outputText value="Bandas:"/></u></b></p>
-        <ui:repeat value="#{eventosMB.evento.bandas}" var="banda">
-          <p><h:outputText value="&nbsp; &nbsp; &nbsp; #{banda.nome}" /></p>
-        </ui:repeat>
-        <p><b><h:outputText value="Local: "/></b>
-          <h:outputText value="#{eventosMB.evento.casa.nome}" /></p>
-        <p><b><h:outputText value="Data \\ Hora: "/></b> 
-          <h:outputText value="#{eventosMB.evento.datahora}">
-            <f:convertDateTime pattern="dd/MM/yyyy   -   HH:mm"/></h:outputText></p>
-        <p><b><h:outputText value="Valor:  R$ "/></b><h:outputText value="#{eventosMB.evento.valor}"/></p>
+        <h:panelGrid columns="2">
+          <h:outputText value="Evento: " class="negrito"/>
+          <h:outputText value="#{eventosMB.evento.nome}" />
 
-        <p align="center"><p:commandButton value="#{msgs.global_ok}" onclick="dialogDetalhesEvento.hide()"/>
-        </p>
+          <h:outputText value="Bandas:" styleClass="negrito sublinhado"/>
+          <p:panel styleClass="panelCru" />
+
+          <p:panel styleClass="panelCru" />
+          <p:panel styleClass="panelCru">
+            <ui:repeat value="#{eventosMB.evento.bandas}" var="banda">
+              <h:outputText value="#{banda.nome}" />
+            </ui:repeat>
+          </p:panel>
+
+          <h:outputText value="Local: " styleClass="negrito"/>
+          <h:outputText value="#{eventosMB.evento.casa.nome}" />
+
+          <h:outputText value="Data/Hora: " styleClass="negrito"/>
+          <h:outputText value="#{eventosMB.evento.datahora}">
+            <f:convertDateTime pattern="dd/MM/yyyy   -   HH:mm"/>
+          </h:outputText>
+
+          <h:outputText value="Valor: " styleClass="negrito"/>
+          <h:outputText value="R$ #{eventosMB.evento.valor}"/>
+        </h:panelGrid>
+
+        <p:panel styleClass="panelCru" style="text-align: center;">
+          <p:commandButton value="#{msgs.global_ok}" onclick="dialogDetalhesEvento.hide()"/>
+        </p:panel>
       </p:dialog>
     </h:form>
 
     <h:form>
-      <div style="float: left;">
-        <p:commandButton value="#{msgs.global_atualizar}" action="#{eventosMB.carregarEventos()}"
-                         update="tableEventos"/>
-      </div>
-      <div style="float: right; position: relative; top: 10px;">
-        <h:link value="#{msgs.global_area_administrativa}" outcome="login"/>
-      </div>
-      <p:dataTable id="tableEventos" var="evento" value="#{eventosMB.eventos}">
-        <p:column sortBy="#{evento.nome}" headerText="#{msgs.Evento_nome}">
-          <h:outputText value="#{evento.nome}" />
-        </p:column>
-        <p:column sortBy="#{evento.datahora}" headerText="#{msgs.Evento_dataHora}">
-          <h:outputText value="#{evento.datahora}">
-            <f:convertDateTime pattern="dd/MM/yyyy  -  HH:mm"/>
-          </h:outputText>
-        </p:column>
+      <h:panelGrid columns="1" style="width: 100%;" styleClass="panelCru">
+        <p:panel styleClass="panelCru">
+          <p:panel style="float: left; background: transparent; border: none;">
+            <p:commandButton value="#{msgs.global_atualizar}" action="#{eventosMB.carregarEventos()}"
+                             update="tableEventos"/>
+          </p:panel>
+          <p:panel style="float: right; position: relative; top: 10px; background: transparent; border: none;">
+            <h:link value="#{msgs.global_area_administrativa}" outcome="login"/>
+          </p:panel>
+        </p:panel>
 
-        <p:column sortBy="#{evento.casa}" headerText="#{msgs.Evento_casa}">
-          <h:outputText value="#{evento.casa.nome}" />
-        </p:column>
+        <p:dataTable id="tableEventos" var="evento" value="#{eventosMB.eventos}">
+          <p:column sortBy="#{evento.nome}" headerText="#{msgs.Evento_nome}">
+            <h:outputText value="#{evento.nome}" />
+          </p:column>
+          <p:column sortBy="#{evento.datahora}" headerText="#{msgs.Evento_dataHora}">
+            <h:outputText value="#{evento.datahora}">
+              <f:convertDateTime pattern="dd/MM/yyyy  -  HH:mm"/>
+            </h:outputText>
+          </p:column>
 
-        <p:column width="30" headerText="#{msgs.global_detalhes}">
-          <p:commandButton value="Detalhes" title="Detalhes" oncomplete="dialogDetalhesEvento.show();"
-                           update=":formDetalhesEvento:dialogDetalhesEvento">
-            <f:setPropertyActionListener value="#{evento}" target="#{eventosMB.evento}" />
-          </p:commandButton>
-        </p:column>
+          <p:column sortBy="#{evento.casa}" headerText="#{msgs.Evento_casa}">
+            <h:outputText value="#{evento.casa.nome}" />
+          </p:column>
 
-      </p:dataTable>
+          <p:column width="30" headerText="#{msgs.global_detalhes}">
+            <p:commandButton value="Detalhes" title="Detalhes" oncomplete="dialogDetalhesEvento.show();"
+                             update=":formDetalhesEvento:dialogDetalhesEvento">
+              <f:setPropertyActionListener value="#{evento}" target="#{eventosMB.evento}" />
+            </p:commandButton>
+          </p:column>
+
+        </p:dataTable>
+      </h:panelGrid>
     </h:form>
   </ui:define>
 

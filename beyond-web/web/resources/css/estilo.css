@@ -24,3 +24,16 @@ root {
 .ui-messages-error-icon{
   display: none;
 }
+
+.negrito{
+  font-weight: bold;
+}
+
+.sublinhado{
+  text-decoration: underline;
+}
+
+.panelCru{
+  background: transparent;
+  border: none;
+}
