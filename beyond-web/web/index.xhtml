@@ -7,34 +7,58 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core">
 
- 
-   <ui:define name="titulo">
-     <h:outputText value="#{msgs.Evento_tituloPagina}" />
-   </ui:define>
-  
+
+  <ui:define name="titulo">
+    <h:outputText value="#{msgs.Evento_tituloPagina}" />
+  </ui:define>
+
   <ui:define name="conteudo">
-   
+
+    <h:form id="formDetalhesEvento">
+      <p:dialog widgetVar="dialogDetalhesEvento"
+                id="dialogDetalhesEvento"
+                header="#{msgs.global_detalhes}"
+                width="400">
+        <p><h:outputText value="Evento: #{eventosMB.evento.nome}" /></p>
+        <p><h:outputText value="Bandas: "/></p>
+        <ui:repeat value="#{eventosMB.evento.bandas}" var="banda">
+          <p><h:outputText value="&nbsp; &nbsp; #{banda.nome}" /></p>
+        </ui:repeat>
+        <p><h:outputText value="Local: #{eventosMB.evento.casa.nome}" /></p>
+        <p><h:outputText value="Data - Hora: "/> 
+          <h:outputText value="#{eventosMB.evento.datahora}">
+            <f:convertDateTime pattern="dd/MM/yyyy  -  HH:mm"/></h:outputText></p>
+        <p><h:outputText value="Valor: R$ "/><h:outputText value="#{eventosMB.evento.valor}"/></p>
+
+        <p align="center"><p:commandButton value="#{msgs.global_ok}" onclick="dialogDetalhesEvento.hide()"/>
+        </p>
+      </p:dialog>
+    </h:form>
+
     <h:form>
       <p:commandButton value="#{msgs.global_atualizar}" action="#{eventosMB.carregarEventos()}"
                        update="tableEventos"/>
-      <p:dataTable id="tableEventos" var="eventos" value="#{eventosMB.eventos}">
-        <p:column sortBy="#{eventos.nome}" headerText="#{msgs.Evento_nome}">
-          <h:outputText value="#{eventos.nome}" />
+      <p:dataTable id="tableEventos" var="evento" value="#{eventosMB.eventos}">
+        <p:column sortBy="#{evento.nome}" headerText="#{msgs.Evento_nome}">
+          <h:outputText value="#{evento.nome}" />
         </p:column>
-        <p:column sortBy="#{eventos.datahora}" headerText="#{msgs.Evento_dataHora}">
-          <h:outputText value="#{eventos.datahora}">
-            <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+        <p:column sortBy="#{evento.datahora}" headerText="#{msgs.Evento_dataHora}">
+          <h:outputText value="#{evento.datahora}">
+            <f:convertDateTime pattern="dd/MM/yyyy  -  HH:mm"/>
           </h:outputText>
         </p:column>
-        
-        <!--<p:column sortBy="#{eventos.casa}" headerText="#{msgs.Evento_casa}">-->
-<!--          <h:outputText value="#{eventos.casa}" />
+
+        <p:column sortBy="#{evento.casa}" headerText="#{msgs.Evento_casa}">
+          <h:outputText value="#{evento.casa.nome}" />
         </p:column>
-        
-        <p:column sortBy="#{eventos.banda}" headerText="#{msgs.Evento_banda}">
-          <h:outputText value="#{eventos.banda}" />
-        </p:column>-->
-       
+
+        <p:column width="30" headerText="#{msgs.global_detalhes}">
+          <p:commandButton value="Detalhes" title="Detalhes" oncomplete="dialogDetalhesEvento.show();"
+                           update=":formDetalhesEvento:dialogDetalhesEvento">
+            <f:setPropertyActionListener value="#{evento}" target="#{eventosMB.evento}" />
+          </p:commandButton>
+        </p:column>
+
       </p:dataTable>
     </h:form>
   </ui:define>

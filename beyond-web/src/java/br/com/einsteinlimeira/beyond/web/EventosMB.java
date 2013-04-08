@@ -19,27 +19,21 @@ import javax.faces.context.FacesContext;
 public class EventosMB implements Serializable {
 
   private List<Evento> eventos;
-  private String dummy;
-
-  public String getDummy() {
-    return dummy;
-  }
-
-  public void setDummy(String dummy) {
-    this.dummy = dummy;
-  }
+  private Evento evento;
 
   public EventosMB() {
     carregarEventos();
   }
 
   public void carregarEventos() {
-    
+
     try {
       eventos = new EventoServices().getEventos();
-      
-   
-      
+
+      for (Evento evento : eventos) {
+        System.out.println(evento.getCasa().getNome());
+      }
+
     } catch (DAOException daoe) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
               FacesMessage.SEVERITY_ERROR, "Não foi possível obter a lista de Eventos",
@@ -48,7 +42,15 @@ public class EventosMB implements Serializable {
     }
   }
 
-  public List<Evento> getEventos() { 
+  public List<Evento> getEventos() {
     return eventos;
+  }
+
+  public Evento getEvento() {
+    return evento;
+  }
+
+  public void setEvento(Evento evento) {
+    this.evento = evento;
   }
 }

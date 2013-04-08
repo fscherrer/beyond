@@ -1,6 +1,7 @@
 package br.com.einsteinlimeira.beyond.web.model.dao;
 
 import br.com.einsteinlimeira.beyond.model.Banda;
+import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Evento;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,7 +35,14 @@ public class EventoDAO implements EntidadeDAO<Evento> {
   @Override
   public List<Evento> listar() throws DAOException {
     try {
-      return getEventos(BancoDeDados.getInstancia().executarQuery("select * from evento"));
+      return getEventos(BancoDeDados.getInstancia().executarQuery(""
+              + " select "
+              + "   evento.*, "
+              + "   eventobanda.bandaid as bandaid "
+              + " from "
+              + "   evento as evento "
+              + "     join eventobanda as eventobanda"
+              + "       on eventobanda.eventoid = evento.id"));
     } catch (BancoDeDadosException bdde) {
       final String mensagem = "Falha ao listar Eventos";
 
@@ -57,8 +65,15 @@ public class EventoDAO implements EntidadeDAO<Evento> {
       double eventoValor;
       Date eventoDataHora;
       int eventoCasaId;
-      int eventoBandaId;
+      Integer eventoBandaId;
       Banda banda;
+      Casa casa;
+      Evento evento = null;
+
+      CasaDAO casaDAO = new CasaDAO();
+      BandaDAO bandaDAO = new BandaDAO();
+
+      int eventoIdAtual = 0;
 
       while (resultSet.next()) {
         eventoId = resultSet.getInt("Id");
@@ -66,11 +81,19 @@ public class EventoDAO implements EntidadeDAO<Evento> {
         eventoValor = resultSet.getDouble("valor");
         eventoDataHora = resultSet.getTimestamp("dataHora");
         eventoCasaId = resultSet.getInt("casaid");
-        //eventoBandaId = resultSet.getInt("bandaid");
-        
-        //banda = null ; //new BandaDAO().getBanda(eventoBandaId);
+        eventoBandaId = resultSet.getInt("bandaid");
 
-        eventos.add(new Evento(eventoId, eventoNome, eventoDataHora, eventoValor, null, null));
+        casa = casaDAO.getPeloId(eventoCasaId);
+        banda = bandaDAO.getPeloId(eventoBandaId);
+
+        if (eventoId != eventoIdAtual) {
+          List<Banda> bandas = new ArrayList<Banda>();
+          evento = new Evento(eventoId, eventoNome, eventoDataHora, eventoValor, casa, bandas);
+          eventos.add(evento);
+        }
+
+        evento.getBandas().add(banda);
+        eventoIdAtual = eventoId;
       }
 
       return eventos;

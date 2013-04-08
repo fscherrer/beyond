@@ -1,6 +1,7 @@
 package br.com.einsteinlimeira.beyond.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Evento extends Entidade {
 
@@ -8,17 +9,17 @@ public class Evento extends Entidade {
   private String nome;
   private double valor;
   private Casa casa;
-  private Banda banda;
+  private List<Banda> bandas;
 
   public Evento() {
   }
 
-  public Evento(int id, String nome, Date datahora, double valor, Casa casa, Banda banda) {
+  public Evento(int id, String nome, Date datahora, double valor, Casa casa, List<Banda> bandas) {
     super(id);
     this.datahora = datahora;
     this.valor = valor;
     this.casa = casa;
-    this.banda = banda;
+    this.bandas = bandas;
     this.nome = nome;
   }
 
@@ -46,12 +47,12 @@ public class Evento extends Entidade {
     this.casa = casa;
   }
 
-  public Banda getBanda() {
-    return banda;
+  public List<Banda> getBandas() {
+    return bandas;
   }
 
-  public void setBanda(Banda banda) {
-    this.banda = banda;
+  public void setBandas(List<Banda> bandas) {
+    this.bandas = bandas;
   }
 
   public String getNome() {
@@ -60,5 +61,5 @@ public class Evento extends Entidade {
 
   public void setNome(String nome) {
     this.nome = nome;
-  }  
+  }
 }
