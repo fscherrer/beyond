@@ -7,7 +7,7 @@ public class Constantes {
   /**
    * Define a TAG utilizada para log.
    */
-  public static final String TAG = "[beyond]";
+  public static final String TAG = "[ARock]";
   
   public static final String CONFIGURACAO_SHARED_PREFERENCES = "BeyondPrefs";
   public static final String CONFIGURACAO_HOST = "host";

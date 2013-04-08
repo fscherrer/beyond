@@ -12,7 +12,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -24,7 +23,7 @@ import br.com.einsteinlimeira.beyond.mobile.util.HttpUtils;
 import br.com.einsteinlimeira.beyond.protocol.Requisicao;
 import br.com.einsteinlimeira.beyond.protocol.RequisicaoEvento;
 
-public class TesteHttpActivity extends Activity {
+public class TesteHttpActivity extends GlobalActivity {
   private TextView textViewHttpResponse;
 
   @Override

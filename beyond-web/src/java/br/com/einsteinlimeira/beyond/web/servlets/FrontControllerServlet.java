@@ -16,7 +16,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.primefaces.json.JSONObject;
 
 /**
  * Servlet que representa um controlador frontal para tratamento de requisições realcionadas a esse

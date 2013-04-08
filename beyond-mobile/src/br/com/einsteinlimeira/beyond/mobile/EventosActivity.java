@@ -1,21 +1,18 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
-import android.app.Activity;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import br.com.einsteinlimeira.beyond.mobile.model.ListaEvento;
-import br.com.einsteinlimeira.beyond.mobile.util.Constantes;
 import br.com.einsteinlimeira.beyond.mobile.util.EntidadeUtils;
 import br.com.einsteinlimeira.beyond.model.Evento;
 
-public class EventosActivity extends Activity {
+public class EventosActivity extends GlobalActivity {
 
 	private ListView listViewListaEventos;
 
@@ -23,9 +20,12 @@ public class EventosActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_eventos);
-
+		
+		@SuppressWarnings("unchecked")
+		List<Evento> eventos = (List<Evento>) getIntent().getExtras().getSerializable("eventos");
+		
 		listViewListaEventos = (ListView) findViewById(R.id.lista_eventos);
-		Adaptador adaptador = new Adaptador(ListaEvento.eventos, this);
+		Adaptador adaptador = new Adaptador(eventos, this);
 		listViewListaEventos.setAdapter(adaptador);
 
 		listViewListaEventos.setOnItemClickListener(new OnItemClickListener() {
@@ -42,30 +42,5 @@ public class EventosActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	  switch (item.getItemId()) {
-      case R.id.menu_configuracoes:
-        exibirActivityConfiguracoes();
-        break;
-    }
-	  
-	  return true;
-	}
-	
-	/**
-	 * Exibe a Activity para realização de configurações.
-	 */
-	private void exibirActivityConfiguracoes(){
-//	  Intent intent = new Intent(this, ConfiguracaoActivity.class);
-//	  startActivity(intent);
 	}
 }

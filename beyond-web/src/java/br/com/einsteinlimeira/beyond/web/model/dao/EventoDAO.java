@@ -42,7 +42,10 @@ public class EventoDAO implements EntidadeDAO<Evento> {
               + " from "
               + "   evento as evento "
               + "     join eventobanda as eventobanda"
-              + "       on eventobanda.eventoid = evento.id"));
+              + "       on eventobanda.eventoid = evento.id "
+              + "  order by "
+              + "    evento.dataHora, "
+              + "    evento.nome"));
     } catch (BancoDeDadosException bdde) {
       final String mensagem = "Falha ao listar Eventos";
 

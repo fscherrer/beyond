@@ -1,15 +1,13 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
+import android.content.res.Resources;
+import android.os.Bundle;
+import android.widget.TextView;
 import br.com.einsteinlimeira.beyond.mobile.util.DateUtils;
 import br.com.einsteinlimeira.beyond.mobile.util.EntidadeUtils;
 import br.com.einsteinlimeira.beyond.model.Evento;
-import android.os.Bundle;
-import android.app.Activity;
-import android.content.res.Resources;
-import android.view.Menu;
-import android.widget.TextView;
 
-public class EventoDetalheActivity extends Activity {
+public class EventoDetalheActivity extends GlobalActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +19,11 @@ public class EventoDetalheActivity extends Activity {
 
 		Resources resources = getResources();
 
-		((TextView) findViewById(R.id.evento_texto_banda)).setText(
-				EntidadeUtils.bandasToString(evento.getBandas()));
+		((TextView) findViewById(R.id.evento_texto_titulo)).setText(evento.getNome());
 
-		((TextView) findViewById(R.id.evento_texto_titulo_banda))
-				.setText(resources.getString(R.string.evento_banda, evento,
-				EntidadeUtils.bandasToString(evento.getBandas())));
+		((TextView) findViewById(R.id.evento_texto_banda))
+				.setText(resources.getString(R.string.evento_banda, 
+						EntidadeUtils.bandasToString(evento.getBandas())));
 
 		((TextView) findViewById(R.id.evento_texto_data)).setText(resources
 				.getString(R.string.evento_data,
@@ -36,12 +33,4 @@ public class EventoDetalheActivity extends Activity {
 				.getString(R.string.evento_valor, evento.getValor()));
 
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_evento_detalhe, menu);
-		return true;
-	}
-
 }

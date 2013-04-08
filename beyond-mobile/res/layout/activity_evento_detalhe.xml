@@ -6,7 +6,7 @@
     android:background="@android:color/darker_gray" >
     
      <TextView
-        android:id="@+id/evento_texto_titulo_banda"
+        android:id="@+id/evento_texto_titulo"
         style="@style/evento_titulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/brancoAlpha"
-        android:layout_below="@id/evento_texto_titulo_banda"
+        android:layout_below="@id/evento_texto_titulo"
         android:padding="5dp">
 
         <TextView
