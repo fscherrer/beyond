@@ -8,5 +8,21 @@
     <string name="evento_banda">%s</string>
     <string name="evento_data">Data: %s</string>
     <string name="evento_valor">Valor: R$ %s</string>
+    
+    <string name="menu_configuracoes">Configurações</string>
+    
+    <!--  mensagens globais -->
+    <string name="global_aguarde">Aguarde&#8230;</string>
+    <string name="global_erro_requisicao">Erro ao realizar requisição</string>
+    
+    <!--  activity para testes HTTP -->
+    <string name="title_activity_teste_http">Teste HTTP</string>
+    
+    <!--  activity para configurações -->
+    <string name="title_activity_configuracao">Configurações</string>
+    <string name="configuracao_host">Host</string>
+    <string name="configuracao_host_padrao">localhost</string>
+    <string name="configuracao_porta">Porta</string>
+    <string name="configuracao_porta_padrao">8080</string>
 
 </resources>

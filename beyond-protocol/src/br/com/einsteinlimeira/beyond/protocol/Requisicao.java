@@ -16,5 +16,5 @@ public class Requisicao {
    * 
    * @see RequisicaoEvento
    */
-  public static final int TIPO_EVENTO = 1;
+  public static final String TIPO_EVENTO = "evento";
 }
