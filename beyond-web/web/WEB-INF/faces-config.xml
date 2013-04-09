@@ -4,9 +4,9 @@
               xmlns="http://java.sun.com/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
-
+  
   <navigation-rule>
-    <from-view-id>/login.xhtml</from-view-id>
+    <from-view-id>*</from-view-id>
     
     <navigation-case>
       <display-name>Admin</display-name>
@@ -14,10 +14,6 @@
       <to-view-id>/admin/admin.xhtml</to-view-id>
       <redirect />
     </navigation-case>
-  </navigation-rule>
-  
-  <navigation-rule>
-    <from-view-id>*</from-view-id>
     
     <navigation-case>
       <display-name>Logout</display-name>
@@ -44,6 +40,20 @@
       <display-name>UFs</display-name>
       <from-outcome>ufs</from-outcome>
       <to-view-id>/admin/ufs.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    
+    <navigation-case>
+      <display-name>musicos</display-name>
+      <from-outcome>musicos</from-outcome>
+      <to-view-id>/admin/musicos.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    
+    <navigation-case>
+      <display-name>Index</display-name>
+      <from-outcome>index</from-outcome>
+      <to-view-id>/index.xhtml</to-view-id>
       <redirect />
     </navigation-case>
   </navigation-rule>

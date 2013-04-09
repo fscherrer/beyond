@@ -29,11 +29,6 @@ public class EventosMB implements Serializable {
 
     try {
       eventos = new EventoServices().getEventos();
-
-      for (Evento evento : eventos) {
-        System.out.println(evento.getCasa().getNome());
-      }
-
     } catch (DAOException daoe) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
               FacesMessage.SEVERITY_ERROR, "Não foi possível obter a lista de Eventos",

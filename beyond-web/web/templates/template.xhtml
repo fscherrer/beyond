@@ -8,16 +8,16 @@
 
   <h:head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link href="../resources/css/default.css" rel="stylesheet" type="text/css" />
-    <link href="../resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
-    <link href="../resources/css/estilo.css" rel="stylesheet" type="text/css" />
+    <h:outputStylesheet library="css" name="default.css" />
+    <h:outputStylesheet library="css" name="cssLayout.css" />
+    <h:outputStylesheet library="css" name="estilo.css" />
     <title><ui:insert name="titulo">Título aqui</ui:insert></title>
   </h:head>
 
   <h:body>
 
     <div id="cabecalho">
-      <img src="../resources/imagens/rock.png" title="A.ROCK !" />
+      <h:graphicImage library="imagens" name="rock.png" title="A.ROCK !" />
 
       <h:form>
 
@@ -26,7 +26,7 @@
           <p:menuitem value="Bandas" />
           <p:menuitem value="Casas"/>
           <p:menuitem value="Estilos"/>
-          <p:menuitem value="Eventos" url="events.xhtml"/>
+          <p:menuitem value="Eventos" outcome="index"/>
 
           <f:facet name="options">
             <p:inputText style="margin-right:10px"/>

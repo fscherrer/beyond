@@ -53,15 +53,16 @@
 
     <h:form>
       <h:panelGrid columns="1" style="width: 100%;" styleClass="panelCru">
-        <p:panel styleClass="panelCru">
-          <p:panel style="float: left; background: transparent; border: none;">
+        <h:panelGroup layout="block" style="vertical-align: middle;">
+        
+          <h:panelGroup layout="block" style="float: left;">
             <p:commandButton value="#{msgs.global_atualizar}" action="#{eventosMB.carregarEventos()}"
                              update="tableEventos"/>
-          </p:panel>
-          <p:panel style="float: right; position: relative; top: 10px; background: transparent; border: none;">
+          </h:panelGroup>
+          <h:panelGroup layout="block" style="float: right; position: relative; top: 8px;">
             <h:link value="#{msgs.global_area_administrativa}" outcome="login"/>
-          </p:panel>
-        </p:panel>
+          </h:panelGroup>
+        </h:panelGroup>
 
         <p:dataTable id="tableEventos" var="evento" value="#{eventosMB.eventos}">
           <p:column sortBy="#{evento.nome}" headerText="#{msgs.Evento_nome}">
