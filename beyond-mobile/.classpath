@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="var" path="BEYOND_HOME"/>
+	<classpathentry exported="true" kind="var" path="BEYOND_HOME/libs/Google-Gson/gson-2.2.2.jar"/>
+	<classpathentry exported="true" kind="var" path="BEYOND_HOME/beyond-model/dist/beyond-model.jar"/>
+	<classpathentry exported="true" kind="var" path="BEYOND_HOME/beyond-protocol/dist/beyond-protocol.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry exported="true" kind="lib" path="/home/scherrer/git/beyond/beyond-model/dist/beyond-model.jar"/>
-	<classpathentry exported="true" kind="lib" path="/home/scherrer/git/beyond/beyond-protocol/dist/beyond-protocol.jar"/>
-	<classpathentry exported="true" kind="lib" path="/home/scherrer/git/beyond/beyond-web/lib/Google-Gson/gson-2.2.2.jar"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
