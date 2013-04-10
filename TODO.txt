@@ -1,0 +1,37 @@
+Para a primeira fase:
+
+ - WEB
+  [ ] FS - Ordenação por casa.
+  [ ] LB - Acrescentar cidade na tela eventos
+  [ ] FS - Melhorar dialog de detalhes (Principalmente as bandas, colocar na mesma linha separado por vírgula, igualmente o Android)
+  [ ] AB - Refazer o rodapé: 
+        A. Rock
+        Anderson Botechia
+        Fernando Scherrer
+        José Bais
+        Lucas Botechia
+        Lucas Lamana
+        Paulo Volpato
+
+ - MOBILE
+  [ ] LB - Ícone Android
+  [ ] AB - Trocar estrela pelo dia do evento
+  [ ] LL - Exibir mais detalhes na tela de eventos
+  [ ] JB - Na listagem de eventos está exibindo a banda onde deveria ser o nome do evento
+  [ ] FS - Atualizar da listagem
+  [ ] LL - Remover barra de título
+  [ ] LB - Atualizar a tela inicial para esquema do toque
+  [ ] PV - Bloquear o toque durante o carregamento das páginas
+
+ - GERAL
+  [ ] LB - Backup da base de dados
+  [ ] PV - Trocar separador decimal
+
+
+Para a segunda fase:
+
+Futuro:
+ - compatibilidade com outros browser (não chrome);
+
+Para o projeto real: 
+ - usar DataSource e ConnectionPool ao invés de arquivo properties para o banco de dados
