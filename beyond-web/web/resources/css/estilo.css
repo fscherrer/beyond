@@ -37,3 +37,16 @@ root {
   background: transparent;
   border: none;
 }
+
+.panelDetalhesEventoColumn2{
+  width: 100%;
+}
+
+.detalhesEventoTitulo{
+  font-size: 250%;
+  font-weight: bold;
+}
+
+.panelDetalhesEventoRowPar{
+  background-color: #efefef;
+}
