@@ -3,7 +3,7 @@ Para a primeira fase:
  - WEB
   [x] FS - Ordenação por casa.
   [ ] LB - Acrescentar cidade na tela eventos
-  [ ] FS - Melhorar dialog de detalhes (Principalmente as bandas, colocar na mesma linha separado por vírgula, igualmente o Android)
+  [x] FS - Melhorar dialog de detalhes (Principalmente as bandas, colocar na mesma linha separado por vírgula, igualmente o Android)
   [ ] AB - Refazer o rodapé: 
         A. Rock
         Anderson Botechia

@@ -18,20 +18,24 @@
       <p:dialog widgetVar="dialogDetalhesEvento"
                 id="dialogDetalhesEvento"
                 header="#{msgs.global_detalhes}"
+                resizable="false"
                 width="400">
-        <h:panelGrid columns="2">
+        <h:panelGrid columns="2" width="100%" cellpadding="2" cellspacing="0"
+                     columnClasses=",panelDetalhesEventoColumn2"
+                     rowClasses=",panelDetalhesEventoRowPar">
           <h:outputText value="Evento: " class="negrito"/>
-          <h:outputText value="#{eventosMB.evento.nome}" />
+          <h:outputText value="#{eventosMB.evento.nome}" class="detalhesEventoTitulo" />
 
-          <h:outputText value="Bandas:" styleClass="negrito sublinhado"/>
-          <p:panel styleClass="panelCru" />
-
-          <p:panel styleClass="panelCru" />
-          <p:panel styleClass="panelCru">
-            <ui:repeat value="#{eventosMB.evento.bandas}" var="banda">
+          <h:outputText value="Bandas:" styleClass="negrito"/>
+          <h:panelGroup layout="block" styleClass="panelCru" style="margin: 0px auto;">
+            <ui:repeat value="#{eventosMB.evento.bandas}" var="banda" varStatus="repeatStatus"><!-- 
+                   value: ternário: se for a última banda, imprime ' e ', senão ', '
+                   rendered: só imprime se tiver mais de uma banda -->
+              <h:outputText value="#{repeatStatus.last ? ' e ' : ', '}" 
+                            rendered="#{repeatStatus.index gt 0}" />
               <h:outputText value="#{banda.nome}" />
             </ui:repeat>
-          </p:panel>
+          </h:panelGroup>
 
           <h:outputText value="Local: " styleClass="negrito"/>
           <h:outputText value="#{eventosMB.evento.casa.nome}" />
@@ -46,7 +50,7 @@
         </h:panelGrid>
 
         <p:panel styleClass="panelCru" style="text-align: center;">
-          <p:commandButton value="#{msgs.global_ok}" onclick="dialogDetalhesEvento.hide()"/>
+          <p:commandButton value="#{msgs.global_ok}" onclick="dialogDetalhesEvento.hide();"/>
         </p:panel>
       </p:dialog>
     </h:form>
@@ -54,7 +58,7 @@
     <h:form>
       <h:panelGrid columns="1" style="width: 100%;" styleClass="panelCru">
         <h:panelGroup layout="block" style="vertical-align: middle;">
-        
+
           <h:panelGroup layout="block" style="float: left;">
             <p:commandButton value="#{msgs.global_atualizar}" action="#{eventosMB.carregarEventos()}"
                              update="tableEventos"/>
