@@ -2,6 +2,7 @@ package br.com.einsteinlimeira.beyond.web.model.dao;
 
 import br.com.einsteinlimeira.beyond.model.Banda;
 import br.com.einsteinlimeira.beyond.model.Casa;
+import br.com.einsteinlimeira.beyond.model.Cidade;
 import br.com.einsteinlimeira.beyond.model.Evento;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -71,10 +72,13 @@ public class EventoDAO implements EntidadeDAO<Evento> {
       Integer eventoBandaId;
       Banda banda;
       Casa casa;
+      int eventoCidadeId;
+      Cidade cidade;
       Evento evento = null;
 
       CasaDAO casaDAO = new CasaDAO();
       BandaDAO bandaDAO = new BandaDAO();
+      CidadeDAO cidadeDAO = new CidadeDAO();
 
       int eventoIdAtual = 0;
 
@@ -85,13 +89,15 @@ public class EventoDAO implements EntidadeDAO<Evento> {
         eventoDataHora = resultSet.getTimestamp("dataHora");
         eventoCasaId = resultSet.getInt("casaid");
         eventoBandaId = resultSet.getInt("bandaid");
+        eventoCidadeId = resultSet.getInt("id");
 
         casa = casaDAO.getPeloId(eventoCasaId);
         banda = bandaDAO.getPeloId(eventoBandaId);
+        cidade = cidadeDAO.getPeloId(eventoCidadeId);
 
         if (eventoId != eventoIdAtual) {
           List<Banda> bandas = new ArrayList<Banda>();
-          evento = new Evento(eventoId, eventoNome, eventoDataHora, eventoValor, casa, bandas);
+          evento = new Evento(eventoId, eventoNome, eventoDataHora, eventoValor, casa, bandas, cidade);
           eventos.add(evento);
         }
 

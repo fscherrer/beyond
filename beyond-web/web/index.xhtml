@@ -81,6 +81,9 @@
           <p:column sortBy="#{evento.casa.nome}" headerText="#{msgs.Evento_casa}">
             <h:outputText value="#{evento.casa.nome}" />
           </p:column>
+          
+          <p:column sortBy="#{evento.cidade.nome}" headerText="#{msgs.nome_Cidade}">
+            <h:outputText value="#{evento.cidade.nome}"/></p:column>
 
           <p:column width="30" headerText="#{msgs.global_detalhes}">
             <p:commandButton value="Detalhes" title="Detalhes" oncomplete="dialogDetalhesEvento.show();"

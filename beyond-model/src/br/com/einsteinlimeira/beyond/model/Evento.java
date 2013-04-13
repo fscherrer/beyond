@@ -10,17 +10,19 @@ public class Evento extends Entidade {
   private double valor;
   private Casa casa;
   private List<Banda> bandas;
+  private Cidade cidade;
 
   public Evento() {
   }
 
-  public Evento(int id, String nome, Date datahora, double valor, Casa casa, List<Banda> bandas) {
+  public Evento(int id, String nome, Date datahora, double valor, Casa casa, List<Banda> bandas,Cidade cidade) {
     super(id);
     this.datahora = datahora;
     this.valor = valor;
     this.casa = casa;
     this.bandas = bandas;
     this.nome = nome;
+    this.cidade = cidade;
   }
 
   public Date getDatahora() {
@@ -62,4 +64,13 @@ public class Evento extends Entidade {
   public void setNome(String nome) {
     this.nome = nome;
   }
+
+  public Cidade getCidade() {
+    return cidade;
+  }
+
+  public void setCidade(Cidade cidade) {
+    this.cidade = cidade;
+  }
+   
 }

@@ -2,7 +2,7 @@
 
  - WEB
   [x] FS - Ordenação por casa.
-  [ ] LB - Acrescentar cidade na tela eventos
+  [X] LB - Acrescentar cidade na tela eventos
   [x] FS - Melhorar dialog de detalhes (Principalmente as bandas, colocar na mesma linha separado por vírgula, igualmente o Android)
   [ ] AB - Refazer o rodapé: 
         A. Rock
