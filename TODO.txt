@@ -1,4 +1,4 @@
-Para a primeira fase:
+﻿Para a primeira fase:
 
  - WEB
   [x] FS - Ordenação por casa.
@@ -14,17 +14,17 @@ Para a primeira fase:
         Paulo Volpato
 
  - MOBILE
-  [ ] LB - Ícone Android
+  [X] LB - Ícone Android
   [ ] AB - Trocar estrela pelo dia do evento
   [ ] LL - Exibir mais detalhes na tela de eventos
   [ ] JB - Na listagem de eventos está exibindo a banda onde deveria ser o nome do evento
   [ ] FS - Atualizar da listagem
-  [ ] LL - Remover barra de título
-  [ ] LB - Atualizar a tela inicial para esquema do toque
+  [X] LB - Remover barra de título
+  [X] LB - Atualizar a tela inicial para esquema do toque
   [ ] PV - Bloquear o toque durante o carregamento das páginas
 
  - GERAL
-  [ ] LB - Backup da base de dados
+  [X] LB - Backup da base de dados
   [ ] PV - Trocar separador decimal
 
 

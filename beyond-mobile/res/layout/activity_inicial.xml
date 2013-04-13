@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/preto"
+    android:id="@+id/inicial"
     tools:context=".InicialActivity" >
 
     <!-- assim consigo centralizar tudo -->
