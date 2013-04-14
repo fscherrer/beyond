@@ -6,6 +6,7 @@ import br.com.einsteinlimeira.beyond.model.Evento;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -17,6 +18,7 @@ public class InicialActivity extends GlobalActivity {
   private TextView textViewInformacoes;
   private Button buttonTentarNovamente;
   private ImageView imageViewLogo;
+  private boolean atualizando;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -30,40 +32,49 @@ public class InicialActivity extends GlobalActivity {
 
       @Override
       public void onClick(View v) {
-        // tip: o bloqueio é aqui (usar uma flag)
-        new ObtemEventosAsyncTask(InicialActivity.this) {
-          private ProgressDialog progressDialog;
+        if (atualizando) {
+          Log.i(Constantes.TAG, "Tentativa de atualização com outra atualização já em curso. Ignorando.");
+        }
+        else {
+          new ObtemEventosAsyncTask(InicialActivity.this) {
+            private ProgressDialog progressDialog;
 
-          @Override
-          protected void onPreExecute() {
-            textViewInformacoes.setText("");
-            buttonTentarNovamente.setVisibility(Button.INVISIBLE);
-            progressDialog = new ProgressDialog(InicialActivity.this);
-            progressDialog.setMessage(getResources().getString(
-                R.string.global_aguarde));
-            progressDialog.show();
-          }
-
-          @Override
-          protected void onPostExecute(ArrayList<Evento> result) {
-            progressDialog.dismiss();
-
-            if (problema) {
-              Toast.makeText(InicialActivity.this,
-                  getResources().getString(R.string.global_erro_requisicao), Toast.LENGTH_LONG)
-                  .show();
-              textViewInformacoes.setText(R.string.global_erro_requisicao);
-              buttonTentarNovamente.setVisibility(Button.VISIBLE);
+            @Override
+            protected void onPreExecute() {
+              Log.i(Constantes.TAG, "Atualizando");
+              atualizando = true;
+              textViewInformacoes.setText("");
+              buttonTentarNovamente.setVisibility(Button.INVISIBLE);
+              progressDialog = new ProgressDialog(InicialActivity.this);
+              progressDialog.setMessage(getResources().getString(
+                  R.string.global_aguarde));
+              progressDialog.show();
             }
-            else {
-              Intent intent = new Intent(InicialActivity.this,
-                  EventosActivity.class);
-              intent.putExtra("eventos", result);
-              startActivity(intent);
-              InicialActivity.this.finish();
+
+            @Override
+            protected void onPostExecute(ArrayList<Evento> result) {
+              progressDialog.dismiss();
+
+              if (problema) {
+                Toast.makeText(InicialActivity.this,
+                    getResources().getString(R.string.global_erro_requisicao), Toast.LENGTH_LONG)
+                    .show();
+                textViewInformacoes.setText(R.string.global_erro_requisicao);
+                buttonTentarNovamente.setVisibility(Button.VISIBLE);
+              }
+              else {
+                Intent intent = new Intent(InicialActivity.this,
+                    EventosActivity.class);
+                intent.putExtra("eventos", result);
+                startActivity(intent);
+                InicialActivity.this.finish();
+              }
+
+              Log.i(Constantes.TAG, "Atualizado");
+              atualizando = false;
             }
-          }
-        }.execute();
+          }.execute();
+        }
       }
     };
 

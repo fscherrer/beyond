@@ -21,7 +21,7 @@
   [x] FS - Atualizar da listagem
   [X] LB - Remover barra de título
   [X] LB - Atualizar a tela inicial para esquema do toque
-  [ ] PV - Bloquear o toque durante o carregamento das páginas
+  [x] PV - Bloquear o toque durante o carregamento dos eventos
 
  - GERAL
   [X] LB - Backup da base de dados
