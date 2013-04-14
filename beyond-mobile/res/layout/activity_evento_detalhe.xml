@@ -38,6 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/evento_texto_data" />
 
-        </RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

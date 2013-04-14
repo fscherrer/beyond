@@ -3,12 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="100dp">
         
-    <ImageView 
-        android:id="@+id/imagem_evento"
+    <TextView 
+        android:id="@+id/dia_evento"
         android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_margin="5dp"
-        android:background="@android:drawable/btn_star_big_on"/>
+        android:background="@color/branco"
+        android:textColor="@color/cinzaEscuro"
+        android:textStyle="bold"
+        android:text=""
+        android:textSize="50sp"/>
     
     <LinearLayout 
         android:layout_width="wrap_content"

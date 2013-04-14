@@ -15,7 +15,7 @@
 
  - MOBILE
   [X] LB - Ícone Android
-  [ ] AB - Trocar estrela pelo dia do evento
+  [x] AB - Trocar estrela pelo dia do evento
   [ ] LL - Exibir mais detalhes na tela de eventos
   [ ] JB - Na listagem de eventos está exibindo a banda onde deveria ser o nome do evento
   [x] FS - Atualizar da listagem

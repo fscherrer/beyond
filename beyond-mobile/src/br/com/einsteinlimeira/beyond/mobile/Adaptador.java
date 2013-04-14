@@ -45,8 +45,11 @@ public class Adaptador extends BaseAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = inflater.inflate(R.layout.activity_linha_eventos, null);
 
+		((TextView) view.findViewById(R.id.dia_evento)).setText(DateUtils.diaFormat.format(eventos.get(
+        positon).getDatahora()));
+		
 		TextView textViewNomeEvento = (TextView) view
-				.findViewById(R.id.nome_banda);
+		    .findViewById(R.id.nome_banda);
 		List<Banda> bandas = eventos.get(positon).getBandas();
 		
 		textViewNomeEvento.setText(EntidadeUtils.bandasToString(bandas));
