@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import br.com.einsteinlimeira.beyond.mobile.util.DateUtils;
-import br.com.einsteinlimeira.beyond.mobile.util.EntidadeUtils;
-import br.com.einsteinlimeira.beyond.model.Banda;
 import br.com.einsteinlimeira.beyond.model.Evento;
 
 public class Adaptador extends BaseAdapter {
@@ -49,10 +47,9 @@ public class Adaptador extends BaseAdapter {
         positon).getDatahora()));
 		
 		TextView textViewNomeEvento = (TextView) view
-		    .findViewById(R.id.nome_banda);
-		List<Banda> bandas = eventos.get(positon).getBandas();
+		    .findViewById(R.id.nome_evento);
 		
-		textViewNomeEvento.setText(EntidadeUtils.bandasToString(bandas));
+		textViewNomeEvento.setText(eventos.get(positon).getNome());
 
 		TextView textViewDataEvento = (TextView) view
 				.findViewById(R.id.data_evento);
