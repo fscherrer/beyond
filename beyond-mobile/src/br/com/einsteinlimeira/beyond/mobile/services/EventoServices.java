@@ -69,10 +69,18 @@ public class EventoServices {
 			Log.i(Constantes.TAG, "Chamando " + httpPost.getURI());
 
 			HttpResponse httpResponse = httpClient.execute(httpPost);
+      int statusCode = httpResponse.getStatusLine().getStatusCode();
 
-			String json = HttpUtils.getString(httpResponse);
-			
-			return new Gson().fromJson(json, new TypeToken<List<Evento>>(){}.getType());
+      if (statusCode != 200) {
+        String reasonPhrase = httpResponse.getStatusLine().getReasonPhrase();
+        Log.e(Constantes.TAG, "A chamada falhou. Retorno: " + statusCode + ": " + reasonPhrase);
+        throw new IllegalStateException("Falha na chamada HTTP. Retorno: " + statusCode + ": " + reasonPhrase);
+      }
+      else {
+        String json = HttpUtils.getString(httpResponse);
+
+        return new Gson().fromJson(json, new TypeToken<List<Evento>>() {}.getType());
+      }
 		} catch (IOException ioe) {
 			Log.e(Constantes.TAG,
 					contexto.getResources().getString(
