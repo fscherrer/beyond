@@ -50,3 +50,17 @@ root {
 .panelDetalhesEventoRowPar{
   background-color: #efefef;
 }
+
+.panelGridSemBordas td, .panelGridSemBordas tr{
+  border: none !important;
+}
+
+.panelGridIntegrantes td{
+  padding: 1px !important;
+}
+
+.panelGridIntegrantes tr{
+  background: transparent;
+  text-align: left;
+  color: white;
+}
