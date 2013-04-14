@@ -28,5 +28,8 @@
     <string name="logo_arock">Logo ARock</string>
     <string name="tentar_novamente">Tentar Novamente</string>
     <string name="toque_inicial">Toque na tela para continuar</string>
+    
+    <!--  activity eventos -->
+    <string name="eventos_atualizar">Atualizar</string>
 
 </resources>

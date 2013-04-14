@@ -59,4 +59,7 @@ public class Adaptador extends BaseAdapter {
 		return view;
 	}
 
+	public void setEventos(List<Evento> eventos) {
+    this.eventos = eventos;
+  }
 }
