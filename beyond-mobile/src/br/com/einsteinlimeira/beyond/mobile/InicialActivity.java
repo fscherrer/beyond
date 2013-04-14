@@ -46,7 +46,7 @@ public class InicialActivity extends GlobalActivity {
 
           @Override
           protected void onPostExecute(ArrayList<Evento> result) {
-            progressDialog.hide();
+            progressDialog.dismiss();
 
             if (problema) {
               Toast.makeText(InicialActivity.this,

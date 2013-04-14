@@ -82,7 +82,7 @@ public class EventosActivity extends GlobalActivity {
 
       @Override
       protected void onPostExecute(ArrayList<Evento> result) {
-        progressDialog.hide();
+        progressDialog.dismiss();
 
         if (problema) {
           Toast.makeText(EventosActivity.this,
