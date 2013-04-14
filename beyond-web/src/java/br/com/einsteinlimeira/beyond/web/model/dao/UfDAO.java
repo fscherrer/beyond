@@ -22,7 +22,16 @@ public class UfDAO implements EntidadeDAO<Uf> {
 
   @Override
   public Uf getPeloId(int id) throws DAOException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    try {
+      return getUf(BancoDeDados.getInstancia().executarQuery("select * from uf"
+          + " where id = " + id)).get(0);
+    }
+    catch (BancoDeDadosException bdde) {
+      final String mensagem = "Falha ao obter UF";
+
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
   }
 
   /**

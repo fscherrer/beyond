@@ -1,6 +1,7 @@
 package br.com.einsteinlimeira.beyond.web.model.dao;
 
 import br.com.einsteinlimeira.beyond.model.Cidade;
+import br.com.einsteinlimeira.beyond.model.Uf;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,14 +25,16 @@ public class CidadeDAO implements EntidadeDAO<Cidade> {
   public Cidade getPeloId(int id) throws DAOException {
     try {
       return getCidades(BancoDeDados.getInstancia().executarQuery(
-              "select * from cidade where id = " + id)).get(0);
-    } catch (BancoDeDadosException bdde) {
+          "select * from cidade where id = " + id)).get(0);
+    }
+    catch (BancoDeDadosException bdde) {
       final String mensagem = "Falha ao obter Cidade";
 
       LOGGER.log(Level.SEVERE, mensagem, bdde);
       throw new DAOException(mensagem, bdde);
     }
   }
+
   /**
    * Logger para logar mensagens.
    */
@@ -41,7 +44,8 @@ public class CidadeDAO implements EntidadeDAO<Cidade> {
   public List<Cidade> listar() throws DAOException {
     try {
       return getCidades(BancoDeDados.getInstancia().executarQuery("select * from cidade"));
-    } catch (BancoDeDadosException bdde) {
+    }
+    catch (BancoDeDadosException bdde) {
       final String mensagem = "Falha ao listar Cidades";
 
       LOGGER.log(Level.SEVERE, mensagem, bdde);
@@ -61,25 +65,23 @@ public class CidadeDAO implements EntidadeDAO<Cidade> {
       int cidadeId;
       String cidadeNome;
       int ufId;
+      Uf uf;
 
-
-
-
+      UfDAO ufDAO = new UfDAO();
 
       while (resultSet.next()) {
         cidadeId = resultSet.getInt("Id");
         cidadeNome = resultSet.getString("nome");
         ufId = resultSet.getInt("ufId");
 
+        uf = ufDAO.getPeloId(ufId);
 
-
-
-
-        cidades.add(new Cidade(cidadeId, cidadeNome, null));
+        cidades.add(new Cidade(cidadeId, cidadeNome, uf));
       }
 
       return cidades;
-    } catch (SQLException sqle) {
+    }
+    catch (SQLException sqle) {
       final String mensagem = "Falha ao extrair cidades do resultSet";
 
       LOGGER.log(Level.SEVERE, mensagem, sqle);

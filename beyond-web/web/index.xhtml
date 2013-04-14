@@ -19,33 +19,40 @@
                 id="dialogDetalhesEvento"
                 header="#{msgs.global_detalhes}"
                 resizable="false"
-                width="400">
-        <h:panelGrid columns="2" width="100%" cellpadding="2" cellspacing="0"
+                width="540">
+        <h:panelGrid columns="2" width="100%" cellpadding="4" cellspacing="0"
                      columnClasses=",panelDetalhesEventoColumn2"
                      rowClasses=",panelDetalhesEventoRowPar">
-          <h:outputText value="Evento: " class="negrito"/>
+          <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Evento}" class="negrito"/>
           <h:outputText value="#{eventosMB.evento.nome}" class="detalhesEventoTitulo" />
 
-          <h:outputText value="Bandas:" styleClass="negrito"/>
+          <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Bandas}" styleClass="negrito"/>
           <h:panelGroup layout="block" styleClass="panelCru" style="margin: 0px auto;">
             <ui:repeat value="#{eventosMB.evento.bandas}" var="banda" varStatus="repeatStatus"><!-- 
                    value: ternário: se for a última banda, imprime ' e ', senão ', '
                    rendered: só imprime se tiver mais de uma banda -->
               <h:outputText value="#{repeatStatus.last ? ' e ' : ', '}" 
                             rendered="#{repeatStatus.index gt 0}" />
-              <h:outputText value="#{banda.nome}" />
+              <h:outputText value="#{banda.nome}" styleClass="detalhesEventoBanda" />
             </ui:repeat>
           </h:panelGroup>
 
-          <h:outputText value="Local: " styleClass="negrito"/>
-          <h:outputText value="#{eventosMB.evento.casa.nome}" />
+          <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Local}" styleClass="negrito"/>
+          <p:panelGrid columns="1" styleClass="panelGridSemBordas panelGridDetalhesEventoEndereco">
+            <h:outputText value="#{eventosMB.evento.casa.nome}" styleClass="detalhesEventoCasa"/>
+            <h:outputText value="#{eventosMB.evento.casa.endereco.logradouro}, 
+                          #{msgs.Endereco_numero} #{eventosMB.evento.casa.endereco.numero}" />
+            <h:outputText value="#{msgs.Endereco_bairro} #{eventosMB.evento.casa.endereco.bairro}" />
+            <h:outputText value="#{eventosMB.evento.casa.endereco.cidade.nome} - #{eventosMB.evento.casa.endereco.cidade.uf.sigla}" />
+            <h:outputText value="#{eventosMB.evento.casa.endereco.cep}" />
+          </p:panelGrid>
 
-          <h:outputText value="Data/Hora: " styleClass="negrito"/>
+          <h:outputText value="#{msgs.Index_dialogDetalhesEvento_DataHora}" styleClass="negrito"/>
           <h:outputText value="#{eventosMB.evento.datahora}">
             <f:convertDateTime pattern="dd/MM/yyyy   -   HH:mm"/>
           </h:outputText>
 
-          <h:outputText value="Valor: " styleClass="negrito"/>
+          <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Valor}" styleClass="negrito"/>
           <h:outputText value="R$ #{eventosMB.evento.valor}"/>
         </h:panelGrid>
 
@@ -81,9 +88,10 @@
           <p:column sortBy="#{evento.casa.nome}" headerText="#{msgs.Evento_casa}">
             <h:outputText value="#{evento.casa.nome}" />
           </p:column>
-          
-          <p:column sortBy="#{evento.cidade.nome}" headerText="#{msgs.nome_Cidade}">
-            <h:outputText value="#{evento.cidade.nome}"/></p:column>
+
+          <p:column sortBy="#{evento.casa.endereco.cidade.nome}" headerText="#{msgs.Evento_cidade}">
+            <h:outputText value="#{evento.casa.endereco.cidade.nome}"/>
+          </p:column>
 
           <p:column width="30" headerText="#{msgs.global_detalhes}">
             <p:commandButton value="Detalhes" title="Detalhes" oncomplete="dialogDetalhesEvento.show();"

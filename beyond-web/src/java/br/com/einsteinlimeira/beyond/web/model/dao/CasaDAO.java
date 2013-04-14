@@ -1,6 +1,7 @@
 package br.com.einsteinlimeira.beyond.web.model.dao;
 
 import br.com.einsteinlimeira.beyond.model.Casa;
+import br.com.einsteinlimeira.beyond.model.Endereco;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -62,20 +63,21 @@ public class CasaDAO implements EntidadeDAO<Casa> {
       String casaNome;
       int casacnpj;
       String casaResponsavel;
-
-
-
+      int enderecoId;
+      Endereco endereco;
+      
+      EnderecoDAO enderecoDAO = new EnderecoDAO();
 
       while (resultSet.next()) {
         casaId = resultSet.getInt("Id");
         casaNome = resultSet.getString("nome");
         casacnpj = resultSet.getInt("cnpj");
         casaResponsavel = resultSet.getString("responsavel");
+        enderecoId = resultSet.getByte("enderecoId");
+        
+        endereco = enderecoDAO.getPeloId(enderecoId);
 
-
-
-
-        casas.add(new Casa(casaId, casaNome, casacnpj, casaResponsavel, null, null, null, null, null));
+        casas.add(new Casa(casaId, casaNome, casacnpj, casaResponsavel, endereco, null, null, null, null));
       }
 
       return casas;

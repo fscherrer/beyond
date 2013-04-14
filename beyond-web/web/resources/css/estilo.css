@@ -47,12 +47,25 @@ root {
   font-weight: bold;
 }
 
+.detalhesEventoBanda, .detalhesEventoCasa{
+  font-size: 150%;
+  font-weight: bold;
+}
+
 .panelDetalhesEventoRowPar{
   background-color: #efefef;
 }
 
 .panelGridSemBordas td, .panelGridSemBordas tr{
   border: none !important;
+}
+
+.panelGridDetalhesEventoEndereco tr{
+  background: transparent;
+}
+
+.panelGridDetalhesEventoEndereco td{
+  padding: 0px !important;
 }
 
 .panelGridIntegrantes td{

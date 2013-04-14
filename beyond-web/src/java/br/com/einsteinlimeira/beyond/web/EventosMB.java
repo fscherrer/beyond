@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 /**
@@ -15,7 +15,7 @@ import javax.faces.context.FacesContext;
  * @author Iron
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class EventosMB implements Serializable {
 
   private List<Evento> eventos;
