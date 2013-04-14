@@ -13,16 +13,16 @@ root {
 }
 
 .panelGridLoginCampos tr{
-  border: none;
+  border: none !important;
 }
 
 .panelGridLoginCampos td{
-  border: none;
+  border: none !important;
 }
 
 /* para <p:messages não exibir o ícone */
 .ui-messages-error-icon{
-  display: none;
+  display: none !important;
 }
 
 .negrito{
