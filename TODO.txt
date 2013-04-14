@@ -17,7 +17,7 @@
   [X] LB - Ícone Android
   [x] AB - Trocar estrela pelo dia do evento
   [ ] LL - Exibir mais detalhes na tela de eventos
-  [ ] JB - Na listagem de eventos está exibindo a banda onde deveria ser o nome do evento
+  [x] JB - Na listagem de eventos está exibindo a banda onde deveria ser o nome do evento
   [x] FS - Atualizar da listagem
   [X] LB - Remover barra de título
   [X] LB - Atualizar a tela inicial para esquema do toque
