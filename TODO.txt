@@ -25,7 +25,7 @@
 
  - GERAL
   [X] LB - Backup da base de dados
-  [ ] PV - Trocar separador decimal
+  [x] PV - Trocar separador decimal
 
 
 Para a segunda fase:

@@ -6,7 +6,7 @@
     <string name="evento_titulo_banda">%s</string>
     <string name="evento_banda">%s</string>
     <string name="evento_data">Data: %s</string>
-    <string name="evento_valor">Valor: R$ %s</string>
+    <string name="evento_valor">Valor: R$ %.2f</string>
     <string name="menu_configuracoes">Configurações</string>
 
     <!-- mensagens globais -->

@@ -53,7 +53,9 @@
           </h:outputText>
 
           <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Valor}" styleClass="negrito"/>
-          <h:outputText value="R$ #{eventosMB.evento.valor}"/>
+          <h:outputText value="#{eventosMB.evento.valor}">
+            <f:convertNumber minFractionDigits="2" type="currency" />
+          </h:outputText>
         </h:panelGrid>
 
         <p:panel styleClass="panelCru" style="text-align: center;">
