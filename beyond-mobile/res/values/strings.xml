@@ -4,7 +4,8 @@
     <!-- strings activity detalhes -->
     <string name="app_name">ARock</string>
     <string name="title_activity_evento_detalhe">Detalhe evento</string>
-    <string name="evento_local">%s</string>
+    <string name="evento_local_logradouro">%1$s, %2$s, %3$s</string>
+    <string name="evento_local_cidade">%1$s - %2$s, %3$s</string>
     <string name="evento_titulo_banda">%s</string>
     <string name="evento_banda">%s</string>
     <string name="evento_data">Data: %s</string>

@@ -25,18 +25,32 @@
             android:layout_height="wrap_content" />
 
         <TextView 
-            android:id="@+id/evento_texto_local"
+            android:id="@+id/evento_texto_casa"
             style="@style/evento_detalhes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/evento_texto_banda"/>
+        
+        <TextView 
+            android:id="@+id/evento_texto_local_logradouro"
+            style="@style/evento_detalhes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/evento_texto_casa"/>
+
+        <TextView 
+            android:id="@+id/evento_texto_local_cidade"
+            style="@style/evento_detalhes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/evento_texto_local_logradouro"/>
         
         <TextView
             android:id="@+id/evento_texto_data"
             style="@style/evento_detalhes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/evento_texto_local" />
+            android:layout_below="@id/evento_texto_local_cidade" />
 
         <TextView
             android:id="@+id/evento_texto_valor"

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.TextView;
 import br.com.einsteinlimeira.beyond.mobile.util.DateUtils;
 import br.com.einsteinlimeira.beyond.mobile.util.EntidadeUtils;
+import br.com.einsteinlimeira.beyond.model.Casa;
+import br.com.einsteinlimeira.beyond.model.Endereco;
 import br.com.einsteinlimeira.beyond.model.Evento;
 
 public class EventoDetalheActivity extends GlobalActivity {
@@ -21,10 +23,19 @@ public class EventoDetalheActivity extends GlobalActivity {
 
 		((TextView) findViewById(R.id.evento_texto_titulo)).setText(evento
 				.getNome());
+		
+		Casa casa = evento.getCasa();
+		Endereco endereco = casa.getEndereco();
 
-		((TextView) findViewById(R.id.evento_texto_local)).setText(resources
-				.getString(R.string.evento_local, evento.getCasa()
-						.getEndereco().getLogradouro()));
+		((TextView) findViewById(R.id.evento_texto_casa)).setText(casa.getNome());
+		
+		((TextView) findViewById(R.id.evento_texto_local_logradouro)).setText(resources
+				.getString(R.string.evento_local_logradouro, endereco.getLogradouro(),
+						endereco.getNumero(), endereco.getBairro()));
+		
+		((TextView) findViewById(R.id.evento_texto_local_cidade)).setText(resources
+				.getString(R.string.evento_local_cidade, endereco.getCidade().getNome(),
+						endereco.getCidade().getUf().getSigla(), endereco.getCep()));
 
 		((TextView) findViewById(R.id.evento_texto_banda)).setText(resources
 				.getString(R.string.evento_banda,
