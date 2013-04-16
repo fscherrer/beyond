@@ -21,7 +21,7 @@ import br.com.einsteinlimeira.beyond.model.Evento;
 public class EventosActivity extends GlobalActivity {
 
 	private ListView listViewListaEventos;
-	private Adaptador adaptador;
+	private AdaptadorEvento adaptador;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class EventosActivity extends GlobalActivity {
 		List<Evento> eventos = (List<Evento>) getIntent().getExtras().getSerializable("eventos");
 		
 		listViewListaEventos = (ListView) findViewById(R.id.lista_eventos);
-		adaptador = new Adaptador(eventos, this);
+		adaptador = new AdaptadorEvento(eventos, this);
 		listViewListaEventos.setAdapter(adaptador);
 
 		listViewListaEventos.setOnItemClickListener(new OnItemClickListener() {

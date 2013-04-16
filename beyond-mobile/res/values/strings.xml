@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- strings activity detalhes -->
     <string name="app_name">ARock</string>
     <string name="title_activity_evento_detalhe">Detalhe evento</string>
+    <string name="evento_local">%s</string>
     <string name="evento_titulo_banda">%s</string>
     <string name="evento_banda">%s</string>
     <string name="evento_data">Data: %s</string>

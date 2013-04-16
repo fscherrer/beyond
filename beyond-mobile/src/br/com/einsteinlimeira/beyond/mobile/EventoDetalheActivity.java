@@ -19,10 +19,15 @@ public class EventoDetalheActivity extends GlobalActivity {
 
 		Resources resources = getResources();
 
-		((TextView) findViewById(R.id.evento_texto_titulo)).setText(evento.getNome());
+		((TextView) findViewById(R.id.evento_texto_titulo)).setText(evento
+				.getNome());
 
-		((TextView) findViewById(R.id.evento_texto_banda))
-				.setText(resources.getString(R.string.evento_banda, 
+		((TextView) findViewById(R.id.evento_texto_local)).setText(resources
+				.getString(R.string.evento_local, evento.getCasa()
+						.getEndereco().getLogradouro()));
+
+		((TextView) findViewById(R.id.evento_texto_banda)).setText(resources
+				.getString(R.string.evento_banda,
 						EntidadeUtils.bandasToString(evento.getBandas())));
 
 		((TextView) findViewById(R.id.evento_texto_data)).setText(resources

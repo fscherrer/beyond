@@ -11,12 +11,12 @@ import android.widget.TextView;
 import br.com.einsteinlimeira.beyond.mobile.util.DateUtils;
 import br.com.einsteinlimeira.beyond.model.Evento;
 
-public class Adaptador extends BaseAdapter {
+public class AdaptadorEvento extends BaseAdapter {
 
 	private List<Evento> eventos;
 	private Context contexto;
 
-	public Adaptador(List<Evento> eventos, Context contexto) {
+	public AdaptadorEvento(List<Evento> eventos, Context contexto) {
 		this.eventos = eventos;
 		this.contexto = contexto;
 	}
