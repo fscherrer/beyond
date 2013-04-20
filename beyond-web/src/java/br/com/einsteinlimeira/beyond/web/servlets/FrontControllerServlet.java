@@ -71,6 +71,7 @@ public class FrontControllerServlet extends HttpServlet {
       throws IOException {
     String eventoRequisitado = request.getParameter(RequisicaoEvento.PARAMETRO_EVENTO);
     final String mensagemFalha = "Falha ao obter eventos";
+    response.setCharacterEncoding("UTF-8");
 
     if (eventoRequisitado == null) {
       response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O evento deve ser requititado através"
