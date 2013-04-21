@@ -1,0 +1,22 @@
+ - Fernando
+   - casa
+   - usuario
+
+ - Lucas B
+   - evento
+   - eventobanda
+
+ - Paulo
+   - cidade
+   - uf
+
+ - Lucas L
+   - musico
+   - musicobanda
+
+ - Anderson
+   - banda
+   - contato
+
+ - José
+   - endereco
