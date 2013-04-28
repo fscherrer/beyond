@@ -1,4 +1,4 @@
-# classe compiladas
+# classes compiladas
 *.class
 
 # pacotes
@@ -24,3 +24,23 @@
 /beyond-protocol/dist/
 /beyond-protocol/build/
 /beyond-protocol/nbproject/private/
+
+# diretórios de beyond-services
+/beyond-services/dist/
+/beyond-services/build/
+/beyond-services/nbproject/private/
+
+# diretórios de beyond-services-impl
+/beyond-services-impl/dist/
+/beyond-services-impl/build/
+/beyond-services-impl/nbproject/private/
+
+# diretórios de beyond-dao
+/beyond-dao/dist/
+/beyond-dao/build/
+/beyond-dao/nbproject/private/
+
+# diretórios de beyond-dao-impl
+/beyond-dao-impl/dist/
+/beyond-dao-impl/build/
+/beyond-dao-impl/nbproject/private/
