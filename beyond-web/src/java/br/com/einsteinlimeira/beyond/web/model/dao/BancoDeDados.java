@@ -37,16 +37,6 @@ public class BancoDeDados {
    */
   private final static Logger LOGGER = Logger.getLogger(BancoDeDados.class.getName());
 
-  static {
-    // não era para precisar disso
-    try {
-      Class.forName("org.postgresql.Driver");
-    }
-    catch (ClassNotFoundException ex) {
-      Logger.getLogger(BancoDeDados.class.getName()).log(Level.SEVERE, null, ex);
-    }
-  }
-
   /**
    * Construtor privado (Singleton).
    * 
@@ -62,11 +52,19 @@ public class BancoDeDados {
       Properties bancodadosProperties = new Properties();
       bancodadosProperties.load(arquivoPropertiesBancoDadosInputStream);
 
+      // registro da classe do driver para acesso à base de dados.
+      Class.forName(bancodadosProperties.getProperty("driver"));
+
       url = bancodadosProperties.getProperty("url");
 
       propriedadesConexao = new Properties();
       propriedadesConexao.put("user", bancodadosProperties.getProperty("usuario"));
       propriedadesConexao.put("password", bancodadosProperties.getProperty("senha"));
+    }
+    catch (ClassNotFoundException cnfe) {
+      LOGGER.log(Level.SEVERE, null, cnfe);
+      throw new BancoDeDadosException(
+          "Erro ao registrar Driver para acesso à base de dados", cnfe);
     }
     catch (IOException ioe) {
       LOGGER.log(Level.SEVERE, null, ioe);
