@@ -1,5 +1,7 @@
 package br.com.einsteinlimeira.beyond.services.impl;
 
+import br.com.einsteinlimeira.beyond.dao.DAOFactory;
+import br.com.einsteinlimeira.beyond.dao.impl.DAOFactoryImpl;
 import br.com.einsteinlimeira.beyond.services.BandaServices;
 import br.com.einsteinlimeira.beyond.services.CasaServices;
 import br.com.einsteinlimeira.beyond.services.EventoServices;
@@ -13,6 +15,13 @@ import br.com.einsteinlimeira.beyond.services.UsuarioServices;
  */
 public class ServicesFactoryImpl extends ServicesFactory {
 
+  /**
+   * Construtor padrão. Define a implementação de {@link DAOFactory} a ser utilizada.
+   */
+  public ServicesFactoryImpl() {
+    DAOFactory.setFactory(new DAOFactoryImpl());
+  }
+  
   /**
    * {@inheritDoc}
    */

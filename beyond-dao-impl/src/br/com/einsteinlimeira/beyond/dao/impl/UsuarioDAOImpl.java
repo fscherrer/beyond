@@ -170,6 +170,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
   /**
    * {@inheritDoc}
    */
+  @Override
   public Usuario getUsuario(String login, String senha) throws DAOException {
     final String mensagem = "Falha ao autenticar usuário";
     Connection conexao = null;

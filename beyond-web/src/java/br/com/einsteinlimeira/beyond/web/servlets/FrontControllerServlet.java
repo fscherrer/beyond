@@ -3,8 +3,8 @@ package br.com.einsteinlimeira.beyond.web.servlets;
 import br.com.einsteinlimeira.beyond.model.Evento;
 import br.com.einsteinlimeira.beyond.protocol.Requisicao;
 import br.com.einsteinlimeira.beyond.protocol.RequisicaoEvento;
-import br.com.einsteinlimeira.beyond.web.model.dao.DAOException;
-import br.com.einsteinlimeira.beyond.web.services.EventoServices;
+import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
+import br.com.einsteinlimeira.beyond.services.ServicesFactory;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -81,7 +81,7 @@ public class FrontControllerServlet extends HttpServlet {
       try {
         // Todos
         if (eventoRequisitado.equals(RequisicaoEvento.EVENTO_TODOS)) {
-          List<Evento> eventos = new EventoServices().getEventos();
+          List<Evento> eventos = ServicesFactory.getFactory().getEventoServices().listar();
           
           String json = new Gson().toJson(eventos);
           
@@ -92,7 +92,7 @@ public class FrontControllerServlet extends HttpServlet {
           try {
             int idEventoRequisitado = Integer.parseInt(eventoRequisitado);
 
-            Evento evento = new EventoServices().getEvento(idEventoRequisitado);
+            Evento evento = ServicesFactory.getFactory().getEventoServices().getPeloId(idEventoRequisitado);
 
             String json = new Gson().toJson(evento);
             writeResponse(response, json);
@@ -103,8 +103,8 @@ public class FrontControllerServlet extends HttpServlet {
           }
         }
       }
-      catch (DAOException daoe) {
-        LOGGER.log(Level.SEVERE, mensagemFalha, daoe);
+      catch (EntidadeServicesException ese) {
+        LOGGER.log(Level.SEVERE, mensagemFalha, ese);
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, mensagemFalha);
       }
     }

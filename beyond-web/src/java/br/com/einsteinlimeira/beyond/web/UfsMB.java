@@ -1,8 +1,8 @@
 package br.com.einsteinlimeira.beyond.web;
 
 import br.com.einsteinlimeira.beyond.model.Uf;
-import br.com.einsteinlimeira.beyond.web.model.dao.DAOException;
-import br.com.einsteinlimeira.beyond.web.services.UfServices;
+import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
+import br.com.einsteinlimeira.beyond.services.ServicesFactory;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -11,21 +11,27 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+/**
+ * ManagedBean para manipulação de {@link Uf}.
+ */
 @ManagedBean
 @ViewScoped
 public class UfsMB implements Serializable {
 
+  /**
+   * Armazena a lista de {@link Uf}s.
+   */
   private List<Uf> ufs;
 
-  public UfsMB() {
-  }
-
+  /**
+   * Carrega a lista de {@link Uf}s, que poderão ser obtidos a partir do {@link #getUfs()}.
+   */
   @PostConstruct
   private void carregarUfs() {
     try {
-      ufs = new UfServices().getUfs();
+      ufs = ServicesFactory.getFactory().getUfServices().listar();
     }
-    catch (DAOException daoe) {
+    catch (EntidadeServicesException ese) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
           FacesMessage.SEVERITY_ERROR, "Não foi possível obter a lista de UFs",
           "Ocorreu uma execção ao tentar recuperar a lista de UFs. Consulte o log da aplicação para"
@@ -33,6 +39,12 @@ public class UfsMB implements Serializable {
     }
   }
 
+  /**
+   * Retorna a lista de {@link Uf}s disponíveis.
+   * 
+   * @return 
+   *   Lista de {@link Uf}s disponíveis.
+   */
   public List<Uf> getUfs() {
     return ufs;
   }

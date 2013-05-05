@@ -81,4 +81,19 @@ public class UsuarioServicesImpl implements UsuarioServices {
           "Falha na chamada à camada de acesso a dados para remover Usuario", daoe);
     }
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Usuario getUsuario(String login, String senha) throws EntidadeServicesException {
+    try {
+      return DAOFactory.getFactory().getUsuarioDAO().getUsuario(login, senha);
+    }
+    catch (DAOException daoe) {
+      throw new EntidadeServicesException(
+          "Falha na chamada à camada de acesso a dados para obter Usuario através de login e senha",
+          daoe);
+    }
+  }
 }
