@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class UsuarioServicesImpl implements UsuarioServices {
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public int inserir(Usuario entidade) throws EntidadeServicesException {
     try {
@@ -23,6 +26,9 @@ public class UsuarioServicesImpl implements UsuarioServices {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Usuario getPeloId(int id) throws EntidadeServicesException {
     try {
@@ -34,6 +40,9 @@ public class UsuarioServicesImpl implements UsuarioServices {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<Usuario> listar() throws EntidadeServicesException {
     try {
@@ -45,6 +54,9 @@ public class UsuarioServicesImpl implements UsuarioServices {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void atualizar(Usuario entidade) throws EntidadeServicesException {
     try {
@@ -56,6 +68,9 @@ public class UsuarioServicesImpl implements UsuarioServices {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void remover(Usuario entidade) throws EntidadeServicesException {
     try {

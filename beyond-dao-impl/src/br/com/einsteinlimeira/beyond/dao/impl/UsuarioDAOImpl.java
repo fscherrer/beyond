@@ -16,7 +16,12 @@ import java.util.logging.Logger;
 /**
  * Implementação padrão de {@link UsuarioDAO}.
  */
-public class UsuarioDAOImpl implements UsuarioDAO{
+public class UsuarioDAOImpl implements UsuarioDAO {
+
+  /**
+   * Logger para logar mensagens.
+   */
+  private final static Logger LOGGER = Logger.getLogger(UsuarioDAOImpl.class.getName());
 
   private static final String INCLUIR_USUARIO_QUERY = ""
       + " insert into "
@@ -27,6 +32,9 @@ public class UsuarioDAOImpl implements UsuarioDAO{
       + "     casaid) "
       + " values(?, ?, ?, ?)";
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public int inserir(Usuario entidade) throws DAOException {
     final String mensagem = "Falha ao incluir usuário";
@@ -73,8 +81,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
       }
     }
   }
-  
-  
+
   private static final String EXCLUIR_USUARIO_QUERY = ""
       + " delete "
       + " from "
@@ -82,9 +89,12 @@ public class UsuarioDAOImpl implements UsuarioDAO{
       + " where "
       + "   id = ?";
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void remover(Usuario entidade) throws DAOException {
-      final String mensagem = "Falha ao remover usuário";
+    final String mensagem = "Falha ao remover usuário";
     Connection conexao = null;
 
     try {
@@ -115,15 +125,13 @@ public class UsuarioDAOImpl implements UsuarioDAO{
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Usuario getPeloId(int id) throws DAOException {
     throw new UnsupportedOperationException("Not supported yet.");
   }
-
-  /**
-   * Logger para logar mensagens.
-   */
-  private final static Logger LOGGER = Logger.getLogger(UsuarioDAO.class.getName());
 
   private static final String LISTA_USUARIO_QUERY = ""
       + " select "
@@ -133,6 +141,9 @@ public class UsuarioDAOImpl implements UsuarioDAO{
       + " order by "
       + "   nome";
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<Usuario> listar() throws DAOException {
     try {
@@ -156,6 +167,9 @@ public class UsuarioDAOImpl implements UsuarioDAO{
       + "     and "
       + "   senha = ? ";
 
+  /**
+   * {@inheritDoc}
+   */
   public Usuario getUsuario(String login, String senha) throws DAOException {
     final String mensagem = "Falha ao autenticar usuário";
     Connection conexao = null;
@@ -206,6 +220,9 @@ public class UsuarioDAOImpl implements UsuarioDAO{
       + " where "
       + "   id = ? ";
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void atualizar(Usuario entidade) throws DAOException {
     final String mensagem = "Falha ao editar usuário";

@@ -42,7 +42,7 @@ public class UfDAOImpl implements UfDAO {
   /**
    * Logger para logar mensagens.
    */
-  private final static Logger LOGGER = Logger.getLogger(UfDAO.class.getName());
+  private final static Logger LOGGER = Logger.getLogger(UfDAOImpl.class.getName());
 
   @Override
   public List<Uf> listar() throws DAOException {

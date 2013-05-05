@@ -34,10 +34,50 @@ public abstract class ServicesFactory {
   }
 
   /**
+   * Retorna o provedor de serviços relacionados a {@link Banda}.
+   * 
+   * @return 
+   *   Provedor de serviços relacionados a {@link Banda}.
+   */
+  public abstract BandaServices getBandaServices();
+
+  /**
+   * Retorna o provedor de serviços relacionados a {@link Casa}.
+   * 
+   * @return 
+   *   Provedor de serviços relacionados a {@link Casa}.
+   */
+  public abstract CasaServices getCasaServices();
+
+  /**
+   * Retorna o provedor de serviços relacionados a {@link Evento}.
+   * 
+   * @return 
+   *   Provedor de serviços relacionados a {@link Evento}.
+   */
+  public abstract EventoServices getEventoServices();
+
+  /**
+   * Retorna o provedor de serviços relacionados a {@link Musico}.
+   * 
+   * @return 
+   *   Provedor de serviços relacionados a {@link Musico}.
+   */
+  public abstract MusicoServices getMusicoServices();
+
+  /**
    * Retorna o provedor de serviços relacionados a {@link Uf}.
    * 
    * @return 
    *   Provedor de serviços relacionados a {@link Uf}.
    */
   public abstract UfServices getUfServices();
+
+  /**
+   * Retorna o provedor de serviços relacionados a {@link Usuario}.
+   * 
+   * @return 
+   *   Provedor de serviços relacionados a {@link Usuario}.
+   */
+  public abstract UsuarioServices getUsuarioServices();
 }

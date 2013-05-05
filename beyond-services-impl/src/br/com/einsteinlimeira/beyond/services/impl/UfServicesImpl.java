@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class UfServicesImpl implements UfServices {
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public int inserir(Uf entidade) throws EntidadeServicesException {
     try {
@@ -23,6 +26,9 @@ public class UfServicesImpl implements UfServices {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Uf getPeloId(int id) throws EntidadeServicesException {
     try {
@@ -34,6 +40,9 @@ public class UfServicesImpl implements UfServices {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public List<Uf> listar() throws EntidadeServicesException {
     try {
@@ -45,6 +54,9 @@ public class UfServicesImpl implements UfServices {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void atualizar(Uf entidade) throws EntidadeServicesException {
     try {
@@ -56,6 +68,9 @@ public class UfServicesImpl implements UfServices {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void remover(Uf entidade) throws EntidadeServicesException {
     try {
