@@ -17,14 +17,14 @@ public class ListaEvento {
 		eventos = new ArrayList<Evento>();
 		
 		
-		Banda bandaUm = new Banda(1, "Unisonic", null, null, null, null); 
-		Banda bandaDois = new Banda(2, "Avantasia", null, null, null, null); 
-		Banda bandaTres = new Banda(3, "Edguy", null, null, null, null); 
-		Banda bandaQuatro = new Banda(4, "Unidroid", null, null, null, null); 
-		Banda bandaCinco = new Banda(5, "Hells Bells", null, null, null, null); 
-		Banda bandaSeis = new Banda(6, "Highway", null, null, null, null); 
-		Banda bandaSete = new Banda(7, "Thunder", null, null, null, null);
-		Banda bandaOito = new Banda(8, "Shook me all", null, null, null, null);
+		Banda bandaUm = new Banda(1, "Unisonic", null, null, null, null,null); 
+		Banda bandaDois = new Banda(2, "Avantasia", null, null, null, null,null); 
+		Banda bandaTres = new Banda(3, "Edguy", null, null, null, null,null); 
+		Banda bandaQuatro = new Banda(4, "Unidroid", null, null, null, null,null); 
+		Banda bandaCinco = new Banda(5, "Hells Bells", null, null, null, null,null); 
+		Banda bandaSeis = new Banda(6, "Highway", null, null, null, null,null); 
+		Banda bandaSete = new Banda(7, "Thunder", null, null, null, null,null);
+		Banda bandaOito = new Banda(8, "Shook me all", null, null, null, null,null);
 		
 		List<Banda> bandasUm = new ArrayList<Banda>();
 		bandasUm.add(bandaUm);
