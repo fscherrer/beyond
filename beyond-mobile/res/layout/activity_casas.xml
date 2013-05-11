@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CasasActivity" >
+
+    <ListView 
+        android:id="@+id/lista_casas"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_margin="10dp">
+        
+    </ListView>
+    
+    <!-- Falta Background nos buttons -->
+    
+    <Button 
+        android:id="@+id/botao_voltar"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/lista_casas"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"/>
+
+    <Button
+        android:id="@+id/botao_avancar"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_alignBaseline="@+id/botao_voltar"
+        android:layout_alignBottom="@+id/botao_voltar"
+        android:layout_alignRight="@+id/lista_casas" />
+    
+</RelativeLayout>
