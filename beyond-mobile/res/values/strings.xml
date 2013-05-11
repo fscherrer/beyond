@@ -32,7 +32,18 @@
     <string name="tentar_novamente">Tentar Novamente</string>
     <string name="toque_inicial">Toque na tela para continuar</string>
     
+    
+    <!--  activity principal -->
+    <string name="casa">Casa</string>
+    <string name="banda">Banda</string>
+    <string name="cidade">Cidade</string>
+     <string name="estilo">Estilo</string>
+    
     <!--  activity eventos -->
     <string name="eventos_atualizar">Atualizar</string>
+    <string name="estilo">Estilo</string>
+    
+    
+   
 
 </resources>
