@@ -6,6 +6,8 @@ import java.util.List;
 public class Banda extends Entidade {
 
   private String nome;
+  
+  private String estilo;
 
   private Date dataformacao;
 
@@ -19,10 +21,11 @@ public class Banda extends Entidade {
   public Banda() {
   }
 
-  public Banda(int id, String nome, Date dataformacao, List<MusicoBanda> musicos,
+  public Banda(int id, String nome, String estilo, Date dataformacao, List<MusicoBanda> musicos,
     List<Contato> contatos, List<Evento> eventos) {
     super(id);
     this.nome = nome;
+    this.estilo = estilo;
     this.dataformacao = dataformacao;
     this.musicos = musicos;
     this.contatos = contatos;
@@ -36,7 +39,15 @@ public class Banda extends Entidade {
   public void setNome(String nome) {
     this.nome = nome;
   }
+  
+    public String getEstilo() {
+    return estilo;
+  }
 
+  public void setEstilo(String estilo) {
+    this.estilo = estilo;
+  }
+  
   public Date getDataformacao() {
     return dataformacao;
   }

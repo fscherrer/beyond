@@ -84,14 +84,16 @@ public class BandaDAOImpl implements BandaDAO {
 
       int bandaId;
       String bandaNome;
+      String bandaEstilo;
       Date dataFormacao;
 
       while (resultSet.next()) {
         bandaId = resultSet.getInt("Id");
+        bandaEstilo = resultSet.getString("estilo");
         bandaNome = resultSet.getString("nome");
         dataFormacao = resultSet.getTimestamp("dataformacao");
 
-        bandas.add(new Banda(bandaId, bandaNome, dataFormacao, null, null, null));
+        bandas.add(new Banda(bandaId, bandaNome, bandaEstilo, dataFormacao, null, null, null));
       }
 
       return bandas;
