@@ -13,8 +13,17 @@ public class Requisicao {
   /**
    * Valor a ser informado no parâmetro {@link #PARAMETRO_TIPO} para requisições referentes a 
    * Eventos.
-   * 
-   * @see RequisicaoEvento
    */
   public static final String TIPO_EVENTO = "evento";
+
+   /**
+   * Valor a ser informado no parâmetro {@link #PARAMETRO_TIPO} para requisições referentes a Casas.
+   */
+  public static final String TIPO_CASA = "casa";
+  
+  /**
+   * Valor para indicar solicitações de todas as entidades de um tipo
+   *@see Requisicao
+   */
+  public static final String TODAS = "todas";
 }

@@ -80,7 +80,7 @@ public class FrontControllerServlet extends HttpServlet {
     else {
       try {
         // Todos
-        if (eventoRequisitado.equals(RequisicaoEvento.EVENTO_TODOS)) {
+        if (eventoRequisitado.equals(Requisicao.TODAS)) {
           List<Evento> eventos = ServicesFactory.getFactory().getEventoServices().listar();
           
           String json = new Gson().toJson(eventos);
