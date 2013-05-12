@@ -5,6 +5,8 @@ import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.ServicesFactory;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -20,6 +22,11 @@ import org.primefaces.context.RequestContext;
 public class UsuariosMB implements Serializable {
 
   /**
+   * Logger para logar mensagens.
+   */
+  private final static Logger LOGGER = Logger.getLogger(UsuariosMB.class.getName());
+
+  /**
    * Armazena a lista de {@link Usuario}s.
    */
   private List<Usuario> usuarios;
@@ -28,6 +35,11 @@ public class UsuariosMB implements Serializable {
    * Conterá a referência a um {@link Usuario} sendo manipulado (para edição, por exemplo).
    */
   private Usuario usuario;
+
+  /**
+   * Referência para o {@link Usuario} selecionado na tabela.
+   */
+  private Usuario usuarioSelecionado;
 
   /**
    * Identifica a operação a ser realizada.
@@ -72,14 +84,14 @@ public class UsuariosMB implements Serializable {
   }
 
   /**
-   * Exclui o {@link #getUsuario() usuário} previamente definido. 
+   * Exclui o {@link #usuarioSelecionado}. 
    */
   public void excluir() {
     boolean exception = false;
 
     try {
-      ServicesFactory.getFactory().getUsuarioServices().remover(usuario);
-      usuarios.remove(usuario);
+      ServicesFactory.getFactory().getUsuarioServices().remover(usuarioSelecionado);
+      usuarios.remove(usuarioSelecionado);
     }
     catch (EntidadeServicesException ese) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
@@ -88,13 +100,34 @@ public class UsuariosMB implements Serializable {
       exception = true;
     }
     catch (Exception e) {
+      LOGGER.log(Level.SEVERE, "Erro não esperado", e);
+      
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
           FacesMessage.SEVERITY_ERROR, "Ocorreu um erro não esperado",
           "Verifique o log da aplicação para mais detalhes"));
+      
       exception = true;
     }
 
     RequestContext.getCurrentInstance().addCallbackParam("exception", exception);
+  }
+
+  /**
+   * Prepara para a exclusão do registro selecionado.
+   */
+  public void preparaExclusao() {
+    boolean continuar = false;
+
+    if (usuarioSelecionado == null) {
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_WARN, "Nenhum registro selecionado",
+          "Por favor selecione um registro para realizar essa operação"));
+    }
+    else {
+      continuar = true;
+    }
+
+    RequestContext.getCurrentInstance().addCallbackParam("continuar", continuar);
   }
 
   /**
@@ -108,7 +141,7 @@ public class UsuariosMB implements Serializable {
     catch (EntidadeServicesException ese) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
           FacesMessage.SEVERITY_ERROR, "Não foi possível obter a lista de Usuários",
-          "Ocorreu uma execção ao tentar recuperar a lista de UFs. Consulte o log da aplicação para"
+          "Ocorreu uma execção ao tentar recuperar a lista de Uusários. Consulte o log da aplicação para"
           + " mais detalhes"));
     }
   }
@@ -144,18 +177,31 @@ public class UsuariosMB implements Serializable {
   }
 
   /**
-   * Inicia a edição de um {@link Usuario}.
-   * 
-   * @param operacao 
-   *   Operação de edição a ser realizada ({@link OperacaoEdicaoEnum#EDICAO} ou
-   * {@link OperacaoEdicaoEnum#INCLUSAO}).
+   * Inicia a edição do {@link #usuarioSelecionado}.
    */
-  public void editar(OperacaoEdicaoEnum operacao) {
-    this.operacao = operacao;
+  public void editar() {
+    boolean continuar = false;
 
-    if (operacao == OperacaoEdicaoEnum.INCLUSAO) {
-      usuario = new Usuario();
+    if (usuarioSelecionado == null) {
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_WARN, "Nenhum registro selecionado",
+          "Por favor selecione um registro para realizar essa operação"));
     }
+    else {
+      continuar = true;
+      operacao = OperacaoEdicaoEnum.EDICAO;
+      usuario = usuarioSelecionado;
+    }
+
+    RequestContext.getCurrentInstance().addCallbackParam("continuar", continuar);
+  }
+
+  /**
+   * Inicia a inclusão de um {@link Usuario}.
+   */
+  public void incluir() {
+    operacao = OperacaoEdicaoEnum.INCLUSAO;
+    usuario = new Usuario();
   }
 
   /**
@@ -166,5 +212,25 @@ public class UsuariosMB implements Serializable {
    */
   public OperacaoEdicaoEnum getOperacao() {
     return operacao;
+  }
+
+  /**
+   * Retorna o {@link Usuario} selecionado.
+   * 
+   * @return 
+   *   O {@link Usuario} selecionado.
+   */
+  public Usuario getUsuarioSelecionado() {
+    return usuarioSelecionado;
+  }
+
+  /**
+   * Define o {@link Usuario} selecionado.
+   * 
+   * @param usuarioSelecionado 
+   *   {@link Usuario} selecionado.
+   */
+  public void setUsuarioSelecionado(Usuario usuarioSelecionado) {
+    this.usuarioSelecionado = usuarioSelecionado;
   }
 }

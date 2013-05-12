@@ -29,6 +29,12 @@
                         required="true" requiredMessage="#{msgs.Usuario_senha_naoInformada}"
                         rendered="#{usuariosMB.operacao eq 'INCLUSAO'}" />
 
+            <h:outputLabel value="#{msgs.Usuario_casa}" />
+            <p:selectOneMenu value="#{usuariosMB.usuario.casa}" converter="casaConverter">
+              <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
+              <f:selectItems value="#{casasMB.casas}" var="casa" itemLabel="#{casa.nome}" itemValue="#{casa}" />
+            </p:selectOneMenu>
+
             <h:outputLabel value="#{msgs.Usuario_nome}" />
             <p:inputText id="nome" value="#{usuariosMB.usuario.nome}" 
                          required="true" requiredMessage="#{msgs.Usuario_nome_naoInformado}" />
@@ -62,16 +68,20 @@
                          actionListener="#{usuariosMB.excluir()}" />  
         <p:commandButton id="decline" value="#{msgs.global_nao}" 
                          onclick="dialogConfirmacaoExclusao.hide();" />   
-        
+
         <p:messages id="exclusaoMessages" showDetail="true" />
 
       </p:confirmDialog>
     </h:form>
 
+    <!-- mensagens globais -->
+    <p:messages id="mensagensGlobais" globalOnly="true" showDetail="true" autoUpdate="true" />
 
     <!-- Listagem -->
     <h:form id="formListagem">
-      <p:dataTable id="tableUsuarios" var="usuario" value="#{usuariosMB.usuarios}">
+      <p:dataTable id="tableUsuarios" var="usuario" value="#{usuariosMB.usuarios}"
+                   selection="#{usuariosMB.usuarioSelecionado}" selectionMode="single"
+                   rowKey="#{usuario.id}">
         <p:column sortBy="#{usuario.login}" headerText="#{msgs.Usuario_login}">
           <h:outputText value="#{usuario.login}" />
         </p:column>
@@ -80,30 +90,35 @@
           <h:outputText value="#{usuario.nome}" />
         </p:column>
 
-        <p:column sortBy="#{usuario.casa}" headerText="#{msgs.Usuario_casa}">
-          <h:outputText value="#{usuario.casa}" />
+        <p:column sortBy="#{usuario.casa.nome}" headerText="#{msgs.Usuario_casa}">
+          <h:outputText value="#{usuario.casa.nome}" />
         </p:column>
-
-        <p:column headerText="" width="100">
-          <p:commandButton value="#{msgs.global_editar}" 
-                           actionListener="#{usuariosMB.editar('EDICAO')}"
-                           oncomplete="editor.show()" update=":formEdicao:panelEdicao">
-            <p:resetInput target=":formEdicao:panelEdicao"/>
-            <f:setPropertyActionListener value="#{usuario}" target="#{usuariosMB.usuario}" />
-          </p:commandButton>
-          <p:commandButton value="#{msgs.global_excluir}" 
-                           onclick="dialogConfirmacaoExclusao.show();">
-            <f:setPropertyActionListener value="#{usuario}" target="#{usuariosMB.usuario}" />
-          </p:commandButton>
-        </p:column>
-
       </p:dataTable>
 
-      <p:commandButton value="#{msgs.global_incluir}" onclick="editor.show();" 
-                       update=":formEdicao:panelEdicao"
-                       actionListener="#{usuariosMB.editar('INCLUSAO')}" >
-        <p:resetInput target=":formEdicao:panelEdicao"/>
-      </p:commandButton>
+      <h:panelGroup layout="block" style="vertical-align: middle; height: 35px; margin-top: 5px;">
+
+        <h:panelGroup layout="block" style="float: left;">
+          <p:commandButton value="#{msgs.global_voltar}" action="admin" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style="float: right;">
+          <p:commandButton value="#{msgs.global_incluir}" onclick="editor.show();" 
+                           update=":formEdicao:panelEdicao"
+                           actionListener="#{usuariosMB.incluir()}" >
+            <p:resetInput target=":formEdicao:panelEdicao"/>
+          </p:commandButton>
+
+          <p:commandButton value="#{msgs.global_editar}" 
+                           actionListener="#{usuariosMB.editar()}"
+                           oncomplete="if(args.continuar) editor.show()" update=":formEdicao:panelEdicao">
+            <p:resetInput target=":formEdicao:panelEdicao"/>
+          </p:commandButton>          
+
+          <p:commandButton value="#{msgs.global_excluir}" 
+                           actionListener="#{usuariosMB.preparaExclusao()}"
+                           oncomplete="if(args.continuar) dialogConfirmacaoExclusao.show();" />
+        </h:panelGroup>
+      </h:panelGroup>
 
     </h:form>
   </ui:define>
