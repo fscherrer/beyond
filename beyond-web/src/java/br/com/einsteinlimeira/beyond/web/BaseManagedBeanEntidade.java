@@ -149,7 +149,7 @@ public abstract class BaseManagedBeanEntidade<E extends Entidade> implements Ser
    * Carrega a lista de {@link Entidades}s, que poderão ser obtidos a partir do {@link #getEntidades()}.
    */
   @PostConstruct
-  private void carregarEntidades() {
+  protected void carregarEntidades() {
     try {
       entidades = getEntidadeServices().listar();
     }
