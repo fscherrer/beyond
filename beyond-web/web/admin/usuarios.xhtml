@@ -32,7 +32,7 @@
             <h:outputLabel value="#{msgs.Usuario_casa}" />
             <p:selectOneMenu value="#{usuariosMB.entidade.casa}" converter="casaConverter">
               <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
-              <f:selectItems value="#{casasMB.casas}" var="casa" itemLabel="#{casa.nome}" itemValue="#{casa}" />
+              <f:selectItems value="#{casasMB.entidades}" var="casa" itemLabel="#{casa.nome}" itemValue="#{casa}" />
             </p:selectOneMenu>
 
             <h:outputLabel value="#{msgs.Usuario_nome}" />
