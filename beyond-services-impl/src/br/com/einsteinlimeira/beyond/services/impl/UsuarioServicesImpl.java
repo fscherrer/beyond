@@ -3,6 +3,7 @@ package br.com.einsteinlimeira.beyond.services.impl;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
 import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.model.Usuario;
+import br.com.einsteinlimeira.beyond.services.DominioException;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.UsuarioServices;
 import java.util.List;
@@ -58,7 +59,13 @@ public class UsuarioServicesImpl implements UsuarioServices {
    * {@inheritDoc}
    */
   @Override
-  public void atualizar(Usuario entidade) throws EntidadeServicesException {
+  public void atualizar(Usuario entidade) throws EntidadeServicesException, DominioException {
+    String loginOriginal = getPeloId(entidade.getId()).getLogin();
+    
+    if (loginOriginal.equals(ServicesImplConstantes.ADMIN)) {
+      throw new DominioException("O usuário 'admin' não poder ser editado.");
+    }
+
     try {
       DAOFactory.getFactory().getUsuarioDAO().atualizar(entidade);
     }
@@ -72,7 +79,11 @@ public class UsuarioServicesImpl implements UsuarioServices {
    * {@inheritDoc}
    */
   @Override
-  public void remover(Usuario entidade) throws EntidadeServicesException {
+  public void remover(Usuario entidade) throws EntidadeServicesException, DominioException {
+    if (entidade.getLogin().equals(ServicesImplConstantes.ADMIN)) {
+      throw new DominioException("O usuário 'admin' não poder ser excluído.");
+    }
+
     try {
       DAOFactory.getFactory().getUsuarioDAO().remover(entidade);
     }

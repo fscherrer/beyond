@@ -1,6 +1,7 @@
 package br.com.einsteinlimeira.beyond.web;
 
 import br.com.einsteinlimeira.beyond.model.Usuario;
+import br.com.einsteinlimeira.beyond.services.DominioException;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.ServicesFactory;
 import java.io.Serializable;
@@ -73,7 +74,16 @@ public class UsuariosMB implements Serializable {
           "Verifique o log da aplicação para mais detalhes"));
       exception = true;
     }
+    catch (DominioException de) {
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_ERROR, "Não foi possível "
+          + (operacao == OperacaoEdicaoEnum.INCLUSAO ? "incluir" : "editar") + " o Usuário",
+          de.getMessage()));
+      exception = true;
+    }
     catch (Exception e) {
+      LOGGER.log(Level.SEVERE, "Erro não esperado", e);
+      
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
           FacesMessage.SEVERITY_ERROR, "Ocorreu um erro não esperado",
           "Verifique o log da aplicação para mais detalhes"));
@@ -97,6 +107,12 @@ public class UsuariosMB implements Serializable {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
           FacesMessage.SEVERITY_ERROR, "Não foi possível excluir o Usuário",
           "Verifique o log da aplicação para mais detalhes"));
+      exception = true;
+    }
+    catch(DominioException de){
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_ERROR, "Não foi possível excluir o Usuário",
+          de.getMessage()));
       exception = true;
     }
     catch (Exception e) {

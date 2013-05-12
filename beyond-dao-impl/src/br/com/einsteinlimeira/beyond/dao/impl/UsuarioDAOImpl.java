@@ -133,7 +133,16 @@ public class UsuarioDAOImpl implements UsuarioDAO {
    */
   @Override
   public Usuario getPeloId(int id) throws DAOException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    try {
+      return getUsuarios(BancoDeDados.getInstancia().executarQuery("select * from usuario"
+          + " where id = " + id)).get(0);
+    }
+    catch (BancoDeDadosException bdde) {
+      final String mensagem = "Falha ao obter Usuário";
+
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
   }
 
   private static final String LISTA_USUARIO_QUERY = ""
@@ -275,7 +284,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     Casa casa;
 
     CasaDAO casaDAO = DAOFactory.getFactory().getCasaDAO();
-    
+
     try {
       while (resultSet.next()) {
         id = resultSet.getInt("id");
@@ -283,9 +292,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         senha = resultSet.getString("senha");
         nome = resultSet.getString("nome");
         idCasa = resultSet.getInt("casaid");
-        
+
         casa = resultSet.wasNull() ? null : casaDAO.getPeloId(idCasa);
-        
+
         usuarios.add(new Usuario(id, login, senha, nome, casa));
       }
 

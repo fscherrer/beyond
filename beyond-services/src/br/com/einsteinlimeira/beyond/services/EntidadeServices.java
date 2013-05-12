@@ -24,8 +24,9 @@ public interface EntidadeServices<E extends Entidade> extends Services {
    * 
    * @throws EntidadeServicesException lançada caso ocorra algum problema durante a inserção da
    * entidade.
+   * @throws DominioException caso haja algum problema com a regra de negócios. 
    */
-  int inserir(E entidade) throws EntidadeServicesException;
+  int inserir(E entidade) throws EntidadeServicesException, DominioException;
 
   /**
    * Retorna a {@link Entidade} correspondente ao <code>id</code>.<br />
@@ -63,8 +64,9 @@ public interface EntidadeServices<E extends Entidade> extends Services {
    * 
    * @throws EntidadeServicesException  lançada caso ocorra algum problema durante a atualização da
    * entidade.
+   * @throws DominioException caso haja algum problema com a regra de negócios.
    */
-  void atualizar(E entidade) throws EntidadeServicesException;
+  void atualizar(E entidade) throws EntidadeServicesException, DominioException;
 
   /**
    * Remove a {@link Entidade} <code>entidade</code>.<br />
@@ -75,6 +77,7 @@ public interface EntidadeServices<E extends Entidade> extends Services {
    * 
    * @throws EntidadeServicesException lançada caso ocorra algum problema durante a remoção da 
    * entidade.
+   * @throws DominioException caso haja algum problema com a regra de negócios.
    */
-  void remover(E entidade) throws EntidadeServicesException;
+  void remover(E entidade) throws EntidadeServicesException, DominioException;
 }

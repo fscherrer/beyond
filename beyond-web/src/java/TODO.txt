@@ -1,3 +1,6 @@
+ - sincronização:
+   - data modificação/remoção;
+ - remover strings hardcoded das classes;
  - alterar String de retorno de outcomes para usar constantes (OutcomeConstantes);
  - compatibilidade com outros browser (não chrome);
  - "version='1.0' encoding='UTF-8' ?>" aparecendo após login;

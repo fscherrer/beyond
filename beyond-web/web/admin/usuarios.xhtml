@@ -58,8 +58,10 @@
       </h:form>
     </p:dialog>
 
+    <!-- Dialog confirmação exclusão -->
     <h:form id="formConfirmacaoExclusao">
-      <p:confirmDialog widgetVar="dialogConfirmacaoExclusao" 
+      <p:confirmDialog id="dialogExclusao"
+                       widgetVar="dialogConfirmacaoExclusao" 
                        header="#{msgs.global_confirmacao_titulo}"
                        message="#{msgs.global_confirmacao_excluir}">
         <p:commandButton id="buttonConfirma" value="#{msgs.global_sim}" 
@@ -116,6 +118,7 @@
 
           <p:commandButton value="#{msgs.global_excluir}" 
                            actionListener="#{usuariosMB.preparaExclusao()}"
+                           update=":formConfirmacaoExclusao:dialogExclusao"
                            oncomplete="if(args.continuar) dialogConfirmacaoExclusao.show();" />
         </h:panelGroup>
       </h:panelGroup>
