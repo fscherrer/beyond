@@ -55,7 +55,7 @@ public class EventosActivity extends GlobalActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 	  super.onCreateOptionsMenu(menu);
 	  
-	  MenuItem menuItem = menu.add(R.string.eventos_atualizar);
+	  MenuItem menuItem = menu.add(R.string.global_atualizar);
 	  menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
       
       @Override

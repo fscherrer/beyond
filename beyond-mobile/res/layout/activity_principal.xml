@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp"
         android:background="@color/preto"
-        android:contentDescription="@string/casa"
+        android:contentDescription="@string/global_casa"
         android:src="@drawable/casa" />
 
     <ImageButton
@@ -25,7 +25,7 @@
         android:layout_below="@+id/btn_casa"
         android:layout_marginTop="12dp"
         android:background="@color/preto"
-        android:contentDescription="@string/cidade"
+        android:contentDescription="@string/global_cidade"
         android:src="@drawable/cidade" />
 
     <ImageButton
@@ -36,7 +36,7 @@
         android:layout_below="@+id/btn_cidade"
         android:layout_marginTop="12dp"
         android:background="@color/preto"
-        android:contentDescription="@string/banda"
+        android:contentDescription="@string/global_banda"
         android:src="@drawable/banda" />
     
        <ImageButton
@@ -47,7 +47,7 @@
         android:layout_below="@+id/btn_banda"
         android:layout_marginTop="12dp"
         android:background="@color/preto"
-        android:contentDescription="@string/estilo"
+        android:contentDescription="@string/global_estilo"
         android:src="@drawable/estilo" />
        
 

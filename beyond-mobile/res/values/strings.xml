@@ -15,7 +15,14 @@
     <!-- mensagens globais -->
     <string name="global_aguarde">Aguarde&#8230;</string>
     <string name="global_erro_requisicao">Erro ao realizar requisição, verifique as configurações</string>
-
+    <string name="global_estilo">Estilo</string>
+    <string name="global_atualizar">Atualizar</string>
+    <string name="global_casa">Casa</string>
+    <string name="global_banda">Banda</string>
+    <string name="global_cidade">Cidade</string>
+    
+    
+    
     <!-- activity para testes HTTP -->
     <string name="title_activity_teste_http">Teste HTTP</string>
 
@@ -33,17 +40,4 @@
     <string name="toque_inicial">Toque na tela para continuar</string>
     
     
-    <!--  activity principal -->
-    <string name="casa">Casa</string>
-    <string name="banda">Banda</string>
-    <string name="cidade">Cidade</string>
-     <string name="estilo">Estilo</string>
-    
-    <!--  activity eventos -->
-    <string name="eventos_atualizar">Atualizar</string>
-    <string name="estilo">Estilo</string>
-    
-    
-   
-
 </resources>
