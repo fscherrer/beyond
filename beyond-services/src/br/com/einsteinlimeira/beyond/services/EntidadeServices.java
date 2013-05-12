@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Define serviços providos por implementações que trabalham com cadastro (CRUD (<b>C</b>reate, 
- * <b>R</b>etrieve, <b>U</b>pdate e <b>D</b>elete))  de {@link Entidade}.
+ * <b>R</b>etrieve, <b>U</b>pdate e <b>D</b>elete)) de {@link Entidade}.
  * 
  * @param <E> 
  *   Tipo da {@link Entidade} manipulada pela implementação.

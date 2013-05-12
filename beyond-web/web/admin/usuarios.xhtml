@@ -20,23 +20,23 @@
         <h:panelGrid id="panelEdicao" columns="1">
           <h:panelGrid id="panelEdicaoCampos" columns="2" cellspacing="4">
             <h:outputLabel value="#{msgs.Usuario_login}" />
-            <p:inputText id="login" value="#{usuariosMB.usuario.login}" 
+            <p:inputText id="login" value="#{usuariosMB.entidade.login}" 
                          required="true" requiredMessage="#{msgs.Usuario_login_naoInformado}" />
 
             <h:outputLabel value="#{msgs.Usuario_senha}" 
                            rendered="#{usuariosMB.operacao eq 'INCLUSAO'}" />
-            <p:password id="senha" value="#{usuariosMB.usuario.senha}" 
+            <p:password id="senha" value="#{usuariosMB.entidade.senha}" 
                         required="true" requiredMessage="#{msgs.Usuario_senha_naoInformada}"
                         rendered="#{usuariosMB.operacao eq 'INCLUSAO'}" />
 
             <h:outputLabel value="#{msgs.Usuario_casa}" />
-            <p:selectOneMenu value="#{usuariosMB.usuario.casa}" converter="casaConverter">
+            <p:selectOneMenu value="#{usuariosMB.entidade.casa}" converter="casaConverter">
               <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
               <f:selectItems value="#{casasMB.casas}" var="casa" itemLabel="#{casa.nome}" itemValue="#{casa}" />
             </p:selectOneMenu>
 
             <h:outputLabel value="#{msgs.Usuario_nome}" />
-            <p:inputText id="nome" value="#{usuariosMB.usuario.nome}" 
+            <p:inputText id="nome" value="#{usuariosMB.entidade.nome}" 
                          required="true" requiredMessage="#{msgs.Usuario_nome_naoInformado}" />
           </h:panelGrid>
 
@@ -81,8 +81,8 @@
 
     <!-- Listagem -->
     <h:form id="formListagem">
-      <p:dataTable id="tableUsuarios" var="usuario" value="#{usuariosMB.usuarios}"
-                   selection="#{usuariosMB.usuarioSelecionado}" selectionMode="single"
+      <p:dataTable id="tableUsuarios" var="usuario" value="#{usuariosMB.entidades}"
+                   selection="#{usuariosMB.entidadeSelecionada}" selectionMode="single"
                    rowKey="#{usuario.id}">
         <p:column sortBy="#{usuario.login}" headerText="#{msgs.Usuario_login}">
           <h:outputText value="#{usuario.login}" />
