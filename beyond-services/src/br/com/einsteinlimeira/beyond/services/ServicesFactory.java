@@ -74,6 +74,14 @@ public abstract class ServicesFactory {
   public abstract UfServices getUfServices();
 
   /**
+   * Retorna o provedor de serviços relacionados a {@link Cidade}.
+   * 
+   * @return 
+   *   Provedor de serviços relacionados a {@link Cidade}.
+   */
+  public abstract CidadeServices getCidadeServices();
+
+  /**
    * Retorna o provedor de serviços relacionados a {@link Usuario}.
    * 
    * @return 

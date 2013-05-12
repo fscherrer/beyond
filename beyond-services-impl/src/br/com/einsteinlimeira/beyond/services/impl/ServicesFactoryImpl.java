@@ -4,6 +4,7 @@ import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.dao.impl.DAOFactoryImpl;
 import br.com.einsteinlimeira.beyond.services.BandaServices;
 import br.com.einsteinlimeira.beyond.services.CasaServices;
+import br.com.einsteinlimeira.beyond.services.CidadeServices;
 import br.com.einsteinlimeira.beyond.services.EventoServices;
 import br.com.einsteinlimeira.beyond.services.MusicoServices;
 import br.com.einsteinlimeira.beyond.services.ServicesFactory;
@@ -21,7 +22,7 @@ public class ServicesFactoryImpl extends ServicesFactory {
   public ServicesFactoryImpl() {
     DAOFactory.setFactory(new DAOFactoryImpl());
   }
-  
+
   /**
    * {@inheritDoc}
    */
@@ -60,6 +61,14 @@ public class ServicesFactoryImpl extends ServicesFactory {
   @Override
   public UfServices getUfServices() {
     return new UfServicesImpl();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public CidadeServices getCidadeServices() {
+    return new CidadeServicesImpl();
   }
 
   /**
