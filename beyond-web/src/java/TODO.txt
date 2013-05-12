@@ -1,5 +1,5 @@
  - sincronização:
-   - data modificação/remoção;
+   - tabela de log (Entidade, ID, Operacao, Data);
  - remover strings hardcoded das classes;
  - alterar String de retorno de outcomes para usar constantes (OutcomeConstantes);
  - compatibilidade com outros browser (não chrome);
