@@ -2,6 +2,7 @@ package br.com.einsteinlimeira.beyond.dao.impl;
 
 import br.com.einsteinlimeira.beyond.dao.CidadeDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
+import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.dao.UfDAO;
 import br.com.einsteinlimeira.beyond.model.Cidade;
 import br.com.einsteinlimeira.beyond.model.Uf;
@@ -88,7 +89,7 @@ public class CidadeDAOImpl implements CidadeDAO {
       int ufId;
       Uf uf;
 
-      UfDAO ufDAO = DAOFactoryImpl.getFactory().getUfDAO();
+      UfDAO ufDAO = DAOFactory.getFactory().getUfDAO();
 
       while (resultSet.next()) {
         cidadeId = resultSet.getInt("Id");

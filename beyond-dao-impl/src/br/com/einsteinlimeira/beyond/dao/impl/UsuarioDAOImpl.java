@@ -1,7 +1,10 @@
 package br.com.einsteinlimeira.beyond.dao.impl;
 
+import br.com.einsteinlimeira.beyond.dao.CasaDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
+import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.dao.UsuarioDAO;
+import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -268,8 +271,11 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     String login;
     String senha;
     String nome;
-    Integer idCasa; // pode ser null
+    int idCasa;
+    Casa casa;
 
+    CasaDAO casaDAO = DAOFactory.getFactory().getCasaDAO();
+    
     try {
       while (resultSet.next()) {
         id = resultSet.getInt("id");
@@ -277,9 +283,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         senha = resultSet.getString("senha");
         nome = resultSet.getString("nome");
         idCasa = resultSet.getInt("casaid");
-
-        // TODO: e a casa? usar o dao de casa para pegar?
-        usuarios.add(new Usuario(id, login, senha, nome, null));
+        
+        casa = resultSet.wasNull() ? null : casaDAO.getPeloId(idCasa);
+        
+        usuarios.add(new Usuario(id, login, senha, nome, casa));
       }
 
       return usuarios;
