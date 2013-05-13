@@ -39,5 +39,8 @@
     <string name="tentar_novamente">Tentar Novamente</string>
     <string name="toque_inicial">Toque na tela para continuar</string>
     
+    <!-- activity casas -->
+    <string name="title_activity_casas">Casas</string>
+    
     
 </resources>

@@ -63,9 +63,8 @@ public class InicialActivity extends GlobalActivity {
                 buttonTentarNovamente.setVisibility(Button.VISIBLE);
               }
               else {
-                Intent intent = new Intent(InicialActivity.this,
-                    EventosActivity.class);
-                intent.putExtra("eventos", result);
+                Intent intent = new Intent(InicialActivity.this, PrincipalActivity.class);
+                //intent.putExtra("eventos", result);
                 startActivity(intent);
                 InicialActivity.this.finish();
               }

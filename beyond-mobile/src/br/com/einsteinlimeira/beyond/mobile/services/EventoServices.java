@@ -61,7 +61,7 @@ public class EventoServices {
 				Requisicao.TIPO_EVENTO));
 		parametros.add(new BasicNameValuePair(
 				RequisicaoEvento.PARAMETRO_EVENTO,
-				RequisicaoEvento.EVENTO_TODOS));
+				Requisicao.TODAS));
 
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(parametros));

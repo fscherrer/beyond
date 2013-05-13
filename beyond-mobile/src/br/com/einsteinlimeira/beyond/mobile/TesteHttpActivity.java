@@ -61,7 +61,7 @@ public class TesteHttpActivity extends GlobalActivity {
         List<NameValuePair> parametros = new ArrayList<NameValuePair>();
         parametros.add(new BasicNameValuePair(Requisicao.PARAMETRO_TIPO, Requisicao.TIPO_EVENTO));
         parametros.add(new BasicNameValuePair(RequisicaoEvento.PARAMETRO_EVENTO,
-            RequisicaoEvento.EVENTO_TODOS));
+            Requisicao.TODAS));
 
         try {
           httpPost.setEntity(new UrlEncodedFormEntity(parametros));
