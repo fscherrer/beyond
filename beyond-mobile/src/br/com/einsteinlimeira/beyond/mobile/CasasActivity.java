@@ -2,6 +2,7 @@ package br.com.einsteinlimeira.beyond.mobile;
 
 import java.util.List;
 
+import br.com.einsteinlimeira.beyond.mobile.model.ListaEvento;
 import br.com.einsteinlimeira.beyond.model.Casa;
 
 import android.os.Bundle;
@@ -23,7 +24,7 @@ public class CasasActivity extends Activity {
 		setContentView(R.layout.activity_casas);
 		
 		listViewListaCasas = (ListView) findViewById(R.id.lista_casas);
-		AdaptadorCasa adaptador = new AdaptadorCasa(casas, this);
+		AdaptadorCasa adaptador = new AdaptadorCasa(ListaEvento.casas, this);
 		listViewListaCasas.setAdapter(adaptador);
 		
 		botaoVoltar = (Button) findViewById(R.id.botao_voltar);

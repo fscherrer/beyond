@@ -43,6 +43,15 @@
         <activity
             android:name="br.com.einsteinlimeira.beyond.mobile.InicialActivity"
             android:label="@string/title_activity_inicial"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >            
+        </activity>
+        <activity
+            android:name="br.com.einsteinlimeira.beyond.mobile.CasasActivity"
+            android:label="@string/title_activity_casas"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >            
+        </activity>
+        <activity
+            android:name="br.com.einsteinlimeira.beyond.mobile.PrincipalActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             
             <intent-filter>
