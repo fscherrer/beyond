@@ -36,6 +36,13 @@
       <redirect />
     </navigation-case>
     
+   <navigation-case>
+      <display-name>Bandas</display-name>
+      <from-outcome>bandas</from-outcome>
+      <to-view-id>/admin/bandas.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    
     <navigation-case>
       <display-name>UFs</display-name>
       <from-outcome>ufs</from-outcome>

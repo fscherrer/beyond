@@ -4,13 +4,13 @@ import br.com.einsteinlimeira.beyond.model.Banda;
 import br.com.einsteinlimeira.beyond.services.EntidadeServices;
 import br.com.einsteinlimeira.beyond.services.ServicesFactory;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  * ManagedBean para manipulação de {@link Banda}.
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class BandasMB extends BaseManagedBeanEntidade<Banda> {
 
   /**

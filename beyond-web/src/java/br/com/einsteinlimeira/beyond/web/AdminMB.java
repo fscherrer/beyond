@@ -24,4 +24,8 @@ public class AdminMB {
   public String musicos(){
     return "musicos";
   }
+  
+  public String bandas(){
+  return "bandas";
+  }
 }

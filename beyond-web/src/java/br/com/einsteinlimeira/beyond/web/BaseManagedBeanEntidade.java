@@ -69,7 +69,7 @@ public abstract class BaseManagedBeanEntidade<E extends Entidade> implements Ser
     catch (EntidadeServicesException ese) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
           FacesMessage.SEVERITY_ERROR, "Não foi possível "
-          + (operacao == OperacaoEdicaoEnum.INCLUSAO ? "incluir" : "editar") + " o Usuário",
+          + (operacao == OperacaoEdicaoEnum.INCLUSAO ? "incluir" : "editar") + " a Entidade",
           "Verifique o log da aplicação para mais detalhes"));
       exception = true;
     }
