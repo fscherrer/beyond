@@ -1,7 +1,9 @@
 package br.com.einsteinlimeira.beyond.web.servlets;
 
+import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Evento;
 import br.com.einsteinlimeira.beyond.protocol.Requisicao;
+import br.com.einsteinlimeira.beyond.protocol.RequisicaoCasa;
 import br.com.einsteinlimeira.beyond.protocol.RequisicaoEvento;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.ServicesFactory;
@@ -24,115 +26,157 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "FrontControllerServlet", urlPatterns = {"/FrontControllerServlet"})
 public class FrontControllerServlet extends HttpServlet {
 
-  /**
-   * Logger para logar mensagens.
-   */
-  private final static Logger LOGGER = Logger.getLogger(FrontControllerServlet.class.getName());
+    /**
+     * Logger para logar mensagens.
+     */
+    private final static Logger LOGGER = Logger.getLogger(FrontControllerServlet.class.getName());
 
-  @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    processaRequisicao(request, response);
-  }
-
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    processaRequisicao(request, response);
-  }
-
-  /**
-   * Método para processamento de requisições. Como são suportados os métodos POST e GET, tudo é 
-   * direcionado para processamento aqui.
-   * 
-   * @param request
-   * @param response
-   * @throws ServletException
-   * @throws IOException 
-   */
-  private void processaRequisicao(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    String tipoRequisicao = request.getParameter(Requisicao.PARAMETRO_TIPO);
-
-    if (tipoRequisicao == null) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Um tipo de requisição deve ser "
-          + "informado como parâmetro \"" + Requisicao.PARAMETRO_TIPO + "\"");
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processaRequisicao(request, response);
     }
-    else if (tipoRequisicao.equals(Requisicao.TIPO_EVENTO)) {
-      processaRequisicaoEvento(request, response);
-    }
-    else {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O tipo de requisição informado ("
-          + tipoRequisicao + ") não é suportado");
-    }
-  }
 
-  private void processaRequisicaoEvento(HttpServletRequest request, HttpServletResponse response)
-      throws IOException {
-    String eventoRequisitado = request.getParameter(RequisicaoEvento.PARAMETRO_EVENTO);
-    final String mensagemFalha = "Falha ao obter eventos";
-    response.setCharacterEncoding("UTF-8");
-
-    if (eventoRequisitado == null) {
-      response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O evento deve ser requititado através"
-          + " do parâmetro \"" + RequisicaoEvento.PARAMETRO_EVENTO + "\"");
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processaRequisicao(request, response);
     }
-    else {
-      try {
-        // Todos
-        if (eventoRequisitado.equals(Requisicao.TODAS)) {
-          List<Evento> eventos = ServicesFactory.getFactory().getEventoServices().listar();
-          
-          String json = new Gson().toJson(eventos);
-          
-          writeResponse(response, json);
+
+    /**
+     * Método para processamento de requisições. Como são suportados os métodos POST e GET, tudo é
+     * direcionado para processamento aqui.
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void processaRequisicao(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String tipoRequisicao = request.getParameter(Requisicao.PARAMETRO_TIPO);
+
+        if (tipoRequisicao == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Um tipo de requisição deve ser "
+                    + "informado como parâmetro \"" + Requisicao.PARAMETRO_TIPO + "\"");
+        } else if (tipoRequisicao.equals(Requisicao.TIPO_EVENTO)) {
+            processaRequisicaoEvento(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O tipo de requisição informado ("
+                    + tipoRequisicao + ") não é suportado");
         }
-        // específico
-        else {
-          try {
-            int idEventoRequisitado = Integer.parseInt(eventoRequisitado);
-
-            Evento evento = ServicesFactory.getFactory().getEventoServices().getPeloId(idEventoRequisitado);
-
-            String json = new Gson().toJson(evento);
-            writeResponse(response, json);
-          }
-          catch (NumberFormatException nfe) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Evento requisitado inválido. Deve"
-                + " ser o ID de um evento ou \"todos\" para obter todos os eventos disponíveis");
-          }
+        if (tipoRequisicao.equals(Requisicao.TIPO_CASA)) {
+            processaRequisicaoCasa(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O tipo de requisição informado ("
+                    + tipoRequisicao + ") não é suportado");
         }
-      }
-      catch (EntidadeServicesException ese) {
-        LOGGER.log(Level.SEVERE, mensagemFalha, ese);
-        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, mensagemFalha);
-      }
     }
-  }
 
-  private void writeResponse(HttpServletResponse response, String responseString)
-      throws IOException {
-    response.setContentType("text/plain");
+    private void processaRequisicaoEvento(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String eventoRequisitado = request.getParameter(RequisicaoEvento.PARAMETRO_EVENTO);
+        final String mensagemFalha = "Falha ao obter eventos";
+        response.setCharacterEncoding("UTF-8");
 
-    PrintWriter printWriter = null;
+        if (eventoRequisitado == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O evento deve ser requititado"
+                    + "através do parâmetro \"" + RequisicaoEvento.PARAMETRO_EVENTO + "\"");
+        } else {
+            try {
+                // Todos
+                if (eventoRequisitado.equals(Requisicao.TODAS)) {
+                    List<Evento> eventos = ServicesFactory.getFactory().getEventoServices().listar();
 
-    try {
-      printWriter = response.getWriter();
-      printWriter.write(responseString);
+                    String json = new Gson().toJson(eventos);
+
+                    writeResponse(response, json);
+                } // específico
+                else {
+                    try {
+                        int idEventoRequisitado = Integer.parseInt(eventoRequisitado);
+
+                        Evento evento = ServicesFactory.getFactory().getEventoServices().getPeloId(
+                                idEventoRequisitado);
+
+                        String json = new Gson().toJson(evento);
+                        writeResponse(response, json);
+                    } catch (NumberFormatException nfe) {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Evento requisitado"
+                                + "inválido. Deve ser o ID de um evento ou \"todos\" para obter"
+                                + "todos os eventos disponíveis");
+                    }
+                }
+            } catch (EntidadeServicesException ese) {
+                LOGGER.log(Level.SEVERE, mensagemFalha, ese);
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, mensagemFalha);
+            }
+        }
     }
-    finally {
-      if (printWriter != null) {
-        printWriter.close();
-      }
-    }
-  }
 
-  /** 
-   * Returns a short description of the servlet.
-   * @return a String containing servlet description
-   */
-  @Override
-  public String getServletInfo() {
-    return "Servlet de entrada/frontal.";
-  }
+    private void processaRequisicaoCasa(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String casaRequisitada = request.getParameter(Requisicao.TIPO_CASA);
+        final String mensagemFalha = "Falha ao obter casas";
+        response.setCharacterEncoding("UTF-8");
+
+        if (casaRequisitada == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "A casa deve ser requisitada"
+                    + "através do parametro\"" + RequisicaoCasa.PARAMETRO_CASA + "\"");
+        } else {
+            //Todas
+            try {
+                if (casaRequisitada.equals(Requisicao.TODAS)) {
+                    List<Casa> casas = ServicesFactory.getFactory().getCasaServices().listar();
+
+                    String json = new Gson().toJson(casas);
+                    writeResponse(response, json);
+                } else {
+                    //Especifico
+                    try{
+                        int idCasaRequisitada = Integer.parseInt(casaRequisitada);
+                        
+                        Casa casa = ServicesFactory.getFactory().getCasaServices().getPeloId(
+                                idCasaRequisitada);
+                        
+                        String json = new Gson().toJson(casa);
+                        writeResponse(response, json);
+                    }catch(NumberFormatException nfe){
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Casa requisitada inválida."
+                                + "Deve ser o ID de uma casa ou \"todas\" para obter todas as casas"
+                                + "disponíveis");
+                    }
+                }
+            } catch (EntidadeServicesException ese) {
+                LOGGER.log(Level.SEVERE, mensagemFalha, ese);
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, mensagemFalha);
+            }
+        }
+    }
+
+    private void writeResponse(HttpServletResponse response, String responseString)
+            throws IOException {
+        response.setContentType("text/plain");
+
+        PrintWriter printWriter = null;
+
+        try {
+            printWriter = response.getWriter();
+            printWriter.write(responseString);
+        } finally {
+            if (printWriter != null) {
+                printWriter.close();
+            }
+        }
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Servlet de entrada/frontal.";
+    }
 }
