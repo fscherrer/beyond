@@ -12,7 +12,7 @@
 
   <ui:define name="conteudo">
     <h:form>
-      <p:dataTable id="tableMusicos" var="musico" value="#{musicosMB.musicos}">
+      <p:dataTable id="tableMusicos" var="musico" value="#{musicosMB.entidades}">
 
         <p:column sortBy="#{musico.nome}" headerText="#{msgs.Musico_nome}">
           <h:outputText value="#{musico.nome}" />

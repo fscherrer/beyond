@@ -4,13 +4,13 @@ import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.services.EntidadeServices;
 import br.com.einsteinlimeira.beyond.services.ServicesFactory;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
 /**
  * ManagedBean para manipulação de {@link Casa}.
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class CasasMB extends BaseManagedBeanEntidade<Casa> {
 
   /**

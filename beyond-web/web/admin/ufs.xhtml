@@ -12,7 +12,7 @@
 
   <ui:define name="conteudo">
     <h:form>
-      <p:dataTable id="tableUFs" var="uf" value="#{ufsMB.ufs}">
+      <p:dataTable id="tableUFs" var="uf" value="#{ufsMB.entidades}">
         <p:column sortBy="#{uf.sigla}" headerText="#{msgs.Uf_sigla}">
           <h:outputText value="#{uf.sigla}" />
         </p:column>

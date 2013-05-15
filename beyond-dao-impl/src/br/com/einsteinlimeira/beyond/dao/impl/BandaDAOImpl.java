@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -227,30 +226,3 @@ public class BandaDAOImpl implements BandaDAO {
     }
   }
 }
-//  private List<Banda> getBandas(ResultSet resultSet) throws DAOException {
-// List<Banda> bandas = new ArrayList<Banda>();
-//
-//      int bandaId;
-//      String bandaNome;
-//      String bandaEstilo;
-//      Date dataFormacao;
-//
-//try {
-//while (resultSet.next()) {
-//        bandaId = resultSet.getInt("Id");
-//        bandaEstilo = resultSet.getString("estilo");
-//        bandaNome = resultSet.getString("nome");
-//        dataFormacao = resultSet.getTimestamp("dataformacao");
-//
-//        bandas.add(new Banda(bandaId, bandaNome, bandaEstilo, dataFormacao));
-//      }
-//
-//      return bandas;
-//    }
-//    catch (SQLException sqle) {
-//      final String mensagem = "Falha ao extrair bandas do resultSet";
-//
-//      LOGGER.log(Level.SEVERE, mensagem, sqle);
-//      throw new DAOException(mensagem, sqle);
-//}
-//  }
