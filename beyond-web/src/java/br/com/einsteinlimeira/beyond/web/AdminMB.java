@@ -32,4 +32,8 @@ public class AdminMB {
    public String cidades(){
     return "cidades";
   }
+   
+    public String eventos(){
+    return "eventos";
+}
 }

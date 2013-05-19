@@ -8,8 +8,12 @@ import br.com.einsteinlimeira.beyond.dao.EventoDAO;
 import br.com.einsteinlimeira.beyond.model.Banda;
 import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Evento;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,21 +29,98 @@ public class EventoDAOImpl implements EventoDAO {
    * Logger para logar mensagens.
    */
   private final static Logger LOGGER = Logger.getLogger(EventoDAOImpl.class.getName());
+  private static final String INCLUIR_EVENTO_QUERY = ""
+          + " insert into "
+          + "   evento("
+          + "     nome, "
+          + "     casaid, "
+          + "     datahora, "
+          + "     valor) "
+          + " values(?, ?, ?,?)";
 
   /**
    * {@inheritDoc}
    */
   @Override
   public int inserir(Evento entidade) throws DAOException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    final String mensagem = "Falha ao incluir evento";
+    Connection conexao = null;
+
+    try {
+      conexao = BancoDeDados.getInstancia().getConexao();
+
+      PreparedStatement preparedStatement = conexao.prepareStatement(INCLUIR_EVENTO_QUERY,
+              Statement.RETURN_GENERATED_KEYS);
+      preparedStatement.setString(1, entidade.getNome());
+      preparedStatement.setObject(2, entidade.getCasa() == null ? null : entidade.getCasa().getId());
+      preparedStatement.setTimestamp(3, (Timestamp) entidade.getDatahora());
+      preparedStatement.setDouble(4, entidade.getValor());
+      preparedStatement.setInt(5, entidade.getId());
+
+      preparedStatement.executeUpdate();
+
+      ResultSet resultSet = preparedStatement.getGeneratedKeys();
+      if (resultSet.next()) {
+        return resultSet.getInt("id");
+      }
+
+      String mensagemFalhaObterId = "Não foi possível obter o ID do evento incluído";
+
+      LOGGER.log(Level.SEVERE, mensagemFalhaObterId);
+      throw new DAOException(mensagemFalhaObterId);
+    } catch (BancoDeDadosException bdde) {
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    } catch (SQLException sqle) {
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    } finally {
+      if (conexao != null) {
+        try {
+          conexao.close();
+        } catch (Exception e) {
+          LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+        }
+      }
+    }
   }
+  private static final String EXCLUIR_EVENTO_QUERY = ""
+          + " delete "
+          + " from "
+          + "   evento "
+          + " where "
+          + "   id = ?";
 
   /**
    * {@inheritDoc}
    */
   @Override
   public void remover(Evento entidade) throws DAOException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    final String mensagem = "Falha ao remover cidade";
+    Connection conexao = null;
+
+    try {
+      conexao = BancoDeDados.getInstancia().getConexao();
+
+      PreparedStatement preparedStatement = conexao.prepareStatement(EXCLUIR_EVENTO_QUERY);
+      preparedStatement.setInt(1, entidade.getId());
+
+      preparedStatement.executeUpdate();
+    } catch (BancoDeDadosException bdde) {
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    } catch (SQLException sqle) {
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    } finally {
+      if (conexao != null) {
+        try {
+          conexao.close();
+        } catch (Exception e) {
+          LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+        }
+      }
+    }
   }
 
   /**
@@ -47,7 +128,16 @@ public class EventoDAOImpl implements EventoDAO {
    */
   @Override
   public Evento getPeloId(int id) throws DAOException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    try {
+      return getEventos(BancoDeDados.getInstancia().executarQuery(
+              "select * from evento where id = " + id)).get(0);
+    } catch (BancoDeDadosException bdde) {
+      final String mensagem = "Falha ao obter Evento";
+
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+
   }
 
   /**
@@ -57,31 +147,68 @@ public class EventoDAOImpl implements EventoDAO {
   public List<Evento> listar() throws DAOException {
     try {
       return getEventos(BancoDeDados.getInstancia().executarQuery(""
-          + " select "
-          + "   evento.*, "
-          + "   eventobanda.bandaid as bandaid "
-          + " from "
-          + "   evento as evento "
-          + "     join eventobanda as eventobanda"
-          + "       on eventobanda.eventoid = evento.id "
-          + "  order by "
-          + "    evento.dataHora, "
-          + "    evento.nome"));
-    }
-    catch (BancoDeDadosException bdde) {
+              + " select "
+              + "   evento.*, "
+              + "   eventobanda.bandaid as bandaid "
+              + " from "
+              + "   evento as evento "
+              + "     join eventobanda as eventobanda"
+              + "       on eventobanda.eventoid = evento.id "
+              + "  order by "
+              + "    evento.dataHora, "
+              + "    evento.nome"));
+    } catch (BancoDeDadosException bdde) {
       final String mensagem = "Falha ao listar Eventos";
 
       LOGGER.log(Level.SEVERE, mensagem, bdde);
       throw new DAOException(mensagem, bdde);
     }
   }
+  private static final String EDITA_EVENTO_QUERY = ""
+          + " update "
+          + "   evento "
+          + " set "
+          + "   nome = ?, "
+          + "   casaid = ?, "
+          + "   datahora = ?, "
+          + "   valor = ? "
+          + " where "
+          + "   id = ? ";
 
   /**
    * {@inheritDoc}
    */
   @Override
   public void atualizar(Evento entidade) throws DAOException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    final String mensagem = "Falha ao editar evento";
+    Connection conexao = null;
+
+    try {
+      conexao = BancoDeDados.getInstancia().getConexao();
+
+      PreparedStatement preparedStatement = conexao.prepareStatement(EDITA_EVENTO_QUERY);
+      preparedStatement.setString(1, entidade.getNome());
+      preparedStatement.setObject(2, entidade.getCasa() == null ? null : entidade.getCasa().getId());
+      preparedStatement.setTimestamp(3, (Timestamp) entidade.getDatahora());
+      preparedStatement.setDouble(4, entidade.getValor());
+      preparedStatement.setInt(5, entidade.getId());
+
+      preparedStatement.executeUpdate();
+    } catch (BancoDeDadosException bdde) {
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    } catch (SQLException sqle) {
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    } finally {
+      if (conexao != null) {
+        try {
+          conexao.close();
+        } catch (Exception e) {
+          LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+        }
+      }
+    }
   }
 
   private List<Evento> getEventos(ResultSet resultSet) throws DAOException {
@@ -116,7 +243,7 @@ public class EventoDAOImpl implements EventoDAO {
 
         if (eventoId != eventoIdAtual) {
           evento = new Evento(eventoId, eventoNome, eventoDataHora, eventoValor, casa,
-              new ArrayList<Banda>());
+                  new ArrayList<Banda>());
           eventos.add(evento);
         }
 
@@ -125,8 +252,7 @@ public class EventoDAOImpl implements EventoDAO {
       }
 
       return eventos;
-    }
-    catch (SQLException sqle) {
+    } catch (SQLException sqle) {
       final String mensagem = "Falha ao extrair eventos do resultSet";
 
       LOGGER.log(Level.SEVERE, mensagem, sqle);
@@ -159,33 +285,32 @@ public class EventoDAOImpl implements EventoDAO {
       where.append(DAOUtils.getFiltroQuery("eventobanda.bandaid", idsBandas));
       where.append(")");
     }
-    
-    if(where.length() > 0){
+
+    if (where.length() > 0) {
       where.insert(0, " where ");
     }
 
     try {
       String query = ""
-          + " select "
-          + "   evento.*, "
-          + "   eventobanda.bandaid as bandaid "
-          + " from "
-          + "   evento as evento "
-          + "     join eventobanda as eventobanda"
-          + "       on eventobanda.eventoid = evento.id "
-          + "     join casa as casa "
-          + "       on casa.id = evento.casaid "
-          + where.toString()
-          + " order by "
-          + "   evento.dataHora, "
-          + "   evento.nome";
+              + " select "
+              + "   evento.*, "
+              + "   eventobanda.bandaid as bandaid "
+              + " from "
+              + "   evento as evento "
+              + "     join eventobanda as eventobanda"
+              + "       on eventobanda.eventoid = evento.id "
+              + "     join casa as casa "
+              + "       on casa.id = evento.casaid "
+              + where.toString()
+              + " order by "
+              + "   evento.dataHora, "
+              + "   evento.nome";
 
       // DEBUG
        System.out.println(query);
 
       return getEventos(BancoDeDados.getInstancia().executarQuery(query));
-    }
-    catch (BancoDeDadosException bdde) {
+    } catch (BancoDeDadosException bdde) {
       final String mensagem = "Falha ao listar Eventos";
 
       LOGGER.log(Level.SEVERE, mensagem, bdde);
