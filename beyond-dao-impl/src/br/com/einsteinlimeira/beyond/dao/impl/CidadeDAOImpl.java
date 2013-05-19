@@ -136,7 +136,7 @@ public class CidadeDAOImpl implements CidadeDAO {
   @Override
   public List<Cidade> listar() throws DAOException {
     try {
-      return getCidades(BancoDeDados.getInstancia().executarQuery("select * from cidade"));
+      return getCidades(BancoDeDados.getInstancia().executarQuery("select * from cidade order by nome"));
     } catch (BancoDeDadosException bdde) {
       final String mensagem = "Falha ao listar Cidades";
 

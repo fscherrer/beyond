@@ -62,10 +62,37 @@ public class CasaDAOImpl implements CasaDAO {
   @Override
   public List<Casa> listar() throws DAOException {
     try {
-      return getCasas(BancoDeDados.getInstancia().executarQuery("select * from casa"));
+      return getCasas(BancoDeDados.getInstancia().executarQuery("select * from casa order by nome"));
     }
     catch (BancoDeDadosException bdde) {
       final String mensagem = "Falha ao listar Casas";
+
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Casa> getCasas(int[] idsCidades) throws DAOException {
+    String query = "select * from casa";
+
+    if (idsCidades != null && idsCidades.length > 0) {
+      query += ""
+          + " join endereco "
+          + "   on endereco.id = enderecoid  "
+          + " where " + DAOUtils.getFiltroQuery("endereco.cidadeid", idsCidades);
+    }
+    
+    query += " order by nome";
+
+    try {
+      return getCasas(BancoDeDados.getInstancia().executarQuery(query));
+    }
+    catch (BancoDeDadosException bdde) {
+      final String mensagem = "Falha ao listar Casas filtradas";
 
       LOGGER.log(Level.SEVERE, mensagem, bdde);
       throw new DAOException(mensagem, bdde);

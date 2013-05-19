@@ -23,13 +23,14 @@ public class BandaDAOImpl implements BandaDAO {
    * Logger para logar mensagens.
    */
   private final static Logger LOGGER = Logger.getLogger(BandaDAOImpl.class.getName());
+
   private static final String INCLUIR_BANDA_QUERY = ""
-          + " insert into "
-          + "   banda("
-          + "     nome, "
-          + "     dataformacao, "
-          + "     estilo) "
-          + " values(?, ?, ?)";
+      + " insert into "
+      + "   banda("
+      + "     nome, "
+      + "     dataformacao, "
+      + "     estilo) "
+      + " values(?, ?, ?)";
 
   /**
    * {@inheritDoc}
@@ -42,7 +43,7 @@ public class BandaDAOImpl implements BandaDAO {
       conexao = BancoDeDados.getInstancia().getConexao();
 
       PreparedStatement preparedStatement = conexao.prepareStatement(INCLUIR_BANDA_QUERY,
-              Statement.RETURN_GENERATED_KEYS);
+          Statement.RETURN_GENERATED_KEYS);
       preparedStatement.setString(1, entidade.getNome());
       preparedStatement.setDate(2, new java.sql.Date(entidade.getDataformacao().getTime()));
       preparedStatement.setString(3, entidade.getEstilo());
@@ -58,34 +59,40 @@ public class BandaDAOImpl implements BandaDAO {
 
       LOGGER.log(Level.SEVERE, mensagemFalhaObterId);
       throw new DAOException(mensagemFalhaObterId);
-    } catch (BancoDeDadosException bdde) {
+    }
+    catch (BancoDeDadosException bdde) {
       LOGGER.log(Level.SEVERE, mensagem, bdde);
       throw new DAOException(mensagem, bdde);
-    } catch (SQLException sqle) {
+    }
+    catch (SQLException sqle) {
       LOGGER.log(Level.SEVERE, mensagem, sqle);
       throw new DAOException(mensagem, sqle);
-    } finally {
+    }
+    finally {
       if (conexao != null) {
         try {
           conexao.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
           LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
         }
       }
     }
   }
- private static final String EXCLUIR_BANDA_QUERY = ""
+
+  private static final String EXCLUIR_BANDA_QUERY = ""
       + " delete "
       + " from "
       + "   banda "
       + " where "
       + "   id = ?";
+
   /**
    * {@inheritDoc}
    */
   @Override
   public void remover(Banda entidade) throws DAOException {
-        final String mensagem = "Falha ao remover banda";
+    final String mensagem = "Falha ao remover banda";
     Connection conexao = null;
 
     try {
@@ -123,7 +130,7 @@ public class BandaDAOImpl implements BandaDAO {
   public Banda getPeloId(int id) throws DAOException {
     try {
       return getBandas(BancoDeDados.getInstancia().executarQuery("select * from banda"
-              + " where id = " + id)).get(0);
+          + " where id = " + id)).get(0);
     }
     catch (BancoDeDadosException bdde) {
       final String mensagem = "Falha ao obter Banda";
@@ -139,7 +146,7 @@ public class BandaDAOImpl implements BandaDAO {
   @Override
   public List<Banda> listar() throws DAOException {
     try {
-      return getBandas(BancoDeDados.getInstancia().executarQuery("select * from banda"));
+      return getBandas(BancoDeDados.getInstancia().executarQuery("select * from banda order by nome"));
     }
     catch (BancoDeDadosException bdde) {
       final String mensagem = "Falha ao listar Bandas";
@@ -148,8 +155,8 @@ public class BandaDAOImpl implements BandaDAO {
       throw new DAOException(mensagem, bdde);
     }
   }
-  
-    private static final String EDITA_BANDA_QUERY = ""
+
+  private static final String EDITA_BANDA_QUERY = ""
       + " update "
       + "   banda "
       + " set "
@@ -195,6 +202,76 @@ public class BandaDAOImpl implements BandaDAO {
           LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
         }
       }
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<String> getEstilos() throws DAOException {
+    try {
+      ResultSet resultSet = BancoDeDados.getInstancia().executarQuery(
+          "select distinct regexp_split_to_table(estilo, ' *, *') from banda order by 1");
+
+      List<String> estilos = new ArrayList<String>();
+
+      while (resultSet.next()) {
+        estilos.add(resultSet.getString(1));
+      }
+
+      return estilos;
+    }
+    catch (BancoDeDadosException bdde) {
+      final String mensagem = "Falha ao obter estilos";
+
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+    catch (SQLException sqle) {
+      final String mensagem = "Falha ao extrair estilos do resultSet";
+
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Banda> getBandas(List<String> estilos) throws DAOException {
+    String query = "select * from banda";
+
+    if (estilos != null && !estilos.isEmpty()) {
+      StringBuilder stringBuilder = new StringBuilder();
+
+      for (String estilo : estilos) {
+        stringBuilder.append(estilo).append(',');
+      }
+
+      // remove a última vírgula sobrando
+      stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
+
+      query += ""
+          + " where "
+          + "   regexp_split_to_array(estilo, ' *, *') "
+          + "     && regexp_split_to_array('" + stringBuilder.toString() + "', ' *, *')";
+    }
+
+    query += " order by nome";
+    
+    // DEBUG
+    System.out.println(query);
+
+    try {
+      return getBandas(BancoDeDados.getInstancia().executarQuery(query));
+    }
+    catch (BancoDeDadosException bdde) {
+      final String mensagem = "Falha ao listar Bandas filtradas";
+
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
     }
   }
 

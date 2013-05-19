@@ -90,26 +90,22 @@ public class EventoServicesImpl implements EventoServices {
    * {@inheritDoc}
    */
   @Override
-  public List<Evento> getEventos(List<Cidade> cidades, List<Casa> casas, List<Banda> bandas)
+  public List<Evento> getEventos(List<Casa> casas, List<Banda> bandas)
       throws EntidadeServicesException {
     int[] idsCasas = null;
     int[] idsBandas = null;
 
-    // casas filtradas explicitamente
+    // casas filtradas
     if (casas != null && !casas.isEmpty()) {
       idsCasas = EntidadeUtils.getIDs(casas);
     }
-    // casas indiretamente filtradas através das cidades filtradas
-    else if (cidades != null && !cidades.isEmpty()) {
-      // TODO: implementar
-    }
-    
-    // bandas filtradas explicitamente
-    if(bandas != null && !bandas.isEmpty()){
+
+    // bandas filtradas
+    if (bandas != null && !bandas.isEmpty()) {
       idsBandas = EntidadeUtils.getIDs(bandas);
     }
 
-
+    
     try {
       return DAOFactory.getFactory().getEventoDAO().getEventos(idsCasas, idsBandas);
     }

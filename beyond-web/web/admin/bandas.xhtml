@@ -29,8 +29,8 @@
 
             <h:outputLabel value="#{msgs.banda_dataformacao}" />
             <p:calendar value="#{bandasMB.entidade.dataformacao}" 
-                         required="true" requiredMessage="#{msgs.data_naoInformada}">
-              <f:convertDateTime pattern="dd/MM/yyyy"/> </p:calendar>
+                         required="true" requiredMessage="#{msgs.data_naoInformada}" 
+                         pattern="dd/MM/yyyy"/>
           </h:panelGrid>
 
           <p:messages id="edicaoMessages" showDetail="true" />

@@ -3,6 +3,8 @@ package br.com.einsteinlimeira.beyond.services.impl;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
 import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.model.Casa;
+import br.com.einsteinlimeira.beyond.model.Cidade;
+import br.com.einsteinlimeira.beyond.model.EntidadeUtils;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.CasaServices;
 import java.util.List;
@@ -79,6 +81,27 @@ public class CasaServicesImpl implements CasaServices {
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
           "Falha na chamada à camada de acesso a dados para remover Casa", daoe);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Casa> getCasas(List<Cidade> cidades) throws EntidadeServicesException {
+    int[] idsCidades = null;
+
+    // cidades filtradas
+    if (cidades != null && !cidades.isEmpty()) {
+      idsCidades = EntidadeUtils.getIDs(cidades);
+    }
+
+    try {
+      return DAOFactory.getFactory().getCasaDAO().getCasas(idsCidades);
+    }
+    catch (DAOException daoe) {
+      throw new EntidadeServicesException(
+          "Falha na chamada à camada de acesso a dados para listar Casas filtradas", daoe);
     }
   }
 }

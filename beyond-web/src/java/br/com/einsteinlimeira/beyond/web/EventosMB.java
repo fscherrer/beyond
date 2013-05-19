@@ -5,18 +5,19 @@ import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Cidade;
 import br.com.einsteinlimeira.beyond.model.Evento;
 import br.com.einsteinlimeira.beyond.services.EntidadeServices;
-import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.EventoServices;
 import br.com.einsteinlimeira.beyond.services.ServicesFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  * ManagedBean para manipulação de {@link Evento}.
@@ -59,6 +60,31 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
    * Armazena a quantidade de cidades selecionadas.
    */
   private int quantidadeCidadesSelecionadas;
+
+  /**
+   * Armazena os estilos selecionados.
+   */
+  private List<String> estilosSelecionados;
+
+  /**
+   * Armazena a quantidade de estilos selecionados.
+   */
+  private int quantidadeEstilosSelecionados;
+
+  /**
+   * Lista de casas disponíveis para seleção do usuário (dependerá de filtro de cidade aplicado).
+   */
+  private List<Casa> casas;
+
+  /**
+   * Lista de bandas disponíveis para seleção do usuário (dependerá de filtro de estilo aplicado).
+   */
+  private List<Banda> bandas;
+
+  /**
+   * Estilos das bandas.
+   */
+  private List<String> estilos;
 
   /**
    * {@inheritDoc}
@@ -137,6 +163,26 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
   }
 
   /**
+   * Retorna os estilos selecionados.
+   * 
+   * @return 
+   *   Os estilos selecionados.
+   */
+  public List<String> getEstilosSelecionados() {
+    return estilosSelecionados;
+  }
+
+  /**
+   * Define os estilos selecionados.
+   * 
+   * @param estilosSelecionados 
+   *   Estilos selecionados.
+   */
+  public void setEstilosSelecionados(List<String> estilosSelecionados) {
+    this.estilosSelecionados = estilosSelecionados;
+  }
+
+  /**
    * Retorna a lista de Eventos disponíveis.
    * 
    * @return 
@@ -201,7 +247,8 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
 
   /**
    * Workaround para permitir que uma Cidade selecionada na table seja desselecionada simplesmente
-   * clicando sobre ela novamente.
+   * clicando sobre ela novamente.<br />
+   * Também delega o processamento para filtrar as casas.
    * 
    * @param event 
    *   Evento de seleção.
@@ -212,15 +259,108 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
     }
 
     quantidadeCidadesSelecionadas = cidadesSelecionadas.size();
+
+    filtrarCasas();
+  }
+
+  /**
+   * Delega o processamento para filtrar as casas.
+   * 
+   * @param event 
+   *   Evento de desseleção.
+   */
+  public void cidadeDesselecionada(UnselectEvent event) {
+    filtrarCasas();
+  }
+
+  /**
+   * Workaround para permitir que um Estilo selecionado na table seja desselecionado simplesmente
+   * clicando sobre ele novamente.<br />
+   * Também delega o processamento para filtrar as bandas.
+   * 
+   * @param event 
+   *   Evento de seleção.
+   */
+  public void estiloSelecionado(SelectEvent event) {
+    if (estilosSelecionados.size() == quantidadeEstilosSelecionados) {
+      estilosSelecionados.remove((String) event.getObject());
+    }
+
+    quantidadeEstilosSelecionados = estilosSelecionados.size();
+
+    filtrarBandas();
+  }
+
+  /**
+   * Delega o processamento para filtrar as bandas.
+   * 
+   * @param event 
+   *   Evento de desseleção.
+   */
+  public void estiloDesselecionado(UnselectEvent event) {
+    filtrarBandas();
+  }
+
+  /**
+   * Filtra as casas de acordo com as Cidades selecionadas.
+   */
+  private void filtrarCasas() {
+    try {
+      casas = ServicesFactory.getFactory().getCasaServices().getCasas(cidadesSelecionadas);
+    }
+    catch (Exception e) {
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_ERROR, "Não foi possível obter a lista de Casas filtradas",
+          "Ocorreu uma execção ao tentar recuperar a lista de Casas filtradas. Consulte o log da "
+          + "aplicação para mais detalhes"));
+      LOGGER.log(Level.SEVERE, "Erro ao carregar Casas filtradas", e);
+    }
+  }
+
+  /**
+   * Filtra as bandas de acordo com os estilos selecionados.
+   */
+  private void filtrarBandas() {
+    try {
+      bandas = ServicesFactory.getFactory().getBandaServices().getBandas(estilosSelecionados);
+    }
+    catch (Exception e) {
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_ERROR, "Não foi possível obter a lista de Bandas filtradas",
+          "Ocorreu uma execção ao tentar recuperar a lista de Bandas filtradas. Consulte o log da "
+          + "aplicação para mais detalhes"));
+      LOGGER.log(Level.SEVERE, "Erro ao carregar Bandas filtradas", e);
+    }
   }
 
   /**
    * Aplica os filtros
    */
   public void aplicarFiltros() {
+    List<Casa> casasFiltrar = null;
+    List<Banda> bandasFiltrar = null;
+
+    // casas filtradas explicitamente
+    if (casasSelecionadas != null && !casasSelecionadas.isEmpty()) {
+      casasFiltrar = casasSelecionadas;
+    }
+    // casas filtradas indiretamente através do filtro de cidades
+    else if (cidadesSelecionadas != null && !cidadesSelecionadas.isEmpty()) {
+      casasFiltrar = casas;
+    }
+    
+    // bandas filtradas explicitamente
+    if (bandasSelecionadas != null && !bandasSelecionadas.isEmpty()) {
+      bandasFiltrar = bandasSelecionadas;
+    }
+    // bandas filtradas indiretamente através do filtro de estilos
+    else if (estilosSelecionados != null && !estilosSelecionados.isEmpty()) {
+      bandasFiltrar = bandas;
+    }
+
     try {
-      entidades = ((EventoServices) getEntidadeServices()).getEventos(cidadesSelecionadas,
-          casasSelecionadas, bandasSelecionadas);
+      entidades = ((EventoServices) getEntidadeServices()).getEventos(casasFiltrar,
+          bandasFiltrar);
     }
     catch (Exception e) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
@@ -230,7 +370,95 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
       LOGGER.log(Level.SEVERE, "Erro ao carregar Eventos filtrados", e);
     }
   }
-  
+
+  /**
+   * Solicita o carregamento dos dados.
+   */
+  @PostConstruct
+  private void carregaDados() {
+    carregarCasas();
+    carregarEstilos();
+    carregarBandas();
+  }
+
+  /**
+   * Carrega todas as Casas disponíveis.
+   */
+  public void carregarCasas() {
+    try {
+      casas = ServicesFactory.getFactory().getCasaServices().listar();
+    }
+    catch (Exception e) {
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_ERROR, "Não foi possível obter a lista de Casas",
+          "Ocorreu uma execção ao tentar recuperar a lista de Casas. Consulte o log da aplicação"
+          + " para mais detalhes"));
+      LOGGER.log(Level.SEVERE, "Erro ao carregar Casas", e);
+    }
+  }
+
+  /**
+   * Carrega todas as Bandas disponíveis.
+   */
+  public void carregarBandas() {
+    try {
+      bandas = ServicesFactory.getFactory().getBandaServices().listar();
+    }
+    catch (Exception e) {
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_ERROR, "Não foi possível obter a lista de Bandas",
+          "Ocorreu uma execção ao tentar recuperar a lista de Bandas. Consulte o log da aplicação"
+          + " para mais detalhes"));
+      LOGGER.log(Level.SEVERE, "Erro ao carregar Bandas", e);
+    }
+  }
+
+  /**
+   * Carrega todos os estilos disponíveis.
+   */
+  public void carregarEstilos() {
+    try {
+      estilos = ServicesFactory.getFactory().getBandaServices().getEstilos();
+    }
+    catch (Exception e) {
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_ERROR, "Não foi possível obter a lista de Estilos",
+          "Ocorreu uma execção ao tentar recuperar a lista de Estilos. Consulte o log da aplicação"
+          + " para mais detalhes"));
+      LOGGER.log(Level.SEVERE, "Erro ao carregar Estilos", e);
+    }
+  }
+
+  /**
+   * Retorna a lista de Casas disponíveis, variando de acordo com o filtro de cidades aplicado.
+   * 
+   * @return 
+   *   Casas.
+   */
+  public List<Casa> getCasas() {
+    return casas;
+  }
+
+  /**
+   * Retorna a lista de Bandas disponíveis, variando de acordo com o filtro de estilos aplicado.
+   * 
+   * @return 
+   *   Bandas.
+   */
+  public List<Banda> getBandas() {
+    return bandas;
+  }
+
+  /**
+   * Retorna os estilos (a partir das Bandas) disponíveis.
+   * 
+   * @return 
+   *   Estilos musicais.
+   */
+  public List<String> getEstilos() {
+    return estilos;
+  }
+
   /**
    * Returna uma String vazia (caso <code>elementos</code> <code>null<code> ou <code>empty</code>)
    * ou uma representação <code>"(n)"</code> onde <code>n</code> é o tamanho de 
@@ -242,7 +470,7 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
    * @return 
    *   String conforme descrito.
    */
-  public String getQuantidadeFiltro(Collection elementos){
+  public String getQuantidadeFiltro(Collection elementos) {
     return (elementos == null || elementos.isEmpty()) ? "" : "(" + elementos.size() + ")";
   }
 

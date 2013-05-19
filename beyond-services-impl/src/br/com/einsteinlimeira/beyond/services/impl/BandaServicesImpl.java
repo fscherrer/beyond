@@ -81,4 +81,32 @@ public class BandaServicesImpl implements BandaServices {
           "Falha na chamada à camada de acesso a dados para remover Banda", daoe);
     }
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<String> getEstilos() throws EntidadeServicesException {
+    try {
+      return DAOFactory.getFactory().getBandaDAO().getEstilos();
+    }
+    catch (DAOException daoe) {
+      throw new EntidadeServicesException(
+          "Falha na chamada à camada de acesso a dados para obter os estilos das Bandas", daoe);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Banda> getBandas(List<String> estilos) throws EntidadeServicesException {
+    try {
+      return DAOFactory.getFactory().getBandaDAO().getBandas(estilos);
+    }
+    catch (DAOException daoe) {
+      throw new EntidadeServicesException(
+          "Falha na chamada à camada de acesso a dados para listar Bandas filtradas", daoe);
+    }
+  }
 }

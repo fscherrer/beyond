@@ -67,7 +67,7 @@
 
 
     <!-- listagem de eventos -->
-    <h:form>
+    <h:form id="formListagem">
       <!-- link área administrativa -->
       <h:panelGroup layout="block" style="text-align: right; padding: 4px 0px 4px 0px;">
         <h:link value="#{msgs.global_area_administrativa}" outcome="login"/>
@@ -88,7 +88,10 @@
                        selection="#{eventosMB.cidadesSelecionadas}" selectionMode="mutiple"
                        rowKey="#{cidade.id}" scrollable="true" scrollHeight="110"
                        styleClass="bordaTimida">
-            <p:ajax event="rowSelect" listener="#{eventosMB.cidadeSelecionada}" update="tableCidades" />
+            <p:ajax event="rowSelect" listener="#{eventosMB.cidadeSelecionada}" 
+                    update="tableCidades :formListagem:tableCasas :formListagem:mensagens" />
+            <p:ajax event="rowUnselect" listener="#{eventosMB.cidadeDesselecionada}" 
+                    update="tableCidades :formListagem:tableCasas :formListagem:mensagens" />
             <p:column headerText="#{msgs.Evento_cidade} 
                       #{eventosMB.getQuantidadeFiltro(eventosMB.cidadesSelecionadas)}">
               <h:outputText value="#{cidade.nome}" />
@@ -97,7 +100,7 @@
           <h:panelGroup layout="block" style="height: 10px;" />
 
           <!-- filtro casas -->
-          <p:dataTable id="tableCasas" var="casa" value="#{casasMB.casas}"
+          <p:dataTable id="tableCasas" var="casa" value="#{eventosMB.casas}"
                        selection="#{eventosMB.casasSelecionadas}" selectionMode="mutiple"
                        rowKey="#{casa.id}" scrollable="true" scrollHeight="110"
                        styleClass="bordaTimida">
@@ -109,8 +112,24 @@
           </p:dataTable>
           <h:panelGroup layout="block" style="height: 10px;" />
 
+          <!-- filtro estilos -->
+          <p:dataTable id="tableEstilos" var="estilo" value="#{eventosMB.estilos}"
+                       selection="#{eventosMB.estilosSelecionados}" selectionMode="mutiple"
+                       rowKey="#{estilo}" scrollable="true" scrollHeight="110"
+                       styleClass="bordaTimida">
+            <p:ajax event="rowSelect" listener="#{eventosMB.estiloSelecionado}" 
+                    update="tableEstilos :formListagem:tableBandas :formListagem:mensagens" />
+            <p:ajax event="rowUnselect" listener="#{eventosMB.estiloDesselecionado}" 
+                    update="tableEstilos :formListagem:tableBandas :formListagem:mensagens" />
+            <p:column headerText="#{msgs.Evento_estilo} 
+                      #{eventosMB.getQuantidadeFiltro(eventosMB.estilosSelecionados)}">
+              <h:outputText value="#{estilo}" />
+            </p:column>
+          </p:dataTable>
+          <h:panelGroup layout="block" style="height: 10px;" />
+
           <!-- filtro bandas -->
-          <p:dataTable id="tableBandas" var="banda" value="#{bandasMB.bandas}"
+          <p:dataTable id="tableBandas" var="banda" value="#{eventosMB.bandas}"
                        selection="#{eventosMB.bandasSelecionadas}" selectionMode="mutiple"
                        rowKey="#{banda.id}" scrollable="true" scrollHeight="110"
                        styleClass="bordaTimida">
@@ -120,11 +139,13 @@
               <h:outputText value="#{banda.nome}" />
             </p:column>
           </p:dataTable>
-          <h:panelGroup layout="block" style="height: 10px;" />
+          <h:panelGroup layout="block" style="height: 5px;" />
 
-          <p:commandButton value="#{msgs.global_atualizar}" 
-                           action="#{eventosMB.aplicarFiltros()}"
-                           update="tableEventos mensagens"/>
+          <h:panelGroup layout="block" style="text-align: center;" >
+            <p:commandButton value="#{msgs.global_atualizar}" 
+                             action="#{eventosMB.aplicarFiltros()}"
+                             update="tableEventos mensagens"/>
+          </h:panelGroup>
         </h:panelGroup>
 
         <!-- direita -->

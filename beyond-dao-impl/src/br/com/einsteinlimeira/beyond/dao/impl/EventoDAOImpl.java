@@ -181,7 +181,7 @@ public class EventoDAOImpl implements EventoDAO {
           + "   evento.nome";
 
       // DEBUG
-      System.out.println(query);
+       System.out.println(query);
 
       return getEventos(BancoDeDados.getInstancia().executarQuery(query));
     }
