@@ -4,21 +4,97 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="../templates/template_admin.xhtml"
-                xmlns:h="http://java.sun.com/jsf/html">
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
 
   <ui:define name="titulo">
     <h:outputText value="#{msgs.Musico_tituloPagina}" />
   </ui:define>
 
   <ui:define name="conteudo">
-    <h:form>
-      <p:dataTable id="tableMusicos" var="musico" value="#{musicosMB.entidades}">
 
-        <p:column sortBy="#{musico.nome}" headerText="#{msgs.Musico_nome}">
+    <!-- Dialog edição -->
+    <p:dialog header="#{msgs.Musico_tituloPagina}" widgetVar="editor"
+              resizable="false" modal="true" onShow="document.getElementById('formEdicao:musico').focus();">  
+      <h:form id="formEdicao">
+        <h:panelGrid id="panelEdicao" columns="1">
+          <h:panelGrid id="panelEdicaoCampos" columns="2" cellspacing="4">
+            <h:outputLabel value="#{msgs.Musico_nome}"/>
+            <p:inputText id="musico" value="#{musicosMB.entidade.nome}" 
+                         required="true" requiredMessage="#{msgs.musico_naoInformado}"/>
+          </h:panelGrid>
+
+          <p:messages id="edicaoMessages" showDetail="true" />
+
+          <f:facet name="footer">
+            <!-- obs.: não posso usar && no javascript aqui -->
+            <h:panelGrid id="panelEdicaoButtons" columns="2" cellspacing="4">
+              <p:commandButton id="buttonOk" value="#{msgs.global_ok}"
+                               actionListener="#{musicosMB.salvar()}" 
+                               update="panelEdicao :formListagem:tableMusicos"
+                               oncomplete="if(!(args.validationFailed || args.exception)) editor.hide()"/>
+              <p:commandButton id="buttonCancelar" value="#{msgs.global_cancelar}"
+                               onclick="editor.hide();"/>
+            </h:panelGrid>
+          </f:facet>
+        </h:panelGrid>
+      </h:form>
+    </p:dialog>
+    <h:form id="formConfirmacaoExclusao">
+      <p:confirmDialog widgetVar="dialogConfirmacaoExclusao" 
+                       header="#{msgs.global_confirmacao_titulo}"
+                       message="#{msgs.global_confirmacao_excluir}">
+        <p:commandButton id="buttonConfirma" value="#{msgs.global_sim}" 
+                         update="exclusaoMessages :formListagem:tableMusicos" 
+                         oncomplete="if(!args.exception) dialogConfirmacaoExclusao.hide()"  
+                         actionListener="#{musicosMB.excluir()}" />  
+        <p:commandButton id="decline" value="#{msgs.global_nao}" 
+                         onclick="dialogConfirmacaoExclusao.hide();" />   
+
+        <p:messages id="exclusaoMessages" showDetail="true" />
+
+      </p:confirmDialog>
+    </h:form>
+    <!-- mensagens globais -->
+    <p:messages id="mensagensGlobais" globalOnly="true" showDetail="true" autoUpdate="true" />
+
+    <!-- Listagem --> 
+
+    <h:form id="formListagem">
+      <p:dataTable id="tableMusicos" var="musico" value="#{musicosMB.entidades}"
+                   selection="#{musicosMB.entidadeSelecionada}" selectionMode="single"
+                   rowKey="#{musico.id}">
+
+        <p:column sortBy="#{musico.nome}" headerText="#{msgs.Musicos_nomes}">
           <h:outputText value="#{musico.nome}" />
         </p:column>
-
       </p:dataTable>
+
+
+      <h:panelGroup layout="block" style="vertical-align: middle; height: 35px; margin-top: 5px;">
+
+        <h:panelGroup layout="block" style="float: left;">
+          <p:commandButton value="#{msgs.global_voltar}" action="admin" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style="float: right;">
+          <p:commandButton value="#{msgs.global_incluir}" onclick="editor.show();" 
+                           update=":formEdicao:panelEdicao"
+                           actionListener="#{musicosMB.incluir()}">
+            <p:resetInput target=":formEdicao:panelEdicao"/>
+          </p:commandButton>
+
+          <p:commandButton value="#{msgs.global_editar}" 
+                           actionListener="#{musicosMB.editar()}"
+                           oncomplete="if(args.continuar) editor.show()" update=":formEdicao:panelEdicao">
+            <p:resetInput target=":formEdicao:panelEdicao"/>
+          </p:commandButton>          
+
+          <p:commandButton value="#{msgs.global_excluir}" 
+                           actionListener="#{musicosMB.preparaExclusao()}"
+                           oncomplete="if(args.continuar) dialogConfirmacaoExclusao.show();" />
+        </h:panelGroup>
+      </h:panelGroup>
     </h:form>
   </ui:define>
 
