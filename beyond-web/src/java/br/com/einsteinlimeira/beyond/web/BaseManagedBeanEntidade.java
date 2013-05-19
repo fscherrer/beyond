@@ -29,7 +29,7 @@ public abstract class BaseManagedBeanEntidade<E extends Entidade> implements Ser
   /**
    * Armazena a lista de entidades.
    */
-  private List<E> entidades;
+  protected List<E> entidades;
 
   /**
    * Conterá a referência a uma {@link Entidade} sendo manipulada (para edição, por exemplo).
@@ -150,14 +150,16 @@ public abstract class BaseManagedBeanEntidade<E extends Entidade> implements Ser
    */
   @PostConstruct
   protected void carregarEntidades() {
+
     try {
       entidades = getEntidadeServices().listar();
     }
-    catch (EntidadeServicesException ese) {
+    catch (Exception e) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
           FacesMessage.SEVERITY_ERROR, "Não foi possível obter a lista de Entidade",
           "Ocorreu uma execção ao tentar recuperar a lista de Entidades. Consulte o log da "
           + "aplicação para mais detalhes"));
+      LOGGER.log(Level.SEVERE, "Erro não experado", e);
     }
   }
 
