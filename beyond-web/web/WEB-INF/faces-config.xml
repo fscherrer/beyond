@@ -57,6 +57,13 @@
       <redirect />
     </navigation-case>
     
+     <navigation-case>
+      <display-name>cidades</display-name>
+      <from-outcome>cidades</from-outcome>
+      <to-view-id>/admin/cidades.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    
     <navigation-case>
       <display-name>Index</display-name>
       <from-outcome>index</from-outcome>

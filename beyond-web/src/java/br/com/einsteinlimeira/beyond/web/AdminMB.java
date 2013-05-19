@@ -28,4 +28,8 @@ public class AdminMB {
   public String bandas(){
   return "bandas";
   }
+  
+   public String cidades(){
+    return "cidades";
+  }
 }

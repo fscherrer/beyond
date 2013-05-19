@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../templates/template_admin.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+  <ui:define name="titulo">
+    <h:outputText value="#{msgs.admin_cidades}" />
+  </ui:define>
+
+  <ui:define name="conteudo">
+
+    <!-- Dialog edição -->
+    <p:dialog header="#{msgs.Evento_cidade}" widgetVar="editor"
+              resizable="false" modal="true" onShow="document.getElementById('formEdicao:cidade').focus();">  
+      <h:form id="formEdicao">
+        <h:panelGrid id="panelEdicao" columns="1">
+          <h:panelGrid id="panelEdicaoCampos" columns="2" cellspacing="4">
+            <h:outputLabel value="#{msgs.Evento_cidade}" />
+            <p:inputText id="cidade" value="#{cidadesMB.entidade.nome}" 
+                         required="true" requiredMessage="#{msgs.cidade_naoInformada}" />
+
+            <h:outputLabel value="#{msgs.uf_cidade}" />
+            <p:selectOneMenu value="#{cidadesMB.entidade.uf}" converter="ufConverter">
+              <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
+              <f:selectItems value="#{ufsMB.entidades}" var="uf" itemLabel="#{uf.nome}" itemValue="#{uf}" />
+            </p:selectOneMenu>
+
+          </h:panelGrid>
+
+          <!-- TODO: combo para selecionar a uf -->
+          <p:messages id="edicaoMessages" showDetail="true" />
+
+          <f:facet name="footer">
+            <!-- obs.: não posso usar && no javascript aqui -->
+            <h:panelGrid id="panelEdicaoButtons" columns="2" cellspacing="4">
+              <p:commandButton id="buttonOk" value="#{msgs.global_ok}"
+                               actionListener="#{cidadesMB.salvar()}" 
+                               update="panelEdicao :formListagem:tableCidades"
+                               oncomplete="if(!(args.validationFailed || args.exception)) editor.hide()"/>
+              <p:commandButton id="buttonCancelar" value="#{msgs.global_cancelar}"
+                               onclick="editor.hide();"/>
+            </h:panelGrid>
+          </f:facet>
+        </h:panelGrid>
+      </h:form>
+    </p:dialog>
+
+    <!-- Dialog confirmação exclusão -->
+    <h:form id="formConfirmacaoExclusao">
+      <p:confirmDialog id="dialogExclusao"
+                       widgetVar="dialogConfirmacaoExclusao" 
+                       header="#{msgs.global_confirmacao_titulo}"
+                       message="#{msgs.global_confirmacao_excluir}">
+        <p:commandButton id="buttonConfirma" value="#{msgs.global_sim}" 
+                         update="exclusaoMessages :formListagem:tableCidades" 
+                         oncomplete="if(!args.exception) dialogConfirmacaoExclusao.hide()"  
+                         actionListener="#{cidadesMB.excluir()}" />  
+        <p:commandButton id="decline" value="#{msgs.global_nao}" 
+                         onclick="dialogConfirmacaoExclusao.hide();" />   
+
+        <p:messages id="exclusaoMessages" showDetail="true" />
+
+      </p:confirmDialog>
+    </h:form>
+
+    <!-- mensagens globais -->
+    <p:messages id="mensagensGlobais" globalOnly="true" showDetail="true" autoUpdate="true" />
+
+    <!-- Listagem -->
+    <h:form id="formListagem">
+      <p:dataTable id="tableCidades" var="cidade" value="#{cidadesMB.entidades}"
+                   selection="#{cidadesMB.entidadeSelecionada}" selectionMode="single"
+                   rowKey="#{cidade.id}">
+        <p:column sortBy="#{cidade.nome}" headerText="#{msgs.admin_cidades}">
+          <h:outputText value="#{cidade.nome}" />
+        </p:column>
+
+        <p:column sortBy="#{cidade.uf.nome}" headerText="#{msgs.admin_ufs}">
+          <h:outputText value="#{cidade.uf.nome}" />
+        </p:column>
+      </p:dataTable>
+
+      <h:panelGroup layout="block" style="vertical-align: middle; height: 35px; margin-top: 5px;">
+
+        <h:panelGroup layout="block" style="float: left;">
+          <p:commandButton value="#{msgs.global_voltar}" action="admin" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style="float: right;">
+          <p:commandButton value="#{msgs.global_incluir}" onclick="editor.show();" 
+                           update=":formEdicao:panelEdicao"
+                           actionListener="#{cidadesMB.incluir()}" >
+            <p:resetInput target=":formEdicao:panelEdicao"/>
+          </p:commandButton>
+
+          <p:commandButton value="#{msgs.global_editar}" 
+                           actionListener="#{cidadesMB.editar()}"
+                           oncomplete="if(args.continuar) editor.show()" update=":formEdicao:panelEdicao">
+            <p:resetInput target=":formEdicao:panelEdicao"/>
+          </p:commandButton>          
+
+          <p:commandButton value="#{msgs.global_excluir}" 
+                           actionListener="#{cidadesMB.preparaExclusao()}"
+                           update=":formConfirmacaoExclusao:dialogExclusao"
+                           oncomplete="if(args.continuar) dialogConfirmacaoExclusao.show();" />
+        </h:panelGroup>
+      </h:panelGroup>
+
+    </h:form>
+  </ui:define>
+
+</ui:composition>
