@@ -56,23 +56,29 @@ public class FrontControllerServlet extends HttpServlet {
             throws ServletException, IOException {
         String tipoRequisicao = request.getParameter(Requisicao.PARAMETRO_TIPO);
 
-        if (tipoRequisicao == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Um tipo de requisição deve ser "
-                    + "informado como parâmetro \"" + Requisicao.PARAMETRO_TIPO + "\"");
-        } else if (tipoRequisicao.equals(Requisicao.TIPO_EVENTO)) {
-            processaRequisicaoEvento(request, response);
-        } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O tipo de requisição informado ("
-                    + tipoRequisicao + ") não é suportado");
-        }
-        if (tipoRequisicao.equals(Requisicao.TIPO_CASA)) {
-            processaRequisicaoCasa(request, response);
-        } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O tipo de requisição informado ("
-                    + tipoRequisicao + ") não é suportado");
-        }
+      if (tipoRequisicao == null) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Um tipo de requisição deve ser "
+            + "informado como parâmetro \"" + Requisicao.PARAMETRO_TIPO + "\"");
+      }
+      else if (tipoRequisicao.equals(Requisicao.TIPO_EVENTO)) {
+        processaRequisicaoEvento(request, response);
+      }
+      else if (tipoRequisicao.equals(Requisicao.TIPO_CASA)) {
+        processaRequisicaoCasa(request, response);
+      }
+      else {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O tipo de requisição informado ("
+            + tipoRequisicao + ") não é suportado");
+      }
     }
 
+    /**
+     * Método responsável pelo processamento de requisições de eventos.
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     private void processaRequisicaoEvento(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String eventoRequisitado = request.getParameter(RequisicaoEvento.PARAMETRO_EVENTO);
@@ -102,9 +108,9 @@ public class FrontControllerServlet extends HttpServlet {
                         String json = new Gson().toJson(evento);
                         writeResponse(response, json);
                     } catch (NumberFormatException nfe) {
-                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Evento requisitado"
-                                + "inválido. Deve ser o ID de um evento ou \"todos\" para obter"
-                                + "todos os eventos disponíveis");
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Evento requisitado "
+                            + "\""+eventoRequisitado+"\" inválido. Deve ser o ID de um evento ou \"" 
+                            + Requisicao.TODAS + "\" para obter todos os eventos disponíveis");
                     }
                 }
             } catch (EntidadeServicesException ese) {
@@ -114,6 +120,13 @@ public class FrontControllerServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Método responsável pelo processamento de requisições de casas.
+     * 
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
     private void processaRequisicaoCasa(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String casaRequisitada = request.getParameter(Requisicao.TIPO_CASA);
