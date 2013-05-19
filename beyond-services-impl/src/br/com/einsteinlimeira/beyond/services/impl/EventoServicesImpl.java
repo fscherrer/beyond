@@ -2,6 +2,10 @@ package br.com.einsteinlimeira.beyond.services.impl;
 
 import br.com.einsteinlimeira.beyond.dao.DAOException;
 import br.com.einsteinlimeira.beyond.dao.DAOFactory;
+import br.com.einsteinlimeira.beyond.model.Banda;
+import br.com.einsteinlimeira.beyond.model.Casa;
+import br.com.einsteinlimeira.beyond.model.Cidade;
+import br.com.einsteinlimeira.beyond.model.EntidadeUtils;
 import br.com.einsteinlimeira.beyond.model.Evento;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.EventoServices;
@@ -79,6 +83,39 @@ public class EventoServicesImpl implements EventoServices {
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
           "Falha na chamada à camada de acesso a dados para remover Evento", daoe);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Evento> getEventos(List<Cidade> cidades, List<Casa> casas, List<Banda> bandas)
+      throws EntidadeServicesException {
+    int[] idsCasas = null;
+    int[] idsBandas = null;
+
+    // casas filtradas explicitamente
+    if (casas != null && !casas.isEmpty()) {
+      idsCasas = EntidadeUtils.getIDs(casas);
+    }
+    // casas indiretamente filtradas através das cidades filtradas
+    else if (cidades != null && !cidades.isEmpty()) {
+      // TODO: implementar
+    }
+    
+    // bandas filtradas explicitamente
+    if(bandas != null && !bandas.isEmpty()){
+      idsBandas = EntidadeUtils.getIDs(bandas);
+    }
+
+
+    try {
+      return DAOFactory.getFactory().getEventoDAO().getEventos(idsCasas, idsBandas);
+    }
+    catch (DAOException daoe) {
+      throw new EntidadeServicesException(
+          "Falha na chamada à camada de acesso a dados para obter Eventos filtrados", daoe);
     }
   }
 }

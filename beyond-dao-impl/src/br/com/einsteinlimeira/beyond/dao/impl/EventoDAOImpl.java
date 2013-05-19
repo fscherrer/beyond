@@ -133,4 +133,63 @@ public class EventoDAOImpl implements EventoDAO {
       throw new DAOException(mensagem, sqle);
     }
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Evento> getEventos(int[] idsCasas, int[] idsBandas) throws DAOException {
+    StringBuilder where = new StringBuilder();
+
+    // filtro casas
+    if (idsCasas != null && idsCasas.length > 0) {
+      where.append(DAOUtils.getFiltroQuery("evento.casaid", idsCasas));
+    }
+
+    // filtro bandas (especial, já que um evento pode ter várias bandas)
+    if (idsBandas != null && idsBandas.length > 0) {
+      if (where.length() > 0) {
+        where.append(" and ");
+      }
+
+      // não posso simplesmente filtrar eventobanda.bandaid pois um evento pode ter várias bandas
+      // no caso de filtrado "Stratovários", as demais bandas de um evento em que "Stratovários"
+      // participa devem aparecer junto
+      where.append("exists (select 0 from eventobanda where eventoid = evento.id and ");
+      where.append(DAOUtils.getFiltroQuery("eventobanda.bandaid", idsBandas));
+      where.append(")");
+    }
+    
+    if(where.length() > 0){
+      where.insert(0, " where ");
+    }
+
+    try {
+      String query = ""
+          + " select "
+          + "   evento.*, "
+          + "   eventobanda.bandaid as bandaid "
+          + " from "
+          + "   evento as evento "
+          + "     join eventobanda as eventobanda"
+          + "       on eventobanda.eventoid = evento.id "
+          + "     join casa as casa "
+          + "       on casa.id = evento.casaid "
+          + where.toString()
+          + " order by "
+          + "   evento.dataHora, "
+          + "   evento.nome";
+
+      // DEBUG
+      System.out.println(query);
+
+      return getEventos(BancoDeDados.getInstancia().executarQuery(query));
+    }
+    catch (BancoDeDadosException bdde) {
+      final String mensagem = "Falha ao listar Eventos";
+
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+  }
 }

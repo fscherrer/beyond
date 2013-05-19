@@ -25,11 +25,11 @@
                      columnClasses=",panelDetalhesEventoColumn2"
                      rowClasses=",panelDetalhesEventoRowPar">
           <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Evento}" class="negrito"/>
-          <h:outputText value="#{eventosMB.entidade.nome}" class="detalhesEventoTitulo" />
+          <h:outputText value="#{eventosMB.evento.nome}" class="detalhesEventoTitulo" />
 
           <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Bandas}" styleClass="negrito"/>
           <h:panelGroup layout="block" styleClass="panelCru" style="margin: 0px auto;">
-            <ui:repeat value="#{eventosMB.entidade.bandas}" var="banda" varStatus="repeatStatus"><!-- 
+            <ui:repeat value="#{eventosMB.evento.bandas}" var="banda" varStatus="repeatStatus"><!-- 
                    value: ternário: se for a última banda, imprime ' e ', senão ', '
                    rendered: só imprime se tiver mais de uma banda -->
               <h:outputText value="#{repeatStatus.last ? ' e ' : ', '}" 
@@ -40,21 +40,21 @@
 
           <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Local}" styleClass="negrito"/>
           <p:panelGrid columns="1" styleClass="panelGridSemBordas panelGridDetalhesEventoEndereco">
-            <h:outputText value="#{eventosMB.entidade.casa.nome}" styleClass="detalhesEventoCasa"/>
-            <h:outputText value="#{eventosMB.entidade.casa.endereco.logradouro}, 
-                          #{msgs.Endereco_numero} #{eventosMB.entidade.casa.endereco.numero}" />
-            <h:outputText value="#{msgs.Endereco_bairro} #{eventosMB.entidade.casa.endereco.bairro}" />
-            <h:outputText value="#{eventosMB.entidade.casa.endereco.cidade.nome} - #{eventosMB.entidade.casa.endereco.cidade.uf.sigla}" />
-            <h:outputText value="#{eventosMB.entidade.casa.endereco.cep}" />
+            <h:outputText value="#{eventosMB.evento.casa.nome}" styleClass="detalhesEventoCasa"/>
+            <h:outputText value="#{eventosMB.evento.casa.endereco.logradouro}, 
+                          #{msgs.Endereco_numero} #{eventosMB.evento.casa.endereco.numero}" />
+            <h:outputText value="#{msgs.Endereco_bairro} #{eventosMB.evento.casa.endereco.bairro}" />
+            <h:outputText value="#{eventosMB.evento.casa.endereco.cidade.nome} - #{eventosMB.evento.casa.endereco.cidade.uf.sigla}" />
+            <h:outputText value="#{eventosMB.evento.casa.endereco.cep}" />
           </p:panelGrid>
 
           <h:outputText value="#{msgs.Index_dialogDetalhesEvento_DataHora}" styleClass="negrito"/>
-          <h:outputText value="#{eventosMB.entidade.datahora}">
+          <h:outputText value="#{eventosMB.evento.datahora}">
             <f:convertDateTime pattern="dd/MM/yyyy   -   HH:mm"/>
           </h:outputText>
 
           <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Valor}" styleClass="negrito"/>
-          <h:outputText value="#{eventosMB.entidade.valor}">
+          <h:outputText value="#{eventosMB.evento.valor}">
             <f:convertNumber minFractionDigits="2" type="currency" />
           </h:outputText>
         </h:panelGrid>
@@ -83,22 +83,53 @@
         <!-- esquerda -->
         <h:panelGroup layout="block" 
                       style="float: left; width: 192px; margin-right: 8px;">
-          <p:dataTable id="tableBandas" var="banda" value="#{bandasMB.entidades}"
+          <!-- filtro cidades -->
+          <p:dataTable id="tableCidades" var="cidade" value="#{cidadesMB.cidades}"
+                       selection="#{eventosMB.cidadesSelecionadas}" selectionMode="mutiple"
+                       rowKey="#{cidade.id}" scrollable="true" scrollHeight="110"
+                       styleClass="bordaTimida">
+            <p:ajax event="rowSelect" listener="#{eventosMB.cidadeSelecionada}" update="tableCidades" />
+            <p:column headerText="#{msgs.Evento_cidade} 
+                      #{eventosMB.getQuantidadeFiltro(eventosMB.cidadesSelecionadas)}">
+              <h:outputText value="#{cidade.nome}" />
+            </p:column>
+          </p:dataTable>
+          <h:panelGroup layout="block" style="height: 10px;" />
+
+          <!-- filtro casas -->
+          <p:dataTable id="tableCasas" var="casa" value="#{casasMB.casas}"
+                       selection="#{eventosMB.casasSelecionadas}" selectionMode="mutiple"
+                       rowKey="#{casa.id}" scrollable="true" scrollHeight="110"
+                       styleClass="bordaTimida">
+            <p:ajax event="rowSelect" listener="#{eventosMB.casaSelecionada}" update="tableCasas" />
+            <p:column headerText="#{msgs.Evento_casa} 
+                      #{eventosMB.getQuantidadeFiltro(eventosMB.casasSelecionadas)}">
+              <h:outputText value="#{casa.nome}" />
+            </p:column>
+          </p:dataTable>
+          <h:panelGroup layout="block" style="height: 10px;" />
+
+          <!-- filtro bandas -->
+          <p:dataTable id="tableBandas" var="banda" value="#{bandasMB.bandas}"
                        selection="#{eventosMB.bandasSelecionadas}" selectionMode="mutiple"
-                       rowKey="#{banda.id}" scrollable="true" scrollHeight="150">
-            <p:column headerText="#{msgs.Evento_banda}">
+                       rowKey="#{banda.id}" scrollable="true" scrollHeight="110"
+                       styleClass="bordaTimida">
+            <p:ajax event="rowSelect" listener="#{eventosMB.bandaSelecionada}" update="tableBandas" />
+            <p:column headerText="#{msgs.Evento_banda} 
+                      #{eventosMB.getQuantidadeFiltro(eventosMB.bandasSelecionadas)}">
               <h:outputText value="#{banda.nome}" />
             </p:column>
           </p:dataTable>
+          <h:panelGroup layout="block" style="height: 10px;" />
 
           <p:commandButton value="#{msgs.global_atualizar}" 
-                           action="#{eventosMB.carregarEntidades()}"
+                           action="#{eventosMB.aplicarFiltros()}"
                            update="tableEventos mensagens"/>
         </h:panelGroup>
 
         <!-- direita -->
         <h:panelGroup layout="block" style="margin-left: 200px;">
-          <p:dataTable id="tableEventos" var="evento" value="#{eventosMB.entidades}">
+          <p:dataTable id="tableEventos" var="evento" value="#{eventosMB.eventos}">
             <p:column sortBy="#{evento.nome}" headerText="#{msgs.Evento_nome}">
               <h:outputText value="#{evento.nome}" />
             </p:column>
@@ -119,7 +150,7 @@
             <p:column width="30" headerText="#{msgs.global_detalhes}">
               <p:commandButton value="Detalhes" title="Detalhes" oncomplete="dialogDetalhesEvento.show();"
                                update=":formDetalhesEvento:dialogDetalhesEvento">
-                <f:setPropertyActionListener value="#{evento}" target="#{eventosMB.entidade}" />
+                <f:setPropertyActionListener value="#{evento}" target="#{eventosMB.evento}" />
               </p:commandButton>
             </p:column>
 

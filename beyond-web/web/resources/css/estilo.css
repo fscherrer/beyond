@@ -60,6 +60,10 @@ root {
   border: none !important;
 }
 
+.bordaTimida{
+  border: solid 1px lightgray;
+}
+
 .panelGridDetalhesEventoEndereco tr{
   background: transparent;
 }
