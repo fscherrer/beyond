@@ -65,9 +65,8 @@ public class EventoDAOImpl implements EventoDAO {
               Statement.RETURN_GENERATED_KEYS);
       preparedStatement.setString(1, entidade.getNome());
       preparedStatement.setObject(2, entidade.getCasa() == null ? null : entidade.getCasa().getId());
-      preparedStatement.setTimestamp(3, (Timestamp) entidade.getDatahora());
+      preparedStatement.setDate(3, new java.sql.Date(entidade.getDatahora().getTime()));
       preparedStatement.setDouble(4, entidade.getValor());
-      preparedStatement.setInt(5, entidade.getId());
 
       preparedStatement.executeUpdate();
 
@@ -164,7 +163,7 @@ public class EventoDAOImpl implements EventoDAO {
               + "   eventobanda.bandaid as bandaid "
               + " from "
               + "   evento as evento "
-              + "     join eventobanda as eventobanda"
+              + "     left join eventobanda as eventobanda"
               + "       on eventobanda.eventoid = evento.id "
               + "  order by "
               + "    evento.dataHora, "
@@ -201,7 +200,7 @@ public class EventoDAOImpl implements EventoDAO {
       PreparedStatement preparedStatement = conexao.prepareStatement(EDITA_EVENTO_QUERY);
       preparedStatement.setString(1, entidade.getNome());
       preparedStatement.setObject(2, entidade.getCasa() == null ? null : entidade.getCasa().getId());
-      preparedStatement.setTimestamp(3, (Timestamp) entidade.getDatahora());
+      preparedStatement.setDate(3, new java.sql.Date(entidade.getDatahora().getTime()));
       preparedStatement.setDouble(4, entidade.getValor());
       preparedStatement.setInt(5, entidade.getId());
 
@@ -229,6 +228,7 @@ public class EventoDAOImpl implements EventoDAO {
 
       int eventoId;
       String eventoNome;
+      String eventoCoordenada;
       double eventoValor;
       Date eventoDataHora;
       int eventoCasaId;
@@ -245,18 +245,28 @@ public class EventoDAOImpl implements EventoDAO {
         eventoValor = resultSet.getDouble("valor");
         eventoDataHora = resultSet.getTimestamp("dataHora");
         eventoCasaId = resultSet.getInt("casaid");
+        eventoCoordenada = resultSet.getString("coordenada");
         eventoBandaId = resultSet.getInt("bandaid");
+        
+        if (!resultSet.wasNull()) {
+          banda = bandaDAO.getPeloId(eventoBandaId);
+        }
+        else {
+          banda = null;
+        }
 
         casa = casaDAO.getPeloId(eventoCasaId);
-        banda = bandaDAO.getPeloId(eventoBandaId);
 
         if (eventoId != eventoIdAtual) {
           evento = new Evento(eventoId, eventoNome, eventoDataHora, eventoValor, casa,
-                  new ArrayList<Banda>());
+                  new ArrayList<Banda>(), eventoCoordenada);
           eventos.add(evento);
         }
 
-        evento.getBandas().add(banda);
+        if(banda != null){
+          evento.getBandas().add(banda);
+        }
+        
         eventoIdAtual = eventoId;
       }
 
@@ -306,7 +316,7 @@ public class EventoDAOImpl implements EventoDAO {
               + "   eventobanda.bandaid as bandaid "
               + " from "
               + "   evento as evento "
-              + "     join eventobanda as eventobanda"
+              + "     left join eventobanda as eventobanda"
               + "       on eventobanda.eventoid = evento.id "
               + "     join casa as casa "
               + "       on casa.id = evento.casaid "
