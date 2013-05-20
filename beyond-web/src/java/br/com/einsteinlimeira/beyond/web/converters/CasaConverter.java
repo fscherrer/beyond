@@ -1,19 +1,26 @@
 package br.com.einsteinlimeira.beyond.web.converters;
 
 import br.com.einsteinlimeira.beyond.model.Casa;
+import br.com.einsteinlimeira.beyond.services.CasaServices;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
-import br.com.einsteinlimeira.beyond.services.ServicesFactory;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Converter para a entidade {@link Casa}.
  */
-@FacesConverter(value = "casaConverter", forClass = Casa.class)
+@Named
 public class CasaConverter implements Converter {
+
+  /**
+   * Services de Casa.
+   */
+  @Inject
+  private CasaServices casaServices;
 
   @Override
   public Object getAsObject(FacesContext context, UIComponent component, String value)
@@ -22,7 +29,7 @@ public class CasaConverter implements Converter {
     try {
       return value == null
           ? null
-          : ServicesFactory.getFactory().getCasaServices().getPeloId(Integer.valueOf(value));
+          : casaServices.getPeloId(Integer.valueOf(value));
     }
     catch (EntidadeServicesException ese) {
       throw new ConverterException(ese);

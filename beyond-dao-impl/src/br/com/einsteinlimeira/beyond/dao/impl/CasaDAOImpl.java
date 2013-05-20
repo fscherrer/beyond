@@ -2,7 +2,6 @@ package br.com.einsteinlimeira.beyond.dao.impl;
 
 import br.com.einsteinlimeira.beyond.dao.CasaDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.dao.EnderecoDAO;
 import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Endereco;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link CasaDAO}.
@@ -22,6 +22,12 @@ public class CasaDAOImpl implements CasaDAO {
    * Logger para logar mensagens.
    */
   private final static Logger LOGGER = Logger.getLogger(CasaDAOImpl.class.getName());
+  
+  /**
+   * DAO de Endereço.
+   */
+  @Inject
+  private EnderecoDAO enderecoDAO;
 
   /**
    * {@inheritDoc}
@@ -117,8 +123,6 @@ public class CasaDAOImpl implements CasaDAO {
       String casaResponsavel;
       int enderecoId;
       Endereco endereco;
-
-      EnderecoDAO enderecoDAO = DAOFactory.getFactory().getEnderecoDAO();
 
       while (resultSet.next()) {
         casaId = resultSet.getInt("Id");

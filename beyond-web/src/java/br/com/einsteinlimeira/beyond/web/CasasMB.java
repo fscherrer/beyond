@@ -1,11 +1,12 @@
 package br.com.einsteinlimeira.beyond.web;
 
 import br.com.einsteinlimeira.beyond.model.Casa;
+import br.com.einsteinlimeira.beyond.services.CasaServices;
 import br.com.einsteinlimeira.beyond.services.EntidadeServices;
-import br.com.einsteinlimeira.beyond.services.ServicesFactory;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 
 /**
  * ManagedBean para manipulação de {@link Casa}.
@@ -13,13 +14,19 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 @ViewScoped
 public class CasasMB extends BaseManagedBeanEntidade<Casa> {
+  
+  /**
+   * Services de Casa.
+   */
+  @Inject
+  private CasaServices casaServices;
 
   /**
    * {@inheritDoc}
    */
   @Override
   public EntidadeServices<Casa> getEntidadeServices() {
-    return ServicesFactory.getFactory().getCasaServices();
+    return casaServices;
   }
 
   /**

@@ -1,38 +1,45 @@
 package br.com.einsteinlimeira.beyond.services.impl;
 
+import br.com.einsteinlimeira.beyond.dao.BandaDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.model.Banda;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.BandaServices;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link BandaServices}.
  */
 public class BandaServicesImpl implements BandaServices {
-
+  
+  /**
+   * DAO de Banda.
+   */
+  @Inject
+  private BandaDAO bandaDAO;
+  
   /**
    * {@inheritDoc}
    */
   @Override
   public int inserir(Banda entidade) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getBandaDAO().inserir(entidade);
+      return bandaDAO.inserir(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
           "Falha na chamada à camada de acesso a dados para inclusão de Banda", daoe);
     }
   }
-
+  
   /**
    * {@inheritDoc}
    */
   @Override
   public Banda getPeloId(int id) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getBandaDAO().getPeloId(id);
+      return bandaDAO.getPeloId(id);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -46,7 +53,7 @@ public class BandaServicesImpl implements BandaServices {
   @Override
   public List<Banda> listar() throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getBandaDAO().listar();
+      return bandaDAO.listar();
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -60,7 +67,7 @@ public class BandaServicesImpl implements BandaServices {
   @Override
   public void atualizar(Banda entidade) throws EntidadeServicesException {
     try {
-      DAOFactory.getFactory().getBandaDAO().atualizar(entidade);
+      bandaDAO.atualizar(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -74,7 +81,7 @@ public class BandaServicesImpl implements BandaServices {
   @Override
   public void remover(Banda entidade) throws EntidadeServicesException {
     try {
-      DAOFactory.getFactory().getBandaDAO().remover(entidade);
+      bandaDAO.remover(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -88,7 +95,7 @@ public class BandaServicesImpl implements BandaServices {
   @Override
   public List<String> getEstilos() throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getBandaDAO().getEstilos();
+      return bandaDAO.getEstilos();
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -102,7 +109,7 @@ public class BandaServicesImpl implements BandaServices {
   @Override
   public List<Banda> getBandas(List<String> estilos) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getBandaDAO().getBandas(estilos);
+      return bandaDAO.getBandas(estilos);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(

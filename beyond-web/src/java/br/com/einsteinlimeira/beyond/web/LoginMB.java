@@ -2,19 +2,20 @@ package br.com.einsteinlimeira.beyond.web;
 
 import br.com.einsteinlimeira.beyond.model.Usuario;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
-import br.com.einsteinlimeira.beyond.services.ServicesFactory;
+import br.com.einsteinlimeira.beyond.services.UsuarioServices;
 import java.io.Serializable;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.validation.constraints.Size;
 
 /**
  * Managed Bean responsável pelas interações de login.
  */
-@ManagedBean
+@Named
 @SessionScoped
 public class LoginMB implements Serializable {
 
@@ -23,6 +24,9 @@ public class LoginMB implements Serializable {
    */
   @Size(min = 4, message = "{login.usuario.tamanhoMinimo}")
   private String usuario;
+  
+  @Inject
+  private UsuarioServices usuarioServices;
 
   /**
    * Senha do usuário.
@@ -88,8 +92,7 @@ public class LoginMB implements Serializable {
    */
   public String doLogin() {
     try {
-      Usuario usuarioAutenticado =
-          ServicesFactory.getFactory().getUsuarioServices().getUsuario(senha, senha);
+      Usuario usuarioAutenticado = usuarioServices.getUsuario(senha, senha);
 
       if (usuarioAutenticado == null) {
         FacesContext.getCurrentInstance().addMessage(inputUsuario.getClientId(), new FacesMessage(

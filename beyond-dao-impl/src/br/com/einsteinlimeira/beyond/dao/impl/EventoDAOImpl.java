@@ -3,7 +3,6 @@ package br.com.einsteinlimeira.beyond.dao.impl;
 import br.com.einsteinlimeira.beyond.dao.BandaDAO;
 import br.com.einsteinlimeira.beyond.dao.CasaDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.dao.EventoDAO;
 import br.com.einsteinlimeira.beyond.model.Banda;
 import br.com.einsteinlimeira.beyond.model.Casa;
@@ -19,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link EventoDAO}.
@@ -37,6 +37,18 @@ public class EventoDAOImpl implements EventoDAO {
           + "     datahora, "
           + "     valor) "
           + " values(?, ?, ?,?)";
+
+  /**
+   * DAO de Casa.
+   */
+  @Inject
+  private CasaDAO casaDAO;
+
+  /**
+   * DAO de Banda.
+   */
+  @Inject
+  private BandaDAO bandaDAO;
 
   /**
    * {@inheritDoc}
@@ -225,9 +237,6 @@ public class EventoDAOImpl implements EventoDAO {
       Casa casa;
       Evento evento = null;
 
-      CasaDAO casaDAO = DAOFactory.getFactory().getCasaDAO();
-      BandaDAO bandaDAO = DAOFactory.getFactory().getBandaDAO();
-
       int eventoIdAtual = 0;
 
       while (resultSet.next()) {
@@ -307,7 +316,7 @@ public class EventoDAOImpl implements EventoDAO {
               + "   evento.nome";
 
       // DEBUG
-       System.out.println(query);
+      // System.out.println(query);
 
       return getEventos(BancoDeDados.getInstancia().executarQuery(query));
     } catch (BancoDeDadosException bdde) {

@@ -2,19 +2,25 @@ package br.com.einsteinlimeira.beyond.web.converters;
 
 import br.com.einsteinlimeira.beyond.model.Uf;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
-import br.com.einsteinlimeira.beyond.services.ServicesFactory;
+import br.com.einsteinlimeira.beyond.services.UfServices;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-import javax.faces.convert.FacesConverter;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
- *
- * @author Iron
+ * Converter para a entidade {@link Uf}.
  */
-@FacesConverter(value = "ufConverter", forClass = Uf.class)
+@Named
 public class UfConverter implements Converter{
+  
+  /**
+   * Services de Uf.
+   */
+  @Inject
+  private UfServices ufServices;
   
    @Override
   public Object getAsObject(FacesContext context, UIComponent component, String value)
@@ -23,7 +29,7 @@ public class UfConverter implements Converter{
     try {
       return value == null
           ? null
-          : ServicesFactory.getFactory().getUfServices().getPeloId(Integer.valueOf(value));
+          : ufServices.getPeloId(Integer.valueOf(value));
     }
     catch (EntidadeServicesException ese) {
       throw new ConverterException(ese);

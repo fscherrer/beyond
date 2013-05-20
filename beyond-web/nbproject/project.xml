@@ -22,16 +22,16 @@
                     <file>${reference.beyond-dao.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
-                <library dirs="200">
-                    <file>${reference.beyond-dao-ref.jar}</file>
+                <library dirs="100">
+                    <file>${reference.beyond-dao-ref.dist}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${reference.beyond-services.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
-                <library dirs="200">
-                    <file>${reference.beyond-services-ref.jar}</file>
+                <library dirs="100">
+                    <file>${reference.beyond-services-ref.dist}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
@@ -67,9 +67,9 @@
                 <foreign-project>beyond-dao-ref</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
-                <target>jar</target>
+                <target>dist</target>
                 <clean-target>clean</clean-target>
-                <id>jar</id>
+                <id>dist</id>
             </reference>
             <reference>
                 <foreign-project>beyond-model</foreign-project>
@@ -99,9 +99,9 @@
                 <foreign-project>beyond-services-ref</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
-                <target>jar</target>
+                <target>dist</target>
                 <clean-target>clean</clean-target>
-                <id>jar</id>
+                <id>dist</id>
             </reference>
         </references>
     </configuration>

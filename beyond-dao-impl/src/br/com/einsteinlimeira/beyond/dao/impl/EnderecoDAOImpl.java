@@ -2,7 +2,6 @@ package br.com.einsteinlimeira.beyond.dao.impl;
 
 import br.com.einsteinlimeira.beyond.dao.CidadeDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.dao.EnderecoDAO;
 import br.com.einsteinlimeira.beyond.model.Cidade;
 import br.com.einsteinlimeira.beyond.model.Endereco;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link EnderecoDAO}.
@@ -22,6 +22,12 @@ public class EnderecoDAOImpl implements EnderecoDAO {
    * Logger para logar mensagens.
    */
   private final static Logger LOGGER = Logger.getLogger(EnderecoDAOImpl.class.getName());
+  
+  /**
+   * DAO de Cidade.
+   */
+  @Inject
+  private CidadeDAO cidadeDAO;
 
   /**
    * {@inheritDoc}
@@ -92,8 +98,6 @@ public class EnderecoDAOImpl implements EnderecoDAO {
       String enderecoComplemento;
       String enderecoNumero;
       Cidade cidade;
-
-      CidadeDAO cidadeDAO = DAOFactory.getFactory().getCidadeDAO();
 
       while (resultSet.next()) {
         enderecoId = resultSet.getInt("Id");

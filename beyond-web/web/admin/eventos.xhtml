@@ -22,7 +22,7 @@
                          required="true" requiredMessage="#{msgs.evento_naoInformado}" />
 
             <h:outputLabel value="#{msgs.Evento_casa}" />
-            <p:selectOneMenu value="#{eventosMB.entidade.casa}" converter="casaConverter">
+            <p:selectOneMenu value="#{eventosMB.entidade.casa}" converter="#{casaConverter}">
               <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
               <f:selectItems value="#{casasMB.entidades}" var="casa" itemLabel="#{casa.nome}" itemValue="#{casa}" />
             </p:selectOneMenu>

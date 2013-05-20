@@ -4,9 +4,10 @@ import br.com.einsteinlimeira.beyond.model.Banda;
 import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Cidade;
 import br.com.einsteinlimeira.beyond.model.Evento;
+import br.com.einsteinlimeira.beyond.services.BandaServices;
+import br.com.einsteinlimeira.beyond.services.CasaServices;
 import br.com.einsteinlimeira.beyond.services.EntidadeServices;
 import br.com.einsteinlimeira.beyond.services.EventoServices;
-import br.com.einsteinlimeira.beyond.services.ServicesFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -16,6 +17,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -25,6 +27,24 @@ import org.primefaces.event.UnselectEvent;
 @ManagedBean
 @ViewScoped
 public class EventosMB extends BaseManagedBeanEntidade<Evento> {
+  
+  /**
+   * Services de Casa.
+   */
+  @Inject
+  private CasaServices casaServices;
+  
+  /**
+   * Services de Banda.
+   */
+  @Inject
+  private BandaServices bandaServices;
+  
+  /**
+   * Services de Evento.
+   */
+  @Inject
+  private EventoServices eventoServices;
 
   /**
    * Logger para logar mensagens.
@@ -91,7 +111,7 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
    */
   @Override
   public EntidadeServices<Evento> getEntidadeServices() {
-    return ServicesFactory.getFactory().getEventoServices();
+    return eventoServices;
   }
 
   /**
@@ -306,7 +326,7 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
    */
   private void filtrarCasas() {
     try {
-      casas = ServicesFactory.getFactory().getCasaServices().getCasas(cidadesSelecionadas);
+      casas = casaServices.getCasas(cidadesSelecionadas);
     }
     catch (Exception e) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
@@ -322,7 +342,7 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
    */
   private void filtrarBandas() {
     try {
-      bandas = ServicesFactory.getFactory().getBandaServices().getBandas(estilosSelecionados);
+      bandas = bandaServices.getBandas(estilosSelecionados);
     }
     catch (Exception e) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
@@ -386,7 +406,7 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
    */
   public void carregarCasas() {
     try {
-      casas = ServicesFactory.getFactory().getCasaServices().listar();
+      casas = casaServices.listar();
     }
     catch (Exception e) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
@@ -402,7 +422,7 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
    */
   public void carregarBandas() {
     try {
-      bandas = ServicesFactory.getFactory().getBandaServices().listar();
+      bandas = bandaServices.listar();
     }
     catch (Exception e) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
@@ -418,7 +438,7 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
    */
   public void carregarEstilos() {
     try {
-      estilos = ServicesFactory.getFactory().getBandaServices().getEstilos();
+      estilos = bandaServices.getEstilos();
     }
     catch (Exception e) {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(

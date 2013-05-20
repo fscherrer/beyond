@@ -2,7 +2,6 @@ package br.com.einsteinlimeira.beyond.dao.impl;
 
 import br.com.einsteinlimeira.beyond.dao.CidadeDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.dao.UfDAO;
 import br.com.einsteinlimeira.beyond.model.Cidade;
 import br.com.einsteinlimeira.beyond.model.Uf;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link CidadeDAO}.
@@ -25,6 +25,13 @@ public class CidadeDAOImpl implements CidadeDAO {
    * Logger para logar mensagens.
    */
   private final static Logger LOGGER = Logger.getLogger(CidadeDAOImpl.class.getName());
+  
+  /**
+   * DAO de Uf.
+   */
+  @Inject
+  private UfDAO ufDAO;
+  
   private static final String INCLUIR_CIDADE_QUERY = ""
           + " insert into "
           + "   cidade("
@@ -163,6 +170,7 @@ public class CidadeDAOImpl implements CidadeDAO {
    */
   @Override
   public void atualizar(Cidade entidade) throws DAOException {
+    System.out.println("---- atualizar");
     final String mensagem = "Falha ao editar cidade";
     Connection conexao = null;
 
@@ -200,8 +208,6 @@ public class CidadeDAOImpl implements CidadeDAO {
       String cidadeNome;
       int ufid;
       Uf uf;
-
-      UfDAO ufDAO = DAOFactory.getFactory().getUfDAO();
 
       while (resultSet.next()) {
         cidadeId = resultSet.getInt("Id");

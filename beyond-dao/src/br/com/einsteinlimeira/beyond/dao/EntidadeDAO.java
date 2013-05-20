@@ -1,6 +1,7 @@
 package br.com.einsteinlimeira.beyond.dao;
 
 import br.com.einsteinlimeira.beyond.model.Entidade;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  * @param <E> 
  *   Tipo da {@link Entidade} manipulada pela implementação.
  */
-public interface EntidadeDAO<E extends Entidade> {
+public interface EntidadeDAO<E extends Entidade> extends Serializable {
 
   /**
    * Método para inclusão de {@link Entidade}s do tipo específico.<br />

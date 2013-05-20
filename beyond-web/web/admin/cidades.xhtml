@@ -23,14 +23,13 @@
                          required="true" requiredMessage="#{msgs.cidade_naoInformada}" />
 
             <h:outputLabel value="#{msgs.uf_cidade}" />
-            <p:selectOneMenu value="#{cidadesMB.entidade.uf}" converter="ufConverter">
+            <p:selectOneMenu value="#{cidadesMB.entidade.uf}" converter="#{ufConverter}">
               <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
               <f:selectItems value="#{ufsMB.entidades}" var="uf" itemLabel="#{uf.nome}" itemValue="#{uf}" />
             </p:selectOneMenu>
 
           </h:panelGrid>
 
-          <!-- TODO: combo para selecionar a uf -->
           <p:messages id="edicaoMessages" showDetail="true" />
 
           <f:facet name="footer">

@@ -2,7 +2,6 @@ package br.com.einsteinlimeira.beyond.dao.impl;
 
 import br.com.einsteinlimeira.beyond.dao.CasaDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.dao.UsuarioDAO;
 import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Usuario;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link UsuarioDAO}.
@@ -25,6 +25,12 @@ public class UsuarioDAOImpl implements UsuarioDAO {
    * Logger para logar mensagens.
    */
   private final static Logger LOGGER = Logger.getLogger(UsuarioDAOImpl.class.getName());
+  
+  /**
+   * DAO de Casa.
+   */
+  @Inject
+  private CasaDAO casaDAO;
 
   private static final String INCLUIR_USUARIO_QUERY = ""
       + " insert into "
@@ -282,8 +288,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     String nome;
     int idCasa;
     Casa casa;
-
-    CasaDAO casaDAO = DAOFactory.getFactory().getCasaDAO();
 
     try {
       while (resultSet.next()) {

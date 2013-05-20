@@ -262,7 +262,7 @@ public class BandaDAOImpl implements BandaDAO {
     query += " order by nome";
     
     // DEBUG
-    System.out.println(query);
+    // System.out.println(query);
 
     try {
       return getBandas(BancoDeDados.getInstancia().executarQuery(query));

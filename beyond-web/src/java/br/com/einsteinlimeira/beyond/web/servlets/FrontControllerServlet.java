@@ -5,14 +5,16 @@ import br.com.einsteinlimeira.beyond.model.Evento;
 import br.com.einsteinlimeira.beyond.protocol.Requisicao;
 import br.com.einsteinlimeira.beyond.protocol.RequisicaoCasa;
 import br.com.einsteinlimeira.beyond.protocol.RequisicaoEvento;
+import br.com.einsteinlimeira.beyond.services.CasaServices;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
-import br.com.einsteinlimeira.beyond.services.ServicesFactory;
+import br.com.einsteinlimeira.beyond.services.EventoServices;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,6 +32,18 @@ public class FrontControllerServlet extends HttpServlet {
      * Logger para logar mensagens.
      */
     private final static Logger LOGGER = Logger.getLogger(FrontControllerServlet.class.getName());
+    
+    /**
+     * Services de Evento.
+     */
+    @Inject
+    private EventoServices eventoServices;
+    
+    /**
+     * Services de Casa.
+     */
+    @Inject
+    private CasaServices casaServices;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -92,7 +106,7 @@ public class FrontControllerServlet extends HttpServlet {
             try {
                 // Todos
                 if (eventoRequisitado.equals(Requisicao.TODAS)) {
-                    List<Evento> eventos = ServicesFactory.getFactory().getEventoServices().listar();
+                    List<Evento> eventos = eventoServices.listar();
 
                     String json = new Gson().toJson(eventos);
 
@@ -102,8 +116,7 @@ public class FrontControllerServlet extends HttpServlet {
                     try {
                         int idEventoRequisitado = Integer.parseInt(eventoRequisitado);
 
-                        Evento evento = ServicesFactory.getFactory().getEventoServices().getPeloId(
-                                idEventoRequisitado);
+                        Evento evento = eventoServices.getPeloId(idEventoRequisitado);
 
                         String json = new Gson().toJson(evento);
                         writeResponse(response, json);
@@ -140,7 +153,7 @@ public class FrontControllerServlet extends HttpServlet {
             //Todas
             try {
                 if (casaRequisitada.equals(Requisicao.TODAS)) {
-                    List<Casa> casas = ServicesFactory.getFactory().getCasaServices().listar();
+                    List<Casa> casas = casaServices.listar();
 
                     String json = new Gson().toJson(casas);
                     writeResponse(response, json);
@@ -149,8 +162,7 @@ public class FrontControllerServlet extends HttpServlet {
                     try{
                         int idCasaRequisitada = Integer.parseInt(casaRequisitada);
                         
-                        Casa casa = ServicesFactory.getFactory().getCasaServices().getPeloId(
-                                idCasaRequisitada);
+                        Casa casa = casaServices.getPeloId(idCasaRequisitada);
                         
                         String json = new Gson().toJson(casa);
                         writeResponse(response, json);

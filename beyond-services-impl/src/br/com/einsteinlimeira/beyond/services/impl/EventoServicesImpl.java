@@ -1,20 +1,26 @@
 package br.com.einsteinlimeira.beyond.services.impl;
 
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
+import br.com.einsteinlimeira.beyond.dao.EventoDAO;
 import br.com.einsteinlimeira.beyond.model.Banda;
 import br.com.einsteinlimeira.beyond.model.Casa;
-import br.com.einsteinlimeira.beyond.model.Cidade;
 import br.com.einsteinlimeira.beyond.model.EntidadeUtils;
 import br.com.einsteinlimeira.beyond.model.Evento;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.EventoServices;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link EventoServices}.
  */
 public class EventoServicesImpl implements EventoServices {
+  
+  /**
+   * DAO de Evento.
+   */
+  @Inject
+  private EventoDAO eventoDAO;
 
   /**
    * {@inheritDoc}
@@ -22,7 +28,7 @@ public class EventoServicesImpl implements EventoServices {
   @Override
   public int inserir(Evento entidade) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getEventoDAO().inserir(entidade);
+      return eventoDAO.inserir(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -36,7 +42,7 @@ public class EventoServicesImpl implements EventoServices {
   @Override
   public Evento getPeloId(int id) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getEventoDAO().getPeloId(id);
+      return eventoDAO.getPeloId(id);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -50,7 +56,7 @@ public class EventoServicesImpl implements EventoServices {
   @Override
   public List<Evento> listar() throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getEventoDAO().listar();
+      return eventoDAO.listar();
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -64,7 +70,7 @@ public class EventoServicesImpl implements EventoServices {
   @Override
   public void atualizar(Evento entidade) throws EntidadeServicesException {
     try {
-      DAOFactory.getFactory().getEventoDAO().atualizar(entidade);
+      eventoDAO.atualizar(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -78,7 +84,7 @@ public class EventoServicesImpl implements EventoServices {
   @Override
   public void remover(Evento entidade) throws EntidadeServicesException {
     try {
-      DAOFactory.getFactory().getEventoDAO().remover(entidade);
+      eventoDAO.remover(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -107,7 +113,7 @@ public class EventoServicesImpl implements EventoServices {
 
     
     try {
-      return DAOFactory.getFactory().getEventoDAO().getEventos(idsCasas, idsBandas);
+      return eventoDAO.getEventos(idsCasas, idsBandas);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(

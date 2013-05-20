@@ -1,16 +1,23 @@
 package br.com.einsteinlimeira.beyond.services.impl;
 
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
+import br.com.einsteinlimeira.beyond.dao.MusicoDAO;
 import br.com.einsteinlimeira.beyond.model.Musico;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.MusicoServices;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link MusicoServices}.
  */
 public class MusicoServicesImpl implements MusicoServices {
+  
+  /**
+   * DAO de Músico.
+   */
+  @Inject
+  private MusicoDAO musicoDAO;
 
   /**
    * {@inheritDoc}
@@ -18,7 +25,7 @@ public class MusicoServicesImpl implements MusicoServices {
   @Override
   public int inserir(Musico entidade) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getMusicoDAO().inserir(entidade);
+      return musicoDAO.inserir(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -32,7 +39,7 @@ public class MusicoServicesImpl implements MusicoServices {
   @Override
   public Musico getPeloId(int id) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getMusicoDAO().getPeloId(id);
+      return musicoDAO.getPeloId(id);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -46,7 +53,7 @@ public class MusicoServicesImpl implements MusicoServices {
   @Override
   public List<Musico> listar() throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getMusicoDAO().listar();
+      return musicoDAO.listar();
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -60,7 +67,7 @@ public class MusicoServicesImpl implements MusicoServices {
   @Override
   public void atualizar(Musico entidade) throws EntidadeServicesException {
     try {
-      DAOFactory.getFactory().getMusicoDAO().atualizar(entidade);
+      musicoDAO.atualizar(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -74,7 +81,7 @@ public class MusicoServicesImpl implements MusicoServices {
   @Override
   public void remover(Musico entidade) throws EntidadeServicesException {
     try {
-      DAOFactory.getFactory().getMusicoDAO().remover(entidade);
+      musicoDAO.remover(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(

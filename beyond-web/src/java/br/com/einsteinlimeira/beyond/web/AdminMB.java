@@ -1,12 +1,12 @@
 package br.com.einsteinlimeira.beyond.web;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 
 /**
  * Managed Bean para a página inicial da área administrativa.
  */
-@ManagedBean
+@Named
 @RequestScoped
 public class AdminMB {
 

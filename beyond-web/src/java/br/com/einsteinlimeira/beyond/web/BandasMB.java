@@ -1,11 +1,12 @@
 package br.com.einsteinlimeira.beyond.web;
 
 import br.com.einsteinlimeira.beyond.model.Banda;
+import br.com.einsteinlimeira.beyond.services.BandaServices;
 import br.com.einsteinlimeira.beyond.services.EntidadeServices;
-import br.com.einsteinlimeira.beyond.services.ServicesFactory;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 
 /**
  * ManagedBean para manipulação de {@link Banda}.
@@ -13,13 +14,19 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 @ViewScoped
 public class BandasMB extends BaseManagedBeanEntidade<Banda> {
+  
+  /**
+   * Services de Banda.
+   */
+  @Inject
+  private BandaServices bandaServices;
 
   /**
    * {@inheritDoc}
    */
   @Override
   public EntidadeServices<Banda> getEntidadeServices() {
-    return ServicesFactory.getFactory().getBandaServices();
+    return bandaServices;
   }
 
   /**

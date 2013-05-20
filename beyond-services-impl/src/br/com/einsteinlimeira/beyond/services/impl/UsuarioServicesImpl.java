@@ -1,17 +1,24 @@
 package br.com.einsteinlimeira.beyond.services.impl;
 
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
+import br.com.einsteinlimeira.beyond.dao.UsuarioDAO;
 import br.com.einsteinlimeira.beyond.model.Usuario;
 import br.com.einsteinlimeira.beyond.services.DominioException;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.UsuarioServices;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link UsuarioServices}.
  */
 public class UsuarioServicesImpl implements UsuarioServices {
+  
+  /**
+   * DAO de Usuário.
+   */
+  @Inject
+  private UsuarioDAO usuarioDAO;
 
   /**
    * {@inheritDoc}
@@ -19,7 +26,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
   @Override
   public int inserir(Usuario entidade) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getUsuarioDAO().inserir(entidade);
+      return usuarioDAO.inserir(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -33,7 +40,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
   @Override
   public Usuario getPeloId(int id) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getUsuarioDAO().getPeloId(id);
+      return usuarioDAO.getPeloId(id);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -47,7 +54,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
   @Override
   public List<Usuario> listar() throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getUsuarioDAO().listar();
+      return usuarioDAO.listar();
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -67,7 +74,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
     }
 
     try {
-      DAOFactory.getFactory().getUsuarioDAO().atualizar(entidade);
+      usuarioDAO.atualizar(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -85,7 +92,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
     }
 
     try {
-      DAOFactory.getFactory().getUsuarioDAO().remover(entidade);
+      usuarioDAO.remover(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -99,7 +106,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
   @Override
   public Usuario getUsuario(String login, String senha) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getUsuarioDAO().getUsuario(login, senha);
+      return usuarioDAO.getUsuario(login, senha);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(

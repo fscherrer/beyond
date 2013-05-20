@@ -1,16 +1,23 @@
 package br.com.einsteinlimeira.beyond.services.impl;
 
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
+import br.com.einsteinlimeira.beyond.dao.UfDAO;
 import br.com.einsteinlimeira.beyond.model.Uf;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.UfServices;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link UfServices}.
  */
 public class UfServicesImpl implements UfServices {
+  
+  /**
+   * DAO de Uf.
+   */
+  @Inject
+  private UfDAO ufDAO;
 
   /**
    * {@inheritDoc}
@@ -18,7 +25,7 @@ public class UfServicesImpl implements UfServices {
   @Override
   public int inserir(Uf entidade) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getUfDAO().inserir(entidade);
+      return ufDAO.inserir(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -32,7 +39,7 @@ public class UfServicesImpl implements UfServices {
   @Override
   public Uf getPeloId(int id) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getUfDAO().getPeloId(id);
+      return ufDAO.getPeloId(id);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -46,7 +53,7 @@ public class UfServicesImpl implements UfServices {
   @Override
   public List<Uf> listar() throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getUfDAO().listar();
+      return ufDAO.listar();
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -60,7 +67,7 @@ public class UfServicesImpl implements UfServices {
   @Override
   public void atualizar(Uf entidade) throws EntidadeServicesException {
     try {
-      DAOFactory.getFactory().getUfDAO().atualizar(entidade);
+      ufDAO.atualizar(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -74,7 +81,7 @@ public class UfServicesImpl implements UfServices {
   @Override
   public void remover(Uf entidade) throws EntidadeServicesException {
     try {
-      DAOFactory.getFactory().getUfDAO().remover(entidade);
+      ufDAO.remover(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(

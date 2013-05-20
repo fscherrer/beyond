@@ -869,9 +869,7 @@ exists or setup the property manually. For example like this:
         <ant antfile="${project.beyond-dao}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
         </ant>
-        <ant antfile="${project.beyond-dao-ref}/build.xml" inheritall="false" target="jar">
-            <property name="deploy.on.save" value="false"/>
-        </ant>
+        <ant antfile="${project.beyond-dao-ref}/build.xml" inheritall="false" target="dist"/>
         <ant antfile="${project.beyond-model}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
         </ant>
@@ -881,16 +879,14 @@ exists or setup the property manually. For example like this:
         <ant antfile="${project.beyond-services}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
         </ant>
-        <ant antfile="${project.beyond-services-ref}/build.xml" inheritall="false" target="jar">
-            <property name="deploy.on.save" value="false"/>
-        </ant>
+        <ant antfile="${project.beyond-services-ref}/build.xml" inheritall="false" target="dist"/>
     </target>
     <target depends="init" if="dist.ear.dir" name="deps-ear-jar" unless="no.deps">
         <ant antfile="${project.beyond-dao}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
         </ant>
-        <ant antfile="${project.beyond-dao-ref}/build.xml" inheritall="false" target="jar">
-            <property name="deploy.on.save" value="false"/>
+        <ant antfile="${project.beyond-dao-ref}/build.xml" inheritall="false" target="dist-ear">
+            <property location="${build.dir}" name="dist.ear.dir"/>
         </ant>
         <ant antfile="${project.beyond-model}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
@@ -901,8 +897,8 @@ exists or setup the property manually. For example like this:
         <ant antfile="${project.beyond-services}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
         </ant>
-        <ant antfile="${project.beyond-services-ref}/build.xml" inheritall="false" target="jar">
-            <property name="deploy.on.save" value="false"/>
+        <ant antfile="${project.beyond-services-ref}/build.xml" inheritall="false" target="dist-ear">
+            <property location="${build.dir}" name="dist.ear.dir"/>
         </ant>
     </target>
     <target depends="init, deps-module-jar, deps-ear-jar" name="deps-jar" unless="no.deps"/>
@@ -1052,9 +1048,9 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${reference.beyond-model.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${reference.beyond-protocol.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${reference.beyond-dao.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${reference.beyond-dao-ref.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${reference.beyond-dao-ref.dist}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}"/>
         <copyfiles files="${reference.beyond-services.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${reference.beyond-services-ref.jar}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${reference.beyond-services-ref.dist}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}"/>
         <copyfiles files="${libs.PostgreSQL-9.2-JDBC4.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.Google-Gson.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <mkdir dir="${build.web.dir}/META-INF"/>
@@ -1065,9 +1061,9 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${reference.beyond-model.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${reference.beyond-protocol.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${reference.beyond-dao.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
-        <copyfiles files="${reference.beyond-dao-ref.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${reference.beyond-dao-ref.dist}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${reference.beyond-services.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
-        <copyfiles files="${reference.beyond-services-ref.jar}" todir="${build.web.dir}/WEB-INF/lib"/>
+        <copyfiles files="${reference.beyond-services-ref.dist}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.PostgreSQL-9.2-JDBC4.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.Google-Gson.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>

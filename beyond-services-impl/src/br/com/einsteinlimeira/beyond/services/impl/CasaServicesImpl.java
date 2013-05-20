@@ -1,18 +1,25 @@
 package br.com.einsteinlimeira.beyond.services.impl;
 
+import br.com.einsteinlimeira.beyond.dao.CasaDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Cidade;
 import br.com.einsteinlimeira.beyond.model.EntidadeUtils;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.CasaServices;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link CasaServices}.
  */
 public class CasaServicesImpl implements CasaServices {
+  
+  /**
+   * DAO de Casa.
+   */
+  @Inject
+  private CasaDAO casaDAO;
 
   /**
    * {@inheritDoc}
@@ -20,7 +27,7 @@ public class CasaServicesImpl implements CasaServices {
   @Override
   public int inserir(Casa entidade) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getCasaDAO().inserir(entidade);
+      return casaDAO.inserir(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -34,7 +41,7 @@ public class CasaServicesImpl implements CasaServices {
   @Override
   public Casa getPeloId(int id) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getCasaDAO().getPeloId(id);
+      return casaDAO.getPeloId(id);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -48,7 +55,7 @@ public class CasaServicesImpl implements CasaServices {
   @Override
   public List<Casa> listar() throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getCasaDAO().listar();
+      return casaDAO.listar();
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -62,7 +69,7 @@ public class CasaServicesImpl implements CasaServices {
   @Override
   public void atualizar(Casa entidade) throws EntidadeServicesException {
     try {
-      DAOFactory.getFactory().getCasaDAO().atualizar(entidade);
+      casaDAO.atualizar(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -76,7 +83,7 @@ public class CasaServicesImpl implements CasaServices {
   @Override
   public void remover(Casa entidade) throws EntidadeServicesException {
     try {
-      DAOFactory.getFactory().getCasaDAO().remover(entidade);
+      casaDAO.remover(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -97,7 +104,7 @@ public class CasaServicesImpl implements CasaServices {
     }
 
     try {
-      return DAOFactory.getFactory().getCasaDAO().getCasas(idsCidades);
+      return casaDAO.getCasas(idsCidades);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(

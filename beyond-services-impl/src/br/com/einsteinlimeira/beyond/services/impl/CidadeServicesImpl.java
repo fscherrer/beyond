@@ -1,16 +1,23 @@
 package br.com.einsteinlimeira.beyond.services.impl;
 
+import br.com.einsteinlimeira.beyond.dao.CidadeDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
-import br.com.einsteinlimeira.beyond.dao.DAOFactory;
 import br.com.einsteinlimeira.beyond.model.Cidade;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.CidadeServices;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Implementação padrão de {@link CidadeServices}.
  */
 public class CidadeServicesImpl implements CidadeServices {
+  
+  /**
+   * DAO de Cidade.
+   */
+  @Inject
+  private CidadeDAO cidadeDAO;
 
   /**
    * {@inheritDoc}
@@ -18,7 +25,7 @@ public class CidadeServicesImpl implements CidadeServices {
   @Override
   public int inserir(Cidade entidade) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getCidadeDAO().inserir(entidade);
+      return cidadeDAO.inserir(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -32,7 +39,7 @@ public class CidadeServicesImpl implements CidadeServices {
   @Override
   public Cidade getPeloId(int id) throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getCidadeDAO().getPeloId(id);
+      return cidadeDAO.getPeloId(id);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -46,7 +53,7 @@ public class CidadeServicesImpl implements CidadeServices {
   @Override
   public List<Cidade> listar() throws EntidadeServicesException {
     try {
-      return DAOFactory.getFactory().getCidadeDAO().listar();
+      return cidadeDAO.listar();
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -59,8 +66,9 @@ public class CidadeServicesImpl implements CidadeServices {
    */
   @Override
   public void atualizar(Cidade entidade) throws EntidadeServicesException {
+    System.out.println("--- services.atualizar");
     try {
-      DAOFactory.getFactory().getCidadeDAO().atualizar(entidade);
+      cidadeDAO.atualizar(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
@@ -74,7 +82,7 @@ public class CidadeServicesImpl implements CidadeServices {
   @Override
   public void remover(Cidade entidade) throws EntidadeServicesException {
     try {
-      DAOFactory.getFactory().getCidadeDAO().remover(entidade);
+      cidadeDAO.remover(entidade);
     }
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
