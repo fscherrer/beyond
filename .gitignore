@@ -6,10 +6,15 @@
 *.war
 *.ear
 
+# libs
+/libs/
+!/libs/nblibraries.properties
+
 # diretórios de beyond-web
 /beyond-web/dist/
 /beyond-web/build/
-/beyond-web/build/nbproject/private/
+/beyond-web/nbproject/private/
+/beyond-web/nbproject/genfiles.properties
 
 # diretórios de beyond-mobile
 /beyond-mobile/bin/
@@ -19,28 +24,34 @@
 /beyond-model/dist/
 /beyond-model/build/
 /beyond-model/nbproject/private/
+/beyond-model/nbproject/genfiles.properties
 
 # diretórios de beyond-protocol
 /beyond-protocol/dist/
 /beyond-protocol/build/
 /beyond-protocol/nbproject/private/
+/beyond-protocol/nbproject/genfiles.properties
 
 # diretórios de beyond-services
 /beyond-services/dist/
 /beyond-services/build/
 /beyond-services/nbproject/private/
+/beyond-services/nbproject/genfiles.properties
 
 # diretórios de beyond-services-impl
 /beyond-services-impl/dist/
 /beyond-services-impl/build/
 /beyond-services-impl/nbproject/private/
+/beyond-services-impl/nbproject/genfiles.properties
 
 # diretórios de beyond-dao
 /beyond-dao/dist/
 /beyond-dao/build/
 /beyond-dao/nbproject/private/
+/beyond-dao/nbproject/genfiles.properties
 
 # diretórios de beyond-dao-impl
 /beyond-dao-impl/dist/
 /beyond-dao-impl/build/
 /beyond-dao-impl/nbproject/private/
+/beyond-dao-impl/nbproject/genfiles.properties
