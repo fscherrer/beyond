@@ -93,6 +93,7 @@
   
   <lifecycle>
     <phase-listener>br.com.einsteinlimeira.beyond.web.LoginPhaseListener</phase-listener>
+    <!--<phase-listener>br.com.einsteinlimeira.beyond.web.DebugPhaseListener</phase-listener>-->
   </lifecycle>
   
 </faces-config>
