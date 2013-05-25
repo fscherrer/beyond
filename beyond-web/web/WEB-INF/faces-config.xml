@@ -35,7 +35,14 @@
       <to-view-id>/admin/usuarios.xhtml</to-view-id>
       <redirect />
     </navigation-case>
-    
+
+    <navigation-case>
+      <display-name>Casas</display-name>
+      <from-outcome>casas</from-outcome>
+      <to-view-id>/admin/casas.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+            
    <navigation-case>
       <display-name>Bandas</display-name>
       <from-outcome>bandas</from-outcome>

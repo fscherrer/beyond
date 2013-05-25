@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="../templates/template_admin.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+  <ui:define name="titulo">
+    <h:outputText value="#{msgs.Evento_casa}"/>
+  </ui:define>
+
+  <ui:define name="conteudo">
+
+    <!-- Dialog de edição -->
+    <p:dialog header="#{msgs.Evento_casa}" widgetVar="editor" resizable="false" modal="true"
+              onShow="document.getElementById('formEdição:Casas').focus();" >
+      <h:form id="formEdicao">
+        <h:panelGrid id="panelEdicao" columns="1">
+          <h:panelGrid id="panelEdicaoCampos" columns="2" cellspacing="4">
+            <h:outputLabel value="#{msgs.global_casas}"/>
+            <p:inputText id="casa" value="#{casasMB.entidade.nome}"
+                         required="true" requiredMessage="#{msgs.casa_naoInformada}"/>
+            <h:outputLabel value="#{msgs.Endereco_logradouro}"/>
+            <p:inputText id="endereco" value="#{casasMB.entidade.endereco}"
+                         required="true" requiredMessage="#{msgs.endereco_naoInformado}"/>
+            <h:outputLabel value="#{msgs.Casas_CNPJ}"/>
+            <p:inputText id="cpnj" value="#{casasMB.entidade.cnpj}" required="true"
+                         requiredMessage="#{msgs.cnpj_naoInformado}"/>
+            <h:outputLabel value="#{msgs.Casas_responsavel}"/>
+            <p:inputText id="responsavel" value="#{casasMB.entidade.responsavel}"/>
+
+          </h:panelGrid>
+
+          <p:messages id="edicaoMessages" showDetail="true"/>
+
+          <f:facet name="footer">
+            <h:panelGrid id="panelEdicaoButtons" columns="2" cellspacing="4">
+              <p:commandButton id="buttonOk" value="#{msgs.global_ok}"
+                               actionListener="#{casasMB.salvar()}"
+                               update="panelEdicao :formListagem:tableCasas"
+                               oncomplete="if(!args.validationFailed() || args.Exception)) editor.hide()"/>
+              <p:commandButton id="buttonCancelar" value="#{msgs.global_cancelar}"
+                               onclick="editor.hide();"/>
+            </h:panelGrid>
+          </f:facet>
+        </h:panelGrid> 
+      </h:form>         
+    </p:dialog>
+
+    <!-- Dialog confirmação de exclusão -->
+    <h:form id="formConfirmacaoExclusao">
+      <p:confirmDialog id="dialogExclusao"
+                       widgetVar="dialogConfirmacaoExclusao"
+                       header="#{msgs.global_confirmacao_titulo}"
+                       message="#{msgs.global_confirmacao_excluir}">
+        <p:commandButton id="buttonConfirma" value="#{msgs.global_sim}"
+                         update="exclusaoMessages :formListagem:tableCasas"
+                         oncomplete="if(!args.exception) dialogConfirmacaoExclusao.hide()"
+                         actionListener="#{casasMB.excluir()}"/>
+        <p:commandButton id="buttonCancelar" value="#{msgs.global_nao}"
+                         onclick="dialogConfimacaoExclusao.hide();"/>
+
+        <p:messages id="exclusaoMessages" showDetail="true"/>
+
+      </p:confirmDialog>     
+    </h:form>
+
+    <!-- Mensagens Globais-->
+    <p:messages id="mensagensGlobais" globalOnly="true" showDetail="true" autoUpdate="true"/>
+
+    <!-- Listagem -->
+    <h:form id="formListagem">
+      <p:dataTable id="tableCasas" var="casa" value="#{casasMB.entidades}"
+                   selection="#{casasMB.entidadeSelecionada}" selectionMode="single"
+                   rowKey="#{casa.id}">
+        <p:column sortBy="#{casa.nome}" headerText="#{msgs.global_casas}">
+          <h:outputText value="#{casa.nome}"/>
+        </p:column>
+        <p:column sortBy="#{casa.responsavel}" headerText="#{msgs.Casas_responsavel}">
+          <h:outputText value="#{casa.responsavel}"/>
+        </p:column>
+      </p:dataTable>
+
+      <h:panelGroup layout="block" style="vertical-align: middle; height: 35px; margin-top: 5px;">
+
+        <h:panelGroup layout="block" style="float: left;">
+          <p:commandButton value="#{msgs.global_voltar}" action="admin" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style="float: right;">
+          <p:commandButton value="#{msgs.global_incluir}" onclick="editor.show();" 
+                           update=":formEdicao:panelEdicao"
+                           actionListener="#{casasMB.incluir()}" >
+            <p:resetInput target=":formEdicao:panelEdicao"/>
+          </p:commandButton>
+
+          <p:commandButton value="#{msgs.global_editar}" 
+                           actionListener="#{casasMB.editar()}"
+                           oncomplete="if(args.continuar) editor.show()" update=":formEdicao:panelEdicao">
+            <p:resetInput target=":formEdicao:panelEdicao"/>
+          </p:commandButton>          
+
+          <p:commandButton value="#{msgs.global_excluir}" 
+                           actionListener="#{casasMB.preparaExclusao()}"
+                           update=":formConfirmacaoExclusao:dialogExclusao"
+                           oncomplete="if(args.continuar) dialogConfirmacaoExclusao.show();" />
+        </h:panelGroup>
+      </h:panelGroup>  
+      
+    </h:form>    
+  </ui:define>  
+  
+</ui:composition>

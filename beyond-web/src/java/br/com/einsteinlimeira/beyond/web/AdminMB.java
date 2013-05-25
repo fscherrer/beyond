@@ -33,6 +33,10 @@ public class AdminMB {
     return "cidades";
   }
    
+   public String casas(){
+     return "casas";
+   }
+   
     public String eventos(){
     return "eventos";
 }
