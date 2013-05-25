@@ -4,7 +4,7 @@
   [x] FS - Ordenação por casa.
   [X] LB - Acrescentar cidade na tela eventos
   [x] FS - Melhorar dialog de detalhes (Principalmente as bandas, colocar na mesma linha separado por vírgula, igualmente o Android)
-  [ ] AB - Refazer o rodapé: 
+  [X] AB - Refazer o rodapé: 
         A. Rock
         Anderson Botechia
         Fernando Scherrer
@@ -30,8 +30,33 @@
 
 Para a segunda fase:
 
+ - MOBILE
+  [] Banco de dados
+  [] GPS
+  [] Mapa
+  [] bandas na edição de eventos
+  [] cidades na edição de eventos
+  [] listar services bandas e cidades
+
+ - WEB
+  [] Area administração para usuario da casa gerenciar seus eventos
+  [] Bandas na edição de eventos
+  [] Retirar barra menu tela index
+  [] Botão voltar na tela UF
+  [] formatar tela admin.xhtml
+  [] adicionar rodape paginas admin
+
+
+
 Futuro:
  - compatibilidade com outros browser (não chrome);
 
 Para o projeto real: 
  - usar DataSource e ConnectionPool ao invés de arquivo properties para o banco de dados
+
+
+
+
+
+
+
