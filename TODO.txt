@@ -41,10 +41,10 @@ Para a segunda fase:
  - WEB
   [] Area administração para usuario da casa gerenciar seus eventos
   [] Bandas na edição de eventos
-  [] Retirar barra menu tela index
-  [] Botão voltar na tela UF
+  [X] Retirar barra menu tela index
+  [X] Botão voltar na tela UF
   [] formatar tela admin.xhtml
-  [] adicionar rodape paginas admin
+  [X] adicionar rodape paginas admin
 
 
 

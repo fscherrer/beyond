@@ -3,7 +3,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="../templates/template_admin.xhtml"
+                template="../templates/template.xhtml"
                 xmlns:h="http://java.sun.com/jsf/html">
 
   <ui:define name="titulo">
@@ -22,6 +22,11 @@
         </p:column>
 
       </p:dataTable>
+      <h:panelGroup layout="block" style="vertical-align: middle; height: 35px; margin-top: 5px;">
+        <h:panelGroup layout="block" style="float: left;">
+          <p:commandButton value="#{msgs.global_voltar}" action="admin" />
+        </h:panelGroup>
+      </h:panelGroup>
     </h:form>
   </ui:define>
 
