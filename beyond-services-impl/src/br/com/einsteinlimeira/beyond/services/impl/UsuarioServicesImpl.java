@@ -13,7 +13,7 @@ import javax.inject.Inject;
  * Implementação padrão de {@link UsuarioServices}.
  */
 public class UsuarioServicesImpl implements UsuarioServices {
-  
+
   /**
    * DAO de Usuário.
    */
@@ -68,7 +68,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
   @Override
   public void atualizar(Usuario entidade) throws EntidadeServicesException, DominioException {
     String loginOriginal = getPeloId(entidade.getId()).getLogin();
-    
+
     if (loginOriginal.equals(ServicesImplConstantes.ADMIN)) {
       throw new DominioException("O usuário 'admin' não poder ser editado.");
     }
@@ -113,5 +113,13 @@ public class UsuarioServicesImpl implements UsuarioServices {
           "Falha na chamada à camada de acesso a dados para obter Usuario através de login e senha",
           daoe);
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isAdministrador(int idUsuario) throws EntidadeServicesException {
+    return getPeloId(idUsuario).getLogin().equals(ServicesImplConstantes.ADMIN);
   }
 }

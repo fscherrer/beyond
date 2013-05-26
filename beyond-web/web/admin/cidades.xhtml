@@ -72,7 +72,7 @@
     <h:form id="formListagem">
       <p:dataTable id="tableCidades" var="cidade" value="#{cidadesMB.entidades}"
                    selection="#{cidadesMB.entidadeSelecionada}" selectionMode="single"
-                   rowKey="#{cidade.id}">
+                   rowKey="#{cidade.id}" emptyMessage="#{msgs.global_nenhumRegistro}">
         <p:column sortBy="#{cidade.nome}" headerText="#{msgs.admin_cidades}">
           <h:outputText value="#{cidade.nome}" />
         </p:column>

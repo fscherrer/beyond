@@ -23,4 +23,17 @@ public interface UsuarioServices extends EntidadeServices<Usuario> {
    * {@link Usuario}.
    */
   public Usuario getUsuario(String login, String senha) throws EntidadeServicesException;
+
+  /**
+   * Retorna se o usuário informado é administrador.
+   * 
+   * @param idUsuario 
+   *   ID do usuário.
+   * 
+   * @return 
+   *   <code>True</code> se o usuário informado for administrador.
+   * 
+   * @throws EntidadeServicesException lançada caso ocorra algum problema durante a verificação.
+   */
+  public boolean isAdministrador(int idUsuario) throws EntidadeServicesException;
 }

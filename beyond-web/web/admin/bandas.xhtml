@@ -74,7 +74,7 @@
     <h:form id="formListagem">
       <p:dataTable id="tableBandas" var="banda" value="#{bandasMB.entidades}"
                    selection="#{bandasMB.entidadeSelecionada}" selectionMode="single"
-                   rowKey="#{banda.id}">       
+                   rowKey="#{banda.id}" emptyMessage="#{msgs.global_nenhumRegistro}">       
 
         <p:column sortBy="#{banda.nome}" headerText="#{msgs.global_bandas}">
           <h:outputText value="#{banda.nome}" />

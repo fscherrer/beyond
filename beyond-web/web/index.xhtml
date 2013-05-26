@@ -87,7 +87,7 @@
           <p:dataTable id="tableCidades" var="cidade" value="#{cidadesMB.cidades}"
                        selection="#{eventosMB.cidadesSelecionadas}" selectionMode="mutiple"
                        rowKey="#{cidade.id}" scrollable="true" scrollHeight="110"
-                       styleClass="bordaTimida">
+                       styleClass="bordaTimida" emptyMessage="#{msgs.global_nenhumRegistro}">
             <p:ajax event="rowSelect" listener="#{eventosMB.cidadeSelecionada}" 
                     update="tableCidades :formListagem:tableCasas :formListagem:mensagens" />
             <p:ajax event="rowUnselect" listener="#{eventosMB.cidadeDesselecionada}" 
@@ -103,7 +103,7 @@
           <p:dataTable id="tableCasas" var="casa" value="#{eventosMB.casas}"
                        selection="#{eventosMB.casasSelecionadas}" selectionMode="mutiple"
                        rowKey="#{casa.id}" scrollable="true" scrollHeight="110"
-                       styleClass="bordaTimida">
+                       styleClass="bordaTimida" emptyMessage="#{msgs.global_nenhumRegistro}">
             <p:ajax event="rowSelect" listener="#{eventosMB.casaSelecionada}" update="tableCasas" />
             <p:column headerText="#{msgs.Evento_casa} 
                       #{eventosMB.getQuantidadeFiltro(eventosMB.casasSelecionadas)}">
@@ -116,7 +116,7 @@
           <p:dataTable id="tableEstilos" var="estilo" value="#{eventosMB.estilos}"
                        selection="#{eventosMB.estilosSelecionados}" selectionMode="mutiple"
                        rowKey="#{estilo}" scrollable="true" scrollHeight="110"
-                       styleClass="bordaTimida">
+                       styleClass="bordaTimida" emptyMessage="#{msgs.global_nenhumRegistro}">
             <p:ajax event="rowSelect" listener="#{eventosMB.estiloSelecionado}" 
                     update="tableEstilos :formListagem:tableBandas :formListagem:mensagens" />
             <p:ajax event="rowUnselect" listener="#{eventosMB.estiloDesselecionado}" 
@@ -132,7 +132,7 @@
           <p:dataTable id="tableBandas" var="banda" value="#{eventosMB.bandas}"
                        selection="#{eventosMB.bandasSelecionadas}" selectionMode="mutiple"
                        rowKey="#{banda.id}" scrollable="true" scrollHeight="110"
-                       styleClass="bordaTimida">
+                       styleClass="bordaTimida" emptyMessage="#{msgs.global_nenhumRegistro}">
             <p:ajax event="rowSelect" listener="#{eventosMB.bandaSelecionada}" update="tableBandas" />
             <p:column headerText="#{msgs.Evento_banda} 
                       #{eventosMB.getQuantidadeFiltro(eventosMB.bandasSelecionadas)}">
@@ -150,7 +150,8 @@
 
         <!-- direita -->
         <h:panelGroup layout="block" style="margin-left: 200px;">
-          <p:dataTable id="tableEventos" var="evento" value="#{eventosMB.eventos}">
+          <p:dataTable id="tableEventos" var="evento" value="#{eventosMB.eventosFiltrados}"
+                       emptyMessage="#{msgs.global_nenhumRegistro}">
             <p:column sortBy="#{evento.nome}" headerText="#{msgs.Evento_nome}">
               <h:outputText value="#{evento.nome}" />
             </p:column>

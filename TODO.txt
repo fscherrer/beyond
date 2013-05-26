@@ -39,7 +39,7 @@ Para a segunda fase:
   [] listar services bandas e cidades
 
  - WEB
-  [] Area administração para usuario da casa gerenciar seus eventos
+  [x] Area administração para usuario da casa gerenciar seus eventos
   [] Bandas na edição de eventos
   [X] Retirar barra menu tela index
   [X] Botão voltar na tela UF
@@ -47,6 +47,8 @@ Para a segunda fase:
   [X] adicionar rodape paginas admin
   [ ] tratar exclusão de registros referenciados em outra tabaleas;
   [ ] tratar erros de SQL (duplicate key, etc);
+  [ ] definir senha de usuário?;
+  [ ] obrigar preenchimento da casa do usuário na manipulação de usuários;
 
 
 

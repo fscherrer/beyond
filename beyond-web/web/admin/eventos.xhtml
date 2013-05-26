@@ -18,23 +18,24 @@
         <h:panelGrid id="panelEdicao" columns="1">
           <h:panelGrid id="panelEdicaoCampos" columns="2" cellspacing="4">
             <h:outputLabel value="#{msgs.global_nome}" />
-            <p:inputText id="evento" value="#{eventosMB.entidade.nome}" 
+            <p:inputText id="evento" value="#{eventosMB.evento.nome}" 
                          required="true" requiredMessage="#{msgs.evento_naoInformado}" />
 
-            <h:outputLabel value="#{msgs.Evento_casa}" />
-            <p:selectOneMenu value="#{eventosMB.entidade.casa}" converter="#{casaConverter}">
+            <h:outputLabel value="#{msgs.Evento_casa}" rendered="#{loginMB.administrador}"/>
+            <p:selectOneMenu value="#{eventosMB.evento.casa}" converter="#{casaConverter}"
+                             rendered="#{loginMB.administrador}">
               <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
-              <f:selectItems value="#{casasMB.entidades}" var="casa" itemLabel="#{casa.nome}" itemValue="#{casa}" />
+              <f:selectItems value="#{casasMB.casas}" var="casa" itemLabel="#{casa.nome}" itemValue="#{casa}" />
             </p:selectOneMenu>
             
             <h:outputLabel value="#{msgs.Index_dialogDetalhesEvento_DataHora}" />
-            <p:calendar value="#{eventosMB.entidade.datahora}" 
+            <p:calendar value="#{eventosMB.evento.datahora}" 
                         required="true" requiredMessage="#{msgs.data_hora_naoInformada}"
                         pattern="dd/MM/yyyy HH:mm">
              </p:calendar>
            
             <h:outputLabel value="#{msgs.global_valor}" />
-            <p:inputText id="valor" value="#{eventosMB.entidade.valor}" 
+            <p:inputText id="valor" value="#{eventosMB.evento.valor}" 
                          required="true" requiredMessage="#{msgs.valor_naoInformado}">
               <f:convertNumber minFractionDigits="2"/></p:inputText>
 
@@ -81,14 +82,15 @@
 
     <!-- Listagem -->
     <h:form id="formListagem">
-      <p:dataTable id="tableEventos" var="evento" value="#{eventosMB.entidades}"
+      <p:dataTable id="tableEventos" var="evento" value="#{eventosMB.eventos}"
                    selection="#{eventosMB.entidadeSelecionada}" selectionMode="single"
-                   rowKey="#{evento.id}">
+                   rowKey="#{evento.id}" emptyMessage="#{msgs.global_nenhumRegistro}">
         <p:column sortBy="#{evento.nome}" headerText="#{msgs.global_eventos}">
           <h:outputText value="#{evento.nome}" />
         </p:column>
 
-        <p:column sortBy="#{evento.casa.nome}" headerText="#{msgs.global_casas}">
+        <p:column sortBy="#{evento.casa.nome}" headerText="#{msgs.global_casas}"
+                  rendered="#{loginMB.administrador}">
           <h:outputText value="#{evento.casa.nome}" />
         </p:column>
         

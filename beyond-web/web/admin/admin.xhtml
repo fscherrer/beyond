@@ -30,16 +30,22 @@
           <div style="text-align: center; margin: auto">
 
             <p:panelGrid  columns="1" style="margin: auto;">  
-              <p:commandButton value="#{msgs.global_bandas}" action="#{adminMB.bandas()}"/>
-              <p:commandButton value="#{msgs.global_casas}" action="#{adminMB.casas()}"/>
-              <p:commandButton value="#{msgs.admin_cidades}" action="#{adminMB.cidades()}"/>
+              <p:commandButton value="#{msgs.global_bandas}" action="#{adminMB.bandas()}"
+                               rendered="#{loginMB.administrador}"/>
+              <p:commandButton value="#{msgs.global_casas}" action="#{adminMB.casas()}"
+                               rendered="#{loginMB.administrador}"/>
+              <p:commandButton value="#{msgs.admin_cidades}" action="#{adminMB.cidades()}"
+                               rendered="#{loginMB.administrador}"/>
               <p:commandButton value="#{msgs.global_eventos}" action="#{adminMB.eventos()}"/>
-              <p:commandButton value="#{msgs.admin_musicos}" action="#{adminMB.musicos()}"/>
-              <p:commandButton value="#{msgs.admin_usuarios}" action="#{adminMB.usuarios()}"/>
-              <p:commandButton value="#{msgs.admin_ufs}" action="#{adminMB.ufs()}"/>
-              
+              <p:commandButton value="#{msgs.admin_musicos}" action="#{adminMB.musicos()}"
+                               rendered="#{loginMB.administrador}"/>
+              <p:commandButton value="#{msgs.admin_usuarios}" action="#{adminMB.usuarios()}"
+                               rendered="#{loginMB.administrador}"/>
+              <p:commandButton value="#{msgs.admin_ufs}" action="#{adminMB.ufs()}"
+                               rendered="#{loginMB.administrador}"/>
+
               <p:commandButton value="#{msgs.admin_sair}" action="#{loginMB.doLogout}" />
-              </p:panelGrid>  
+            </p:panelGrid>
 
             <p:messages id="mensagensGlobaisLogin" globalOnly="true" showDetail="true" />
           </div>

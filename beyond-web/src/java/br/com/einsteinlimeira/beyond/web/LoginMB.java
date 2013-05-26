@@ -24,7 +24,7 @@ public class LoginMB implements Serializable {
    */
   @Size(min = 4, message = "{login.usuario.tamanhoMinimo}")
   private String usuario;
-  
+
   @Inject
   private UsuarioServices usuarioServices;
 
@@ -42,6 +42,16 @@ public class LoginMB implements Serializable {
    * Binding com a view.
    */
   private UIComponent inputUsuario;
+  
+  /**
+   * Flag para identificar se o usuário logado é administrador.
+   */
+  private boolean administrador;
+
+  /**
+   * Guarda o usuário autenticado.
+   */
+  private Usuario usuarioAutenticado;
 
   /**
    * Retorna o nome de acesso do usuário.
@@ -92,7 +102,7 @@ public class LoginMB implements Serializable {
    */
   public String doLogin() {
     try {
-      Usuario usuarioAutenticado = usuarioServices.getUsuario(senha, senha);
+      usuarioAutenticado = usuarioServices.getUsuario(usuario, senha);
 
       if (usuarioAutenticado == null) {
         FacesContext.getCurrentInstance().addMessage(inputUsuario.getClientId(), new FacesMessage(
@@ -100,6 +110,7 @@ public class LoginMB implements Serializable {
       }
       else {
         logado = true;
+        administrador = usuarioServices.isAdministrador(usuarioAutenticado.getId());
         return "admin";
       }
     }
@@ -120,6 +131,8 @@ public class LoginMB implements Serializable {
    */
   public String doLogout() {
     logado = false;
+    administrador = false;
+    usuarioAutenticado = null;
     FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 
     return "logout";
@@ -133,6 +146,16 @@ public class LoginMB implements Serializable {
    */
   public boolean isLogado() {
     return logado;
+  }
+
+  /**
+   * Retorna se o usuário logado é administrador.
+   * 
+   * @return 
+   *   <code>True</code> se o usuário logado for administrador.
+   */
+  public boolean isAdministrador() {
+    return administrador;
   }
 
   /**
@@ -153,5 +176,15 @@ public class LoginMB implements Serializable {
    */
   public void setInputUsuario(UIComponent inputUsuario) {
     this.inputUsuario = inputUsuario;
+  }
+
+  /**
+   * Retorna o usuário autenticado.
+   * 
+   * @return 
+   *   O usuário autenticado.
+   */
+  public Usuario getUsuarioAutenticado() {
+    return usuarioAutenticado;
   }
 }

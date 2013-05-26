@@ -8,6 +8,7 @@ import br.com.einsteinlimeira.beyond.services.BandaServices;
 import br.com.einsteinlimeira.beyond.services.CasaServices;
 import br.com.einsteinlimeira.beyond.services.EntidadeServices;
 import br.com.einsteinlimeira.beyond.services.EventoServices;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,24 +28,30 @@ import org.primefaces.event.UnselectEvent;
 @ManagedBean
 @ViewScoped
 public class EventosMB extends BaseManagedBeanEntidade<Evento> {
-  
+
   /**
    * Services de Casa.
    */
   @Inject
   private CasaServices casaServices;
-  
+
   /**
    * Services de Banda.
    */
   @Inject
   private BandaServices bandaServices;
-  
+
   /**
    * Services de Evento.
    */
   @Inject
   private EventoServices eventoServices;
+
+  /**
+   * ManagedBean de login
+   */
+  @Inject
+  private LoginMB loginMB;
 
   /**
    * Logger para logar mensagens.
@@ -107,6 +114,11 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
   private List<String> estilos;
 
   /**
+   * Lista de Eventos filtrados.
+   */
+  private List<Evento> eventosFiltrados;
+
+  /**
    * {@inheritDoc}
    */
   @Override
@@ -119,7 +131,13 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
    */
   @Override
   public Evento getNovaEntidade() {
-    return new Evento();
+    Evento evento = new Evento();
+    
+    if(!loginMB.isAdministrador()){
+      evento.setCasa(loginMB.getUsuarioAutenticado().getCasa());
+    }
+    
+    return evento;
   }
 
   /**
@@ -203,14 +221,13 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
   }
 
   /**
-   * Retorna a lista de Eventos disponíveis.
+   * Retorna a lista de Eventos filtrados.
    * 
    * @return 
-   *   Lista de Eventos disponíveis.
+   *   Eventos filtrados.
    */
-  // criado devido aos warnings e falta de code completion do NB com o tipo genérico
-  public List<Evento> getEventos() {
-    return getEntidades();
+  public List<Evento> getEventosFiltrados() {
+    return eventosFiltrados;
   }
 
   /**
@@ -368,7 +385,7 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
     else if (cidadesSelecionadas != null && !cidadesSelecionadas.isEmpty()) {
       casasFiltrar = casas;
     }
-    
+
     // bandas filtradas explicitamente
     if (bandasSelecionadas != null && !bandasSelecionadas.isEmpty()) {
       bandasFiltrar = bandasSelecionadas;
@@ -379,7 +396,7 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
     }
 
     try {
-      entidades = ((EventoServices) getEntidadeServices()).getEventos(casasFiltrar,
+      eventosFiltrados = ((EventoServices) getEntidadeServices()).getEventos(casasFiltrar,
           bandasFiltrar);
     }
     catch (Exception e) {
@@ -399,6 +416,7 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
     carregarCasas();
     carregarEstilos();
     carregarBandas();
+    aplicarFiltros();
   }
 
   /**
@@ -495,12 +513,46 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
   }
 
   /**
-   * Apenas publica o método protegido da classe mãe.
+   * Carrega os eventos conforme o usuário logado.
    * 
    * {@inheritDoc}
    */
   @Override
   public void carregarEntidades() {
-    super.carregarEntidades();
+    // só carrega a lista de eventos aqui se for a página de eventos (para manipulação)
+    if (!FacesContext.getCurrentInstance().getViewRoot().getViewId().endsWith("eventos.xhtml")){
+      return;
+    }
+    
+    try {
+      List<Casa> casasFiltrar = null;
+
+      // se é o administrador, serão listados todos os eventos
+      // senão serão listados apenas os eventos da casa do usuário
+      if (!loginMB.isAdministrador()) {
+        casasFiltrar = new ArrayList<Casa>(1);
+        casasFiltrar.add(loginMB.getUsuarioAutenticado().getCasa());
+      }
+
+      entidades = eventoServices.getEventos(casasFiltrar, null);
+    }
+    catch (Exception e) {
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+          FacesMessage.SEVERITY_ERROR, "Não foi possível obter a lista de Eventos",
+          "Ocorreu uma execção ao tentar recuperar a lista de Eventos. Consulte o log da "
+          + "aplicação para mais detalhes"));
+      LOGGER.log(Level.SEVERE, "Erro não experado", e);
+    }
+  }
+
+  /**
+   * Retorna a lista de Eventos carregados.
+   * 
+   * @return 
+   *   Lista de Eventos carregados.
+   */
+  // criado devido aos warnings e falta de code completion do NB com o tipo genérico
+  public List<Evento> getEventos() {
+    return entidades;
   }
 }

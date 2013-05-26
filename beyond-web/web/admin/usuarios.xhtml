@@ -83,7 +83,7 @@
     <h:form id="formListagem">
       <p:dataTable id="tableUsuarios" var="usuario" value="#{usuariosMB.entidades}"
                    selection="#{usuariosMB.entidadeSelecionada}" selectionMode="single"
-                   rowKey="#{usuario.id}">
+                   rowKey="#{usuario.id}" emptyMessage="#{msgs.global_nenhumRegistro}">
         <p:column sortBy="#{usuario.login}" headerText="#{msgs.Usuario_login}">
           <h:outputText value="#{usuario.login}" />
         </p:column>
