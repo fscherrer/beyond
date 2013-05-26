@@ -10,7 +10,7 @@ import android.app.Activity;
 
 public class BandaActivity extends Activity {
 
-	private ListView listViewListaBandas;
+	private ListView listaBandas;
 	private Button botaoVoltar, botaoAvancar;
 	
 	@Override
@@ -18,9 +18,9 @@ public class BandaActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_banda);
 
-		listViewListaBandas = (ListView) findViewById(R.id.lista_bandas);
+		listaBandas = (ListView) findViewById(R.id.lista_bandas);
 		AdaptadorBandas adptador = new AdaptadorBandas(Listas.bandas, BandaActivity.this);
-		listViewListaBandas.setAdapter(adptador);
+		listaBandas.setAdapter(adptador);
 		
 		botaoVoltar = (Button) findViewById(R.id.botao_voltar_bandas);
 		botaoVoltar.setOnClickListener(new OnClickListener() {

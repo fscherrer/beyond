@@ -20,7 +20,7 @@ import br.com.einsteinlimeira.beyond.model.Evento;
 
 public class EventosActivity extends GlobalActivity {
 
-	private ListView listViewListaEventos;
+	private ListView listaEventos;
 	private AdaptadorEvento adaptador;
 
 	@Override
@@ -31,15 +31,15 @@ public class EventosActivity extends GlobalActivity {
 		@SuppressWarnings("unchecked")
 		List<Evento> eventos = (List<Evento>) getIntent().getExtras().getSerializable("eventos");
 		
-		listViewListaEventos = (ListView) findViewById(R.id.lista_eventos);
+		listaEventos = (ListView) findViewById(R.id.lista_eventos);
 		adaptador = new AdaptadorEvento(eventos, this);
-		listViewListaEventos.setAdapter(adaptador);
+		listaEventos.setAdapter(adaptador);
 
-		listViewListaEventos.setOnItemClickListener(new OnItemClickListener() {
+		listaEventos.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				Evento eventoSelecionado = (Evento) listViewListaEventos.getAdapter().getItem(position);
+				Evento eventoSelecionado = (Evento) listaEventos.getAdapter().getItem(position);
 				
 				Log.i(Constantes.TAG, "Evento selecionado: " + EntidadeUtils.bandasToString(eventoSelecionado.getBandas()));
 				

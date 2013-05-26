@@ -11,7 +11,7 @@ import android.widget.ListView;
 
 public class CasasActivity extends Activity {
 
-	private ListView listViewListaCasas;
+	private ListView listaCasas;
 	private Button botaoVoltar, botaoAvancar;
 	
 	@Override
@@ -19,9 +19,9 @@ public class CasasActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_casas);
 		
-		listViewListaCasas = (ListView) findViewById(R.id.lista_casas);
+		listaCasas = (ListView) findViewById(R.id.lista_casas);
 		AdaptadorCasa adaptador = new AdaptadorCasa(Listas.casas, this);
-		listViewListaCasas.setAdapter(adaptador);
+		listaCasas.setAdapter(adaptador);
 		
 		botaoVoltar = (Button) findViewById(R.id.botao_voltar_casa);
 		botaoVoltar.setOnClickListener(new OnClickListener() {

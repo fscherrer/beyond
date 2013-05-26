@@ -46,4 +46,7 @@
     <!-- activity bandas -->
     <string name="title_activity_banda">BandaActivity</string>
 
+    <!-- activity estilos -->
+    <string name="title_activity_estilo">EstiloActivity</string>
+
 </resources>
