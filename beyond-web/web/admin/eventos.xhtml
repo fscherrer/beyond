@@ -16,32 +16,72 @@
               resizable="false" modal="true" onShow="document.getElementById('formEdicao:evento').focus();">  
       <h:form id="formEdicao">
         <h:panelGrid id="panelEdicao" columns="1">
-          <h:panelGrid id="panelEdicaoCampos" columns="2" cellspacing="4">
-            <h:outputLabel value="#{msgs.global_nome}" />
-            <p:inputText id="evento" value="#{eventosMB.evento.nome}" 
-                         required="true" requiredMessage="#{msgs.evento_naoInformado}" />
+          <p:panelGrid id="panelEdicaoCampos" styleClass="panelGridSemBordas">
+            <p:row>
+              <p:column>
+                <h:outputLabel value="#{msgs.global_nome}" />
+              </p:column>
+              <p:column>
+                <p:inputText id="evento" value="#{eventosMB.evento.nome}" 
+                             required="true" requiredMessage="#{msgs.evento_naoInformado}" />
+              </p:column>
+            </p:row>
 
-            <h:outputLabel value="#{msgs.Evento_casa}" rendered="#{loginMB.administrador}"/>
-            <p:selectOneMenu value="#{eventosMB.evento.casa}" converter="#{casaConverter}"
-                             rendered="#{loginMB.administrador}">
-              <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
-              <f:selectItems value="#{casasMB.casas}" var="casa" itemLabel="#{casa.nome}" itemValue="#{casa}" />
-            </p:selectOneMenu>
-            
-            <h:outputLabel value="#{msgs.Index_dialogDetalhesEvento_DataHora}" />
-            <p:calendar value="#{eventosMB.evento.datahora}" 
-                        required="true" requiredMessage="#{msgs.data_hora_naoInformada}"
-                        pattern="dd/MM/yyyy HH:mm">
-             </p:calendar>
-           
-            <h:outputLabel value="#{msgs.global_valor}" />
-            <p:inputText id="valor" value="#{eventosMB.evento.valor}" 
-                         required="true" requiredMessage="#{msgs.valor_naoInformado}">
-              <f:convertNumber minFractionDigits="2"/></p:inputText>
+            <p:row>
+              <p:column>
+                <h:outputLabel value="#{msgs.Evento_casa}" rendered="#{loginMB.administrador}"/>
+              </p:column>
+              <p:column>
+                <p:selectOneMenu value="#{eventosMB.evento.casa}" converter="#{casaConverter}"
+                                 rendered="#{loginMB.administrador}">
+                  <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
+                  <f:selectItems value="#{casasMB.casas}" var="casa" itemLabel="#{casa.nome}" itemValue="#{casa}" />
+                </p:selectOneMenu>
+              </p:column>
+            </p:row>
 
-          </h:panelGrid>
+            <p:row>
+              <p:column>
+                <h:outputLabel value="#{msgs.Index_dialogDetalhesEvento_DataHora}" />
+              </p:column>
+              <p:column>
+                <p:calendar value="#{eventosMB.evento.datahora}" 
+                            required="true" requiredMessage="#{msgs.data_hora_naoInformada}"
+                            pattern="dd/MM/yyyy HH:mm">
+                </p:calendar>
+              </p:column>
+            </p:row>
 
-          
+            <p:row>
+              <p:column>
+                <h:outputLabel value="#{msgs.global_valor}" />
+              </p:column>
+              <p:column>
+                <p:inputText id="valor" value="#{eventosMB.evento.valor}" 
+                             required="true" requiredMessage="#{msgs.valor_naoInformado}">
+                  <f:convertNumber minFractionDigits="2"/>
+                </p:inputText>
+              </p:column>
+            </p:row>
+
+            <p:row>
+              <p:column colspan="2">
+                <p:dataTable id="tableBandas" var="banda" value="#{eventosMB.bandas}"
+                             selection="#{eventosMB.bandasSelecionadas}" selectionMode="mutiple"
+                             rowKey="#{banda.id}" scrollable="true" scrollHeight="210"
+                             styleClass="bordaTimida" emptyMessage="#{msgs.global_nenhumRegistro}">
+                  <p:ajax event="rowSelect" listener="#{eventosMB.bandaSelecionada}" update="tableBandas" />
+                  <p:column headerText="#{msgs.Evento_banda} 
+                            #{eventosMB.getQuantidadeFiltro(eventosMB.bandasSelecionadas)}">
+                    <h:outputText value="#{banda.nome}" />
+                  </p:column>
+                </p:dataTable>
+              </p:column>
+            </p:row>
+
+          </p:panelGrid>
+
+
           <p:messages id="edicaoMessages" showDetail="true" />
 
           <f:facet name="footer">
@@ -101,7 +141,7 @@
         
         <p:column sortBy="#{evento.valor}" headerText="#{msgs.global_valor}">
           <h:outputText value="#{evento.valor}">
-          <f:convertNumber minFractionDigits="2" type="currency" />
+            <f:convertNumber minFractionDigits="2" type="currency" />
           </h:outputText>
         </p:column>
         

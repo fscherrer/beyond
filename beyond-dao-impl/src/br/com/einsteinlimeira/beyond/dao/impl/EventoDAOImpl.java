@@ -28,6 +28,7 @@ public class EventoDAOImpl implements EventoDAO {
    * Logger para logar mensagens.
    */
   private final static Logger LOGGER = Logger.getLogger(EventoDAOImpl.class.getName());
+
   private static final String INCLUIR_EVENTO_QUERY = ""
           + " insert into "
           + "   evento("
@@ -36,6 +37,13 @@ public class EventoDAOImpl implements EventoDAO {
           + "     datahora, "
           + "     valor) "
           + " values(?, ?, ?,?)";
+
+  private static final String INCLUIR_EVENTOBANDA_QUERY = ""
+      + " insert into "
+      + "   eventobanda("
+      + "     eventoid, "
+      + "     bandaid) "
+      + " values(?, ?)";
 
   /**
    * DAO de Casa.
@@ -60,6 +68,7 @@ public class EventoDAOImpl implements EventoDAO {
     try {
       conexao = BancoDeDados.getInstancia().getConexao();
 
+      // inclui o evento
       PreparedStatement preparedStatement = conexao.prepareStatement(INCLUIR_EVENTO_QUERY,
               Statement.RETURN_GENERATED_KEYS);
       preparedStatement.setString(1, entidade.getNome());
@@ -69,16 +78,33 @@ public class EventoDAOImpl implements EventoDAO {
 
       preparedStatement.executeUpdate();
 
+      int idGerado = -1;
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if (resultSet.next()) {
-        return resultSet.getInt("id");
+        idGerado = resultSet.getInt("id");
       }
 
-      String mensagemFalhaObterId = "Não foi possível obter o ID do evento incluído";
+      if (idGerado == -1) {
+        String mensagemFalhaObterId = "Não foi possível obter o ID do evento incluído";
 
-      LOGGER.log(Level.SEVERE, mensagemFalhaObterId);
-      throw new DAOException(mensagemFalhaObterId);
-    } catch (BancoDeDadosException bdde) {
+        LOGGER.log(Level.SEVERE, mensagemFalhaObterId);
+        throw new DAOException(mensagemFalhaObterId);
+      }
+
+      // inclui os eventobanda
+      PreparedStatement preparedStatementEventoBanda =
+          conexao.prepareStatement(INCLUIR_EVENTOBANDA_QUERY);
+
+      for (Banda banda : entidade.getBandas()) {
+        preparedStatementEventoBanda.setInt(1, idGerado);
+        preparedStatementEventoBanda.setInt(2, banda.getId());
+
+        preparedStatementEventoBanda.executeUpdate();
+      }
+
+      return idGerado;
+    }
+    catch (BancoDeDadosException bdde) {
       LOGGER.log(Level.SEVERE, mensagem, bdde);
       throw new DAOException(mensagem, bdde);
     } catch (SQLException sqle) {
@@ -94,12 +120,20 @@ public class EventoDAOImpl implements EventoDAO {
       }
     }
   }
+
   private static final String EXCLUIR_EVENTO_QUERY = ""
           + " delete "
           + " from "
           + "   evento "
           + " where "
           + "   id = ?";
+
+  private static final String EXCLUIR_EVENTOBANDA_QUERY = ""
+      + " delete "
+      + " from "
+      + "   eventobanda "
+      + " where "
+      + "   eventoid = ? ";
 
   /**
    * {@inheritDoc}
@@ -112,6 +146,16 @@ public class EventoDAOImpl implements EventoDAO {
     try {
       conexao = BancoDeDados.getInstancia().getConexao();
 
+      // remove os eventobanda
+      if (entidade.getBandas() != null && !entidade.getBandas().isEmpty()) {
+        PreparedStatement preparedStatementRemoverEventoBanda =
+            conexao.prepareStatement(EXCLUIR_EVENTOBANDA_QUERY);
+        
+        preparedStatementRemoverEventoBanda.setInt(1, entidade.getId());
+        preparedStatementRemoverEventoBanda.executeUpdate();
+      }
+
+      // remove os eventos
       PreparedStatement preparedStatement = conexao.prepareStatement(EXCLUIR_EVENTO_QUERY);
       preparedStatement.setInt(1, entidade.getId());
 
@@ -174,6 +218,7 @@ public class EventoDAOImpl implements EventoDAO {
       throw new DAOException(mensagem, bdde);
     }
   }
+
   private static final String EDITA_EVENTO_QUERY = ""
           + " update "
           + "   evento "
@@ -184,7 +229,15 @@ public class EventoDAOImpl implements EventoDAO {
           + "   valor = ? "
           + " where "
           + "   id = ? ";
-
+  
+  private static final String IDS_BANDAS_JA_NO_EVENTO_QUERY = ""
+          + " select "
+          + "   bandaid "
+          + " from "
+          + "   eventobanda "
+          + " where "
+          + "   eventoid = ? ";
+  
   /**
    * {@inheritDoc}
    */
@@ -204,6 +257,92 @@ public class EventoDAOImpl implements EventoDAO {
       preparedStatement.setInt(5, entidade.getId());
 
       preparedStatement.executeUpdate();
+      
+      // obtém os ids das bandas que já fazem parte do evento
+      preparedStatement = conexao.prepareStatement(IDS_BANDAS_JA_NO_EVENTO_QUERY);
+      preparedStatement.setInt(1, entidade.getId());
+      preparedStatement.execute();
+      ResultSet idsBandasJaNoEventoResultSet = preparedStatement.getResultSet();
+      
+      List<Integer> idsBandasJaNoEvento = new ArrayList<Integer>();
+      
+      while (idsBandasJaNoEventoResultSet.next()) {
+        idsBandasJaNoEvento.add(idsBandasJaNoEventoResultSet.getInt(1));
+      }
+      
+      // DEBUG
+      System.out.println("IDs Bandas já no evento:");
+      for (Integer idBandaJaNoEvento : idsBandasJaNoEvento) {
+        System.out.println("  " + idBandaJaNoEvento);
+      }
+      
+      
+      // obtém os ids das bandas que devem fazer parte do evento após a edição
+      List<Integer> idsBandasNoEvento = new ArrayList<Integer>();
+      if(entidade.getBandas() != null && !entidade.getBandas().isEmpty()){
+        for(Banda banda: entidade.getBandas()){
+          idsBandasNoEvento.add(banda.getId());
+        }
+      }
+
+      // DEBUG
+      // System.out.println("IDs Bandas no evento:");
+      // for (Integer idBandaNoEvento : idsBandasNoEvento) {
+      //   System.out.println("  " + idBandaNoEvento);
+      // }
+
+
+      // ids das bandas estava no evento e devem ser removidas
+      // obtidos a partir dos ids que já estavam menos os que estão agora
+      List<Integer> idsBandasRemoverDoEvento = new ArrayList<Integer>(idsBandasJaNoEvento);
+      idsBandasRemoverDoEvento.removeAll(idsBandasNoEvento);
+
+      // DEBUG
+      // System.out.println("IDs Bandas a remover do evento:");
+      // for (Integer idBandaRemoverDoEvento : idsBandasRemoverDoEvento) {
+      //   System.out.println("  " + idBandaRemoverDoEvento);
+      // }
+
+
+      // ids das bandas que devem ser adicionadas ao evento
+      // obtidos a partir dos ids que devem estar menos os que já estão
+      List<Integer> idsBandasAdicionarNoEvento = new ArrayList<Integer>(idsBandasNoEvento);
+      idsBandasAdicionarNoEvento.removeAll(idsBandasJaNoEvento);
+
+      // DEBUG
+      // System.out.println("IDs Bandas a adicionar no evento:");
+      // for (Integer idBandaAdicionarNoEvento : idsBandasAdicionarNoEvento) {
+      //   System.out.println("  " + idBandaAdicionarNoEvento);
+      // }
+      
+      
+      // remove os eventobanda das bandas que não fazem mais parte do evento
+      if (!idsBandasRemoverDoEvento.isEmpty()) {
+        String deleteEventoBandaQuery = ""
+            + " delete "
+            + " from "
+            + "   eventobanda "
+            + " where "
+            + "   eventoid = " + entidade.getId()
+            + "     and "
+            + DAOUtils.getFiltroQuery("bandaid", DAOUtils.criaArray(idsBandasRemoverDoEvento));
+        conexao.createStatement().executeUpdate(deleteEventoBandaQuery);
+      }
+      
+      
+      // adiciona os eventobanda das bandas que não faziam parte do evento
+      if (!idsBandasAdicionarNoEvento.isEmpty()) {
+        // inclui os eventobanda
+        PreparedStatement preparedStatementEventoBanda =
+            conexao.prepareStatement(INCLUIR_EVENTOBANDA_QUERY);
+
+        for (Integer idBandaAdicionarNoEvento : idsBandasAdicionarNoEvento) {
+          preparedStatementEventoBanda.setInt(1, entidade.getId());
+          preparedStatementEventoBanda.setInt(2, idBandaAdicionarNoEvento);
+
+          preparedStatementEventoBanda.executeUpdate();
+        }
+      }
     } catch (BancoDeDadosException bdde) {
       LOGGER.log(Level.SEVERE, mensagem, bdde);
       throw new DAOException(mensagem, bdde);

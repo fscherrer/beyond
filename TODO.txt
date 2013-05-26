@@ -40,7 +40,7 @@ Para a segunda fase:
 
  - WEB
   [x] Area administração para usuario da casa gerenciar seus eventos
-  [] Bandas na edição de eventos
+  [x] Bandas na edição de eventos
   [X] Retirar barra menu tela index
   [X] Botão voltar na tela UF
   [] formatar tela admin.xhtml
@@ -49,6 +49,7 @@ Para a segunda fase:
   [ ] tratar erros de SQL (duplicate key, etc);
   [ ] definir senha de usuário?;
   [ ] obrigar preenchimento da casa do usuário na manipulação de usuários;
+  [ ] usar transações para operações com mais de um executeUpdate;
 
 
 

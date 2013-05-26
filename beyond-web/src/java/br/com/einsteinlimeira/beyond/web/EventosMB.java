@@ -546,6 +546,33 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
   }
 
   /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void editar() {
+    super.editar();
+    bandasSelecionadas = entidade.getBandas();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void incluir() {
+    super.incluir();
+    bandasSelecionadas = null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void salvar() {
+    entidade.setBandas(bandasSelecionadas);
+    super.salvar();
+  }
+
+  /**
    * Retorna a lista de Eventos carregados.
    * 
    * @return 

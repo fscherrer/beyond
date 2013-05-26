@@ -34,7 +34,7 @@ public abstract class BaseManagedBeanEntidade<E extends Entidade> implements Ser
   /**
    * Conterá a referência a uma {@link Entidade} sendo manipulada (para edição, por exemplo).
    */
-  private E entidade;
+  protected E entidade;
 
   /**
    * Referência para a {@link Entidade} selecionada na tabela.
