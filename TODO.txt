@@ -45,6 +45,8 @@ Para a segunda fase:
   [X] Botão voltar na tela UF
   [] formatar tela admin.xhtml
   [X] adicionar rodape paginas admin
+  [ ] tratar exclusão de registros referenciados em outra tabaleas;
+  [ ] tratar erros de SQL (duplicate key, etc);
 
 
 

@@ -18,21 +18,51 @@ and open the template in the editor.
 
     <!-- Dialog de edição -->
     <p:dialog header="#{msgs.Evento_casa}" widgetVar="editor" resizable="false" modal="true"
-              onShow="document.getElementById('formEdição:Casas').focus();" >
+              onShow="document.getElementById('formEdicao:nome').focus();" >
       <h:form id="formEdicao">
         <h:panelGrid id="panelEdicao" columns="1">
           <h:panelGrid id="panelEdicaoCampos" columns="2" cellspacing="4">
-            <h:outputLabel value="#{msgs.global_casas}"/>
-            <p:inputText id="casa" value="#{casasMB.entidade.nome}"
-                         required="true" requiredMessage="#{msgs.casa_naoInformada}"/>
+            <h:outputLabel value="#{msgs.Casa_nome}"/>
+            <p:inputText id="nome" value="#{casasMB.casa.nome}"
+                         required="true" requiredMessage="#{msgs.Casa_nome_naoInformado}"/>
+
+            <h:outputLabel value="#{msgs.Casa_responsavel}"/>
+            <p:inputText id="responsavel" value="#{casasMB.casa.responsavel}" required="true"
+                         requiredMessage="#{msgs.Casa_responsavel_naoInformado}"/>
+
+            <h:outputLabel value="#{msgs.Casa_cnpj}"/>
+            <p:inputText id="cpnj" value="#{casasMB.casa.cnpj}" required="true"
+                         requiredMessage="#{msgs.Casa_cpnj_naoInformado}"/>
+
+            <h:outputLabel value="#{msgs.Casa_matriz}" />
+            <p:selectOneMenu value="#{casasMB.casa.matriz}" converter="#{casaConverter}">
+              <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
+              <f:selectItems value="#{casasMB.casas}" var="matriz" itemLabel="#{matriz.nome}" itemValue="#{matriz}" />
+            </p:selectOneMenu>
+
+            <h:outputLabel value="#{msgs.Casa_cidade}" />
+            <p:selectOneMenu value="#{casasMB.casa.endereco.cidade}" converter="#{cidadeConverter}">
+              <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
+              <f:selectItems value="#{cidadesMB.entidades}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}" />
+            </p:selectOneMenu>
+
+            <h:outputLabel value="#{msgs.Endereco_bairro}"/>
+            <p:inputText id="bairro" value="#{casasMB.casa.endereco.bairro}"
+                         required="true" requiredMessage="#{msgs.Endereco_bairro_naoInformado}"/>
+
+            <h:outputLabel value="#{msgs.Endereco_cep}"/>
+            <p:inputText id="cep" value="#{casasMB.casa.endereco.cep}"
+                         required="true" requiredMessage="#{msgs.Endereco_cep_naoInformado}"/>
+
             <h:outputLabel value="#{msgs.Endereco_logradouro}"/>
-            <p:inputText id="endereco" value="#{casasMB.entidade.endereco}"
-                         required="true" requiredMessage="#{msgs.endereco_naoInformado}"/>
-            <h:outputLabel value="#{msgs.Casas_CNPJ}"/>
-            <p:inputText id="cpnj" value="#{casasMB.entidade.cnpj}" required="true"
-                         requiredMessage="#{msgs.cnpj_naoInformado}"/>
-            <h:outputLabel value="#{msgs.Casas_responsavel}"/>
-            <p:inputText id="responsavel" value="#{casasMB.entidade.responsavel}"/>
+            <p:inputText id="logradouro" value="#{casasMB.casa.endereco.logradouro}"
+                         required="true" requiredMessage="#{msgs.Endereco_logradouro_naoInformado}"/>
+
+            <h:outputLabel value="#{msgs.Endereco_complemento}"/>
+            <p:inputText id="complemento" value="#{casasMB.casa.endereco.complemento}" />
+
+            <h:outputLabel value="#{msgs.Endereco_numero}"/>
+            <p:inputText id="numero" value="#{casasMB.casa.endereco.numero}" />
 
           </h:panelGrid>
 
@@ -43,7 +73,7 @@ and open the template in the editor.
               <p:commandButton id="buttonOk" value="#{msgs.global_ok}"
                                actionListener="#{casasMB.salvar()}"
                                update="panelEdicao :formListagem:tableCasas"
-                               oncomplete="if(!args.validationFailed() || args.Exception)) editor.hide()"/>
+                               oncomplete="if(!(args.validationFailed() || args.Exception)) editor.hide()"/>
               <p:commandButton id="buttonCancelar" value="#{msgs.global_cancelar}"
                                onclick="editor.hide();"/>
             </h:panelGrid>
@@ -78,10 +108,13 @@ and open the template in the editor.
       <p:dataTable id="tableCasas" var="casa" value="#{casasMB.entidades}"
                    selection="#{casasMB.entidadeSelecionada}" selectionMode="single"
                    rowKey="#{casa.id}">
-        <p:column sortBy="#{casa.nome}" headerText="#{msgs.global_casas}">
+        <p:column sortBy="#{casa.nome}" headerText="#{msgs.Casa_nome}">
           <h:outputText value="#{casa.nome}"/>
         </p:column>
-        <p:column sortBy="#{casa.responsavel}" headerText="#{msgs.Casas_responsavel}">
+        <p:column sortBy="#{casa.endereco.cidade.nome}" headerText="#{msgs.Casa_cidade}">
+          <h:outputText value="#{casa.endereco.cidade.nome}"/>
+        </p:column>
+        <p:column sortBy="#{casa.responsavel}" headerText="#{msgs.Casa_responsavel}">
           <h:outputText value="#{casa.responsavel}"/>
         </p:column>
       </p:dataTable>
@@ -95,7 +128,7 @@ and open the template in the editor.
         <h:panelGroup layout="block" style="float: right;">
           <p:commandButton value="#{msgs.global_incluir}" onclick="editor.show();" 
                            update=":formEdicao:panelEdicao"
-                           actionListener="#{casasMB.incluir()}" >
+                           actionListener="#{casasMB.incluir()}">
             <p:resetInput target=":formEdicao:panelEdicao"/>
           </p:commandButton>
 
@@ -111,8 +144,8 @@ and open the template in the editor.
                            oncomplete="if(args.continuar) dialogConfirmacaoExclusao.show();" />
         </h:panelGroup>
       </h:panelGroup>  
-      
+
     </h:form>    
   </ui:define>  
-  
+
 </ui:composition>

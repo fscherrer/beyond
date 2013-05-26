@@ -5,8 +5,11 @@ import br.com.einsteinlimeira.beyond.dao.DAOException;
 import br.com.einsteinlimeira.beyond.dao.EnderecoDAO;
 import br.com.einsteinlimeira.beyond.model.Cidade;
 import br.com.einsteinlimeira.beyond.model.Endereco;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,27 +25,117 @@ public class EnderecoDAOImpl implements EnderecoDAO {
    * Logger para logar mensagens.
    */
   private final static Logger LOGGER = Logger.getLogger(EnderecoDAOImpl.class.getName());
-  
+
   /**
    * DAO de Cidade.
    */
   @Inject
   private CidadeDAO cidadeDAO;
 
+  private static final String INCLUIR_ENDERECO_QUERY = ""
+      + " insert into "
+      + "   endereco( "
+      + "     cidadeid, "
+      + "     bairro, "
+      + "     cep, "
+      + "     logradouro, "
+      + "     complemento,"
+      + "     numero) "
+      + " values(?, ?, ?, ?, ?, ?)";
+
   /**
    * {@inheritDoc}
    */
   @Override
   public int inserir(Endereco entidade) throws DAOException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    final String mensagem = "Falha ao incluir endereço";
+    Connection conexao = null;
+
+    try {
+      conexao = BancoDeDados.getInstancia().getConexao();
+
+      PreparedStatement preparedStatement = conexao.prepareStatement(INCLUIR_ENDERECO_QUERY,
+          Statement.RETURN_GENERATED_KEYS);
+      preparedStatement.setInt(1, entidade.getCidade().getId());
+      preparedStatement.setString(2, entidade.getBairro());
+      preparedStatement.setString(3, entidade.getCep());
+      preparedStatement.setString(4, entidade.getLogradouro());
+      preparedStatement.setString(5, entidade.getComplemento());
+      preparedStatement.setString(6, entidade.getNumero());
+
+      preparedStatement.executeUpdate();
+
+      ResultSet resultSet = preparedStatement.getGeneratedKeys();
+      if (resultSet.next()) {
+        return resultSet.getInt("id");
+      }
+
+      String mensagemFalhaObterId = "Não foi possível obter o ID do endereço incluído";
+
+      LOGGER.log(Level.SEVERE, mensagemFalhaObterId);
+      throw new DAOException(mensagemFalhaObterId);
+    }
+    catch (BancoDeDadosException bdde) {
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+    catch (SQLException sqle) {
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    }
+    finally {
+      if (conexao != null) {
+        try {
+          conexao.close();
+        }
+        catch (Exception e) {
+          LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+        }
+      }
+    }
   }
+  
+  private static final String EXCLUIR_ENDERECO_QUERY = ""
+      + " delete "
+      + " from "
+      + "   endereco "
+      + " where "
+      + "   id = ?";
 
   /**
    * {@inheritDoc}
    */
   @Override
   public void remover(Endereco entidade) throws DAOException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    final String mensagem = "Falha ao remover endereço";
+    Connection conexao = null;
+
+    try {
+      conexao = BancoDeDados.getInstancia().getConexao();
+
+      PreparedStatement preparedStatement = conexao.prepareStatement(EXCLUIR_ENDERECO_QUERY);
+      preparedStatement.setInt(1, entidade.getId());
+
+      preparedStatement.executeUpdate();
+    }
+    catch (BancoDeDadosException bdde) {
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+    catch (SQLException sqle) {
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    }
+    finally {
+      if (conexao != null) {
+        try {
+          conexao.close();
+        }
+        catch (Exception e) {
+          LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+        }
+      }
+    }
   }
 
   /**
@@ -78,12 +171,60 @@ public class EnderecoDAOImpl implements EnderecoDAO {
     }
   }
 
+  private static final String EDITA_ENDERECO_QUERY = ""
+      + " update "
+      + "   endereco "
+      + " set "
+      + "   cidadeid = ?, "
+      + "   bairro = ?, "
+      + "   cep = ?, "
+      + "   logradouro = ?, "
+      + "   complemento = ?, "
+      + "   numero = ? "
+      + " where "
+      + "   id = ? ";
+
   /**
    * {@inheritDoc}
    */
   @Override
   public void atualizar(Endereco entidade) throws DAOException {
-    throw new UnsupportedOperationException("Not supported yet.");
+    final String mensagem = "Falha ao editar endereço";
+    Connection conexao = null;
+
+    try {
+      conexao = BancoDeDados.getInstancia().getConexao();
+
+      PreparedStatement preparedStatement = conexao.prepareStatement(EDITA_ENDERECO_QUERY);
+      preparedStatement.setInt(1, entidade.getCidade().getId());
+      preparedStatement.setString(2, entidade.getBairro());
+      preparedStatement.setString(3, entidade.getCep());
+      preparedStatement.setString(4, entidade.getLogradouro());
+      preparedStatement.setString(5, entidade.getComplemento());
+      preparedStatement.setString(6, entidade.getNumero());
+
+      preparedStatement.setInt(7, entidade.getId());
+
+      preparedStatement.executeUpdate();
+    }
+    catch (BancoDeDadosException bdde) {
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+    catch (SQLException sqle) {
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    }
+    finally {
+      if (conexao != null) {
+        try {
+          conexao.close();
+        }
+        catch (Exception e) {
+          LOGGER.log(Level.WARNING, "Falha ao fechar conexão", e);
+        }
+      }
+    }
   }
 
   private List<Endereco> getEnderecos(ResultSet resultSet) throws DAOException {

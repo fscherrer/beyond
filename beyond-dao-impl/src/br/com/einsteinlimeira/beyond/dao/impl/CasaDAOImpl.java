@@ -27,13 +27,13 @@ public class CasaDAOImpl implements CasaDAO {
   private final static Logger LOGGER = Logger.getLogger(CasaDAOImpl.class.getName());
   
   private final static String INCLUIR_CASA_QUERY = ""
-          + " insert"
-          + " into"
-          + "   casa"
-          + "     (nome,"
-          + "      cnpj,"
-          + "      responsavel)"
-          + " values(?, ?, ?)";
+          + " insert into"
+          + "   casa("
+          + "     nome,"
+          + "     cnpj,"
+          + "     responsavel,"
+          + "     enderecoid)"
+          + " values(?, ?, ?, ?)";
   
   /**
    * DAO de Endereço.
@@ -46,9 +46,11 @@ public class CasaDAOImpl implements CasaDAO {
    */
   @Override
   public int inserir(Casa entidade) throws DAOException {
-    final String mensagem = "Falha ao incluir banda";
+    final String mensagem = "Falha ao incluir casa";
     Connection conexao= null;
     try{
+      int idEndereco = enderecoDAO.inserir(entidade.getEndereco());
+      
       conexao = BancoDeDados.getInstancia().getConexao();
       
       PreparedStatement preparedStatement = conexao.prepareStatement(INCLUIR_CASA_QUERY,
@@ -56,8 +58,9 @@ public class CasaDAOImpl implements CasaDAO {
       preparedStatement.setString(1, entidade.getNome());
       preparedStatement.setInt(2, entidade.getCnpj());
       preparedStatement.setString(3, entidade.getResponsavel());
+      preparedStatement.setInt(4, idEndereco);
       
-      preparedStatement.executeQuery();
+      preparedStatement.executeUpdate();
       
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
       if(resultSet.next()){
@@ -101,11 +104,15 @@ public class CasaDAOImpl implements CasaDAO {
     Connection conexao = null;
     
     try{
+      Endereco enderecoCasa = entidade.getEndereco();
+      
       conexao = BancoDeDados.getInstancia().getConexao();
       PreparedStatement preparedStatement = conexao.prepareStatement(EXCLUIR_CASA_QUERY);
       preparedStatement.setInt(1, entidade.getId());
       
-      preparedStatement.executeQuery();
+      preparedStatement.executeUpdate();
+      
+      enderecoDAO.remover(enderecoCasa);
     } catch (BancoDeDadosException bdde){
       LOGGER.log(Level.SEVERE, mensagem, bdde);
       throw new DAOException(mensagem, bdde);
@@ -188,9 +195,10 @@ public class CasaDAOImpl implements CasaDAO {
           +" update"
           + "   casa"
           + " set"
-          + "   nome = ?"
-          + "   cpnj = ?"
-          + "   responsavel = ?"
+          + "   nome = ?, "
+          + "   cnpj = ?, "
+          + "   responsavel = ?, "
+          + "   matrizid = ? "
           + " where"
           + "   id = ?";
 
@@ -208,8 +216,14 @@ public class CasaDAOImpl implements CasaDAO {
       preparedStatement.setString(1, entidade.getNome());
       preparedStatement.setInt(2, entidade.getCnpj());
       preparedStatement.setString(3, entidade.getResponsavel());
+      preparedStatement.setObject(4, entidade.getMatriz() == null ? null : entidade.getMatriz().getId());
       
-      preparedStatement.executeQuery();
+      preparedStatement.setInt(5, entidade.getId());
+
+      preparedStatement.executeUpdate();
+      
+      // atualiza o endereço
+      enderecoDAO.atualizar(entidade.getEndereco());
     } catch (BancoDeDadosException bdde){
       LOGGER.log(Level.SEVERE, mensagem, bdde);
       throw new DAOException(mensagem, bdde);
