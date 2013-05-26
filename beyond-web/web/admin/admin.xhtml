@@ -6,52 +6,68 @@
       xmlns:f="http://java.sun.com/jsf/core">
   <h:head>
     <title>Admin</title>
-    <link rel="stylesheet" type="text/css" href="../resources/css/estilo.css" />
   </h:head>
-  <h:body style="background-image: url('../resources/imagens/background.png'); 
-          background-repeat: repeat-x;
-          background-attachment:fixed;
-          background-position:bottom; ">   
+  <h:body style="background-image: url('../resources/imagens/background_adm.png'); 
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: 100%;
+          margin-left: 20px;">   
     <h:form id="adminForm">
 
-      <div style="position: absolute; top: 50%; left: 0; width: 100%">
-        <div style="position: absolute; text-align: center; width: 100%; top: -95px">
 
-          <p:ajaxStatus style="height: 11px">
-            <f:facet name="start">
-              <h:graphicImage value="../resources/imagens/processando.gif" />
-            </f:facet>
+      <p> 
+        <p:commandLink action="#{adminMB.bandas()}" 
+                         rendered="#{loginMB.administrador}">
+          <h:graphicImage value="../resources/imagens/bandas.png"/>
+        </p:commandLink>
+      </p>
 
-            <f:facet name="complete">
-              <h:outputText value="" />
-            </f:facet>
-          </p:ajaxStatus>
+      <p>
+        <p:commandLink action="#{adminMB.casas()}" 
+                       rendered="#{loginMB.administrador}">
+          <h:graphicImage value="../resources/imagens/casas.png"/>
+        </p:commandLink>
+      </p>
 
-          <div style="text-align: center; margin: auto">
+      <p>
+        <p:commandLink action="#{adminMB.cidades()}" 
+                       rendered="#{loginMB.administrador}">
+          <h:graphicImage value="../resources/imagens/cidades.png"/>
+        </p:commandLink>
+      </p>
 
-            <p:panelGrid  columns="1" style="margin: auto;">  
-              <p:commandButton value="#{msgs.global_bandas}" action="#{adminMB.bandas()}"
-                               rendered="#{loginMB.administrador}"/>
-              <p:commandButton value="#{msgs.global_casas}" action="#{adminMB.casas()}"
-                               rendered="#{loginMB.administrador}"/>
-              <p:commandButton value="#{msgs.admin_cidades}" action="#{adminMB.cidades()}"
-                               rendered="#{loginMB.administrador}"/>
-              <p:commandButton value="#{msgs.global_eventos}" action="#{adminMB.eventos()}"/>
-              <p:commandButton value="#{msgs.admin_musicos}" action="#{adminMB.musicos()}"
-                               rendered="#{loginMB.administrador}"/>
-              <p:commandButton value="#{msgs.admin_usuarios}" action="#{adminMB.usuarios()}"
-                               rendered="#{loginMB.administrador}"/>
-              <p:commandButton value="#{msgs.admin_ufs}" action="#{adminMB.ufs()}"
-                               rendered="#{loginMB.administrador}"/>
+      <p>
+        <p:commandLink action="#{adminMB.eventos()}">
+          <h:graphicImage value="../resources/imagens/eventos.png"/>
+        </p:commandLink>
+      </p>
 
-              <p:commandButton value="#{msgs.admin_sair}" action="#{loginMB.doLogout}" />
-            </p:panelGrid>
+      <p>
+        <p:commandLink action="#{adminMB.musicos()}" 
+                       rendered="#{loginMB.administrador}">
+          <h:graphicImage value="../resources/imagens/musicos.png"/>
+        </p:commandLink>
+      </p>
 
-            <p:messages id="mensagensGlobaisLogin" globalOnly="true" showDetail="true" />
-          </div>
-        </div>
-      </div>
+      <p>
+        <p:commandLink action="#{adminMB.usuarios()}" 
+                       rendered="#{loginMB.administrador}">
+          <h:graphicImage value="../resources/imagens/usuarios.png"/>
+        </p:commandLink>
+      </p>
+
+      <p>
+        <p:commandLink action="#{adminMB.ufs()}" 
+                       rendered="#{loginMB.administrador}">
+          <h:graphicImage value="../resources/imagens/ufs.png"/>
+        </p:commandLink>
+      </p>
+
+      <p>
+        <p:commandLink action="#{loginMB.doLogout()}">
+          <h:graphicImage value="../resources/imagens/sair.png"/>
+        </p:commandLink>
+      </p>
     </h:form>
   </h:body>
 </html>
-
