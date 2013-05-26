@@ -43,4 +43,7 @@
     <!-- activity cidades -->
     <string name="title_activity_cidade">Cidades</string>
 
+    <!-- activity bandas -->
+    <string name="title_activity_banda">BandaActivity</string>
+
 </resources>

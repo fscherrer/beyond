@@ -15,12 +15,14 @@ public class Listas {
 	public static List<Evento> eventos;
 	public static List<Casa> casas;
 	public static List<Cidade> cidades;
+	public static List<Banda> bandas;
 	
 	static{
 		
 		eventos = new ArrayList<Evento>();
 		casas = new ArrayList<Casa>();
 		cidades = new ArrayList<Cidade>();
+		bandas = new ArrayList<Banda>();
 		
 		Banda bandaUm = new Banda(1, "Unisonic", null, null, null, null, null); 
 		Banda bandaDois = new Banda(2, "Avantasia", null, null, null, null, null); 
@@ -47,6 +49,15 @@ public class Listas {
 		List<Banda> bandasQuatro = new ArrayList<Banda>();
 		bandasQuatro.add(bandaSete);
 		bandasQuatro.add(bandaOito);
+		
+		bandas.add(bandaUm);
+		bandas.add(bandaDois);
+		bandas.add(bandaTres);
+		bandas.add(bandaQuatro);
+		bandas.add(bandaCinco);
+		bandas.add(bandaSeis);
+		bandas.add(bandaSete);
+		bandas.add(bandaOito);
 		
 		Casa casaUm = new Casa(01, "Casa 1", 0, null, null, null, null, null, null);
 		Casa casaDois = new Casa(02, "Casa 2", 0, null, null, null, null, null, null);

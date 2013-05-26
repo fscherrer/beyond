@@ -61,6 +61,11 @@
         <activity
             android:name="br.com.einsteinlimeira.beyond.mobile.CidadesActivity"
             android:label="@string/title_activity_cidade"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="br.com.einsteinlimeira.beyond.mobile.BandaActivity"
+            android:label="@string/title_activity_banda" 
             android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>
     </application>

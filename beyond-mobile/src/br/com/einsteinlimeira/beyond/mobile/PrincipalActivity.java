@@ -41,8 +41,8 @@ public class PrincipalActivity extends GlobalActivity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO intent for open activity banda.
-				
+				Intent intent = new Intent(PrincipalActivity.this, BandaActivity.class);
+				startActivity(intent);
 			}
 		});
 		
