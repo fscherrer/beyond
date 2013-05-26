@@ -34,8 +34,8 @@ Para a segunda fase:
   [] Banco de dados
   [] GPS
   [] Mapa
-  [] bandas na edição de eventos
-  [] cidades na edição de eventos
+  [X] bandas na edição de eventos
+  [X] cidades na edição de eventos
   [] listar services bandas e cidades
 
  - WEB
