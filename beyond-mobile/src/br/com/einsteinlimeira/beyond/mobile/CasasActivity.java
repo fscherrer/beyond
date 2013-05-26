@@ -1,9 +1,6 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
-import java.util.List;
-
-import br.com.einsteinlimeira.beyond.mobile.model.ListaEvento;
-import br.com.einsteinlimeira.beyond.model.Casa;
+import br.com.einsteinlimeira.beyond.mobile.model.Listas;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -16,7 +13,6 @@ public class CasasActivity extends Activity {
 
 	private ListView listViewListaCasas;
 	private Button botaoVoltar, botaoAvancar;
-	private List<Casa> casas;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +20,10 @@ public class CasasActivity extends Activity {
 		setContentView(R.layout.activity_casas);
 		
 		listViewListaCasas = (ListView) findViewById(R.id.lista_casas);
-		AdaptadorCasa adaptador = new AdaptadorCasa(ListaEvento.casas, this);
+		AdaptadorCasa adaptador = new AdaptadorCasa(Listas.casas, this);
 		listViewListaCasas.setAdapter(adaptador);
 		
-		botaoVoltar = (Button) findViewById(R.id.botao_voltar);
+		botaoVoltar = (Button) findViewById(R.id.botao_voltar_casa);
 		botaoVoltar.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -36,7 +32,7 @@ public class CasasActivity extends Activity {
 			}
 		});
 		
-		botaoAvancar = (Button) findViewById(R.id.botao_avancar);
+		botaoAvancar = (Button) findViewById(R.id.botao_avancar_casa);
 		botaoAvancar.setOnClickListener(new OnClickListener() {
 			
 			@Override

@@ -17,19 +17,18 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="br.com.einsteinlimeira.beyond.mobile.EventosActivity"
-             android:label="@string/app_name"
-             android:theme="@android:style/Theme.Black.NoTitleBar">
-            
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="br.com.einsteinlimeira.beyond.mobile.EventoDetalheActivity"
             android:label="@string/title_activity_evento_detalhe"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="br.com.einsteinlimeira.beyond.mobile.TesteHttpActivity"
             android:label="@string/title_activity_teste_http"
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,22 +42,26 @@
         <activity
             android:name="br.com.einsteinlimeira.beyond.mobile.InicialActivity"
             android:label="@string/title_activity_inicial"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >            
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="br.com.einsteinlimeira.beyond.mobile.CasasActivity"
             android:label="@string/title_activity_casas"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >            
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="br.com.einsteinlimeira.beyond.mobile.PrincipalActivity"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
-            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="br.com.einsteinlimeira.beyond.mobile.CidadesActivity"
+            android:label="@string/title_activity_cidade"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
         </activity>
     </application>
 

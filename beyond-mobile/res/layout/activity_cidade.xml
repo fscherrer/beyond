@@ -2,23 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CasasActivity" >
-
+    tools:context=".CidadesActivity" >
+    
     <TableRow
-        android:id="@+id/layout_casas"
+        android:id="@+id/layout_lista"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
         
         <ListView 
-            android:id="@+id/lista_casas"
+            android:id="@+id/lista_cidades"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_margin="5dp"/>
         
-    </TableRow>
-    
+    </TableRow>    
     <TableRow 
         android:id="@+id/layout_botoes"
         android:layout_width="match_parent"
@@ -28,21 +27,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
-            
+        
             <Button 
-                android:id="@+id/botao_voltar_casa"
-                android:layout_width="50dp"
-                android:layout_height="40dp"
-                android:layout_gravity="left"/>
-            
-            <Button 
-                android:id="@+id/botao_avancar_casa"
-                android:layout_width="50dp"
-                android:layout_height="40dp"
-                android:layout_gravity="right"/>
+            android:id="@+id/botao_voltar_cidade"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left"/>
+        
+        <Button 
+            android:id="@+id/botao_avancar_cidade"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"/>
+    
             
         </FrameLayout>
-        
+            
     </TableRow>
     
 </TableLayout>

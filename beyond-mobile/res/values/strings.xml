@@ -20,9 +20,7 @@
     <string name="global_casa">Casa</string>
     <string name="global_banda">Banda</string>
     <string name="global_cidade">Cidade</string>
-    
-    
-    
+
     <!-- activity para testes HTTP -->
     <string name="title_activity_teste_http">Teste HTTP</string>
 
@@ -32,15 +30,17 @@
     <string name="configuracao_host_padrao">localhost</string>
     <string name="configuracao_porta">Porta</string>
     <string name="configuracao_porta_padrao">8080</string>
-    
-    <!--  activity inicial -->
+
+    <!-- activity inicial -->
     <string name="title_activity_inicial">ARock</string>
     <string name="logo_arock">Logo ARock</string>
     <string name="tentar_novamente">Tentar Novamente</string>
     <string name="toque_inicial">Toque na tela para continuar</string>
-    
+
     <!-- activity casas -->
     <string name="title_activity_casas">Casas</string>
-    
-    
+
+    <!-- activity cidades -->
+    <string name="title_activity_cidade">Cidades</string>
+
 </resources>

@@ -1,13 +1,12 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
-public class PrincipalActivity extends Activity {
+public class PrincipalActivity extends GlobalActivity {
 	
 	private ImageButton botaoCasa, botaoCidade, botaoBanda, botaoEstilo;
 	
@@ -31,7 +30,8 @@ public class PrincipalActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO intent for open activity cidade.
+				Intent intent = new Intent(PrincipalActivity.this, CidadesActivity.class);
+				startActivity(intent);
 				
 			}
 		});
