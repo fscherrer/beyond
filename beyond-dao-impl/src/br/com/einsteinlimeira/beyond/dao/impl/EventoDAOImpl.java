@@ -366,7 +366,6 @@ public class EventoDAOImpl implements EventoDAO {
 
       int eventoId;
       String eventoNome;
-      String eventoCoordenada;
       double eventoValor;
       Date eventoDataHora;
       int eventoCasaId;
@@ -383,7 +382,6 @@ public class EventoDAOImpl implements EventoDAO {
         eventoValor = resultSet.getDouble("valor");
         eventoDataHora = resultSet.getTimestamp("dataHora");
         eventoCasaId = resultSet.getInt("casaid");
-        eventoCoordenada = resultSet.getString("coordenada");
         eventoBandaId = resultSet.getInt("bandaid");
         
         if (!resultSet.wasNull()) {
@@ -397,7 +395,7 @@ public class EventoDAOImpl implements EventoDAO {
 
         if (eventoId != eventoIdAtual) {
           evento = new Evento(eventoId, eventoNome, eventoDataHora, eventoValor, casa,
-                  new ArrayList<Banda>(), eventoCoordenada);
+                  new ArrayList<Banda>());
           eventos.add(evento);
         }
 

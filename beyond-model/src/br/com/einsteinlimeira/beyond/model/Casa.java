@@ -6,7 +6,7 @@ public class Casa extends Entidade {
 
   private String nome;
 
-  private int cnpj;
+  private String cnpj;
 
   private String responsavel;
 
@@ -23,8 +23,8 @@ public class Casa extends Entidade {
   public Casa() {
   }
 
-  public Casa(int id, String nome, int cnpj, String responsavel, Endereco endereco, Casa matriz,
-    List<Evento> eventos, List<Usuario> usuarios, List<Contato> contatos) {
+  public Casa(int id, String nome, String cnpj, String responsavel, Endereco endereco, Casa matriz,
+      List<Evento> eventos, List<Usuario> usuarios, List<Contato> contatos) {
     super(id);
     this.nome = nome;
     this.cnpj = cnpj;
@@ -44,11 +44,11 @@ public class Casa extends Entidade {
     this.nome = nome;
   }
 
-  public int getCnpj() {
+  public String getCnpj() {
     return cnpj;
   }
 
-  public void setCnpj(int cnpj) {
+  public void setCnpj(String cnpj) {
     this.cnpj = cnpj;
   }
 

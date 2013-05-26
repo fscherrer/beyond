@@ -51,6 +51,7 @@ Para a segunda fase:
   [ ] obrigar preenchimento da casa do usuário na manipulação de usuários;
   [ ] usar transações para operações com mais de um executeUpdate;
   [ ] corrigir tela login,o voltar do browser, não pode acessar registro da tela admin
+  [ ] implementar contatos;
 
 
 

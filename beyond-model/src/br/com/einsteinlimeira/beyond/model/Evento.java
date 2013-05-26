@@ -7,7 +7,6 @@ public class Evento extends Entidade {
 
   private Date datahora;
   private String nome;
-  private String coordenada;
   private double valor;
   private Casa casa;
   private List<Banda> bandas;
@@ -15,14 +14,13 @@ public class Evento extends Entidade {
   public Evento() {
   }
 
-  public Evento(int id, String nome, Date datahora, double valor, Casa casa, List<Banda> bandas, String coordenada) {
+  public Evento(int id, String nome, Date datahora, double valor, Casa casa, List<Banda> bandas) {
     super(id);
     this.datahora = datahora;
     this.valor = valor;
     this.casa = casa;
     this.bandas = bandas;
     this.nome = nome;
-    this.coordenada = coordenada;
   }
 
   public Date getDatahora() {
@@ -63,12 +61,5 @@ public class Evento extends Entidade {
 
   public void setNome(String nome) {
     this.nome = nome;
-  }
-    public String getCoordenada() {
-    return coordenada;
-  }
-
-  public void setCoordenada(String coordenada) {
-    this.coordenada = coordenada;
   }
 }

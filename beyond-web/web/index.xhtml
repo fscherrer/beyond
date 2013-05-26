@@ -2,11 +2,15 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
                 template="./templates/template.xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core">
 
+  <ui:define name="headerExtra">
+    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+  </ui:define>
 
   <ui:define name="titulo">
     <h:outputText value="#{msgs.Evento_tituloPagina}" />
@@ -20,43 +24,57 @@
                 id="dialogDetalhesEvento"
                 header="#{msgs.global_detalhes}"
                 resizable="false"
-                width="540">
-        <h:panelGrid columns="2" width="100%" cellpadding="4" cellspacing="0"
-                     columnClasses=",panelDetalhesEventoColumn2"
-                     rowClasses=",panelDetalhesEventoRowPar">
-          <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Evento}" class="negrito"/>
-          <h:outputText value="#{eventosMB.evento.nome}" class="detalhesEventoTitulo" />
+                width="750">
+        <h:panelGrid columns="2">
+          <h:panelGrid columns="2" width="340" cellpadding="4" cellspacing="0"
+                       columnClasses=",panelDetalhesEventoColumn2"
+                       rowClasses=",panelDetalhesEventoRowPar">
+            <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Evento}" class="negrito"/>
+            <h:outputText value="#{eventosMB.evento.nome}" class="detalhesEventoTitulo" />
 
-          <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Bandas}" styleClass="negrito"/>
+            <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Bandas}" styleClass="negrito"/>
+            <h:panelGroup layout="block" styleClass="panelCru" style="margin: 0px auto;">
+              <ui:repeat value="#{eventosMB.evento.bandas}" var="banda" varStatus="repeatStatus"><!-- 
+                     value: ternário: se for a última banda, imprime ' e ', senão ', '
+                     rendered: só imprime se tiver mais de uma banda -->
+                <h:outputText value="#{repeatStatus.last ? ' e ' : ', '}" 
+                              rendered="#{repeatStatus.index gt 0}" />
+                <h:outputText value="#{banda.nome}" styleClass="detalhesEventoBanda" />
+              </ui:repeat>
+            </h:panelGroup>
+
+            <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Local}" styleClass="negrito"/>
+            <p:panelGrid columns="1" styleClass="panelGridSemBordas panelGridDetalhesEventoEndereco">
+              <h:outputText value="#{eventosMB.evento.casa.nome}" styleClass="detalhesEventoCasa"/>
+              <h:outputText value="#{eventosMB.evento.casa.endereco.logradouro}, 
+                            #{msgs.Endereco_numero} #{eventosMB.evento.casa.endereco.numero}" />
+              <h:outputText value="#{msgs.Endereco_bairro} #{eventosMB.evento.casa.endereco.bairro}" />
+              <h:outputText value="#{eventosMB.evento.casa.endereco.cidade.nome} - #{eventosMB.evento.casa.endereco.cidade.uf.sigla}" />
+              <h:outputText value="#{eventosMB.evento.casa.endereco.cep}" />
+            </p:panelGrid>
+
+            <h:outputText value="#{msgs.Index_dialogDetalhesEvento_DataHora}" styleClass="negrito"/>
+            <h:outputText value="#{eventosMB.evento.datahora}">
+              <f:convertDateTime pattern="dd/MM/yyyy   -   HH:mm"/>
+            </h:outputText>
+
+            <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Valor}" styleClass="negrito"/>
+            <h:outputText value="#{eventosMB.evento.valor}">
+              <f:convertNumber minFractionDigits="2" type="currency" />
+            </h:outputText>
+          </h:panelGrid>
+
           <h:panelGroup layout="block" styleClass="panelCru" style="margin: 0px auto;">
-            <ui:repeat value="#{eventosMB.evento.bandas}" var="banda" varStatus="repeatStatus"><!-- 
-                   value: ternário: se for a última banda, imprime ' e ', senão ', '
-                   rendered: só imprime se tiver mais de uma banda -->
-              <h:outputText value="#{repeatStatus.last ? ' e ' : ', '}" 
-                            rendered="#{repeatStatus.index gt 0}" />
-              <h:outputText value="#{banda.nome}" styleClass="detalhesEventoBanda" />
-            </ui:repeat>
+            <p:gmap id="mapa" center="-22.023527,-48.240967" zoom="15" type="ROADMAP" 
+                    binding="#{eventosMB.map}" model="#{eventosMB.mapModel}"
+                    style="width:380px;height:350px" 
+                    rendered="#{eventosMB.exibirMapa}">
+            </p:gmap>
+
+            <p:graphicImage library="imagens" name="semmapa.gif"
+                            width="380" height="350" style="border: none; margin: 0px; padding: 0px"
+                            rendered="#{!eventosMB.exibirMapa}" />
           </h:panelGroup>
-
-          <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Local}" styleClass="negrito"/>
-          <p:panelGrid columns="1" styleClass="panelGridSemBordas panelGridDetalhesEventoEndereco">
-            <h:outputText value="#{eventosMB.evento.casa.nome}" styleClass="detalhesEventoCasa"/>
-            <h:outputText value="#{eventosMB.evento.casa.endereco.logradouro}, 
-                          #{msgs.Endereco_numero} #{eventosMB.evento.casa.endereco.numero}" />
-            <h:outputText value="#{msgs.Endereco_bairro} #{eventosMB.evento.casa.endereco.bairro}" />
-            <h:outputText value="#{eventosMB.evento.casa.endereco.cidade.nome} - #{eventosMB.evento.casa.endereco.cidade.uf.sigla}" />
-            <h:outputText value="#{eventosMB.evento.casa.endereco.cep}" />
-          </p:panelGrid>
-
-          <h:outputText value="#{msgs.Index_dialogDetalhesEvento_DataHora}" styleClass="negrito"/>
-          <h:outputText value="#{eventosMB.evento.datahora}">
-            <f:convertDateTime pattern="dd/MM/yyyy   -   HH:mm"/>
-          </h:outputText>
-
-          <h:outputText value="#{msgs.Index_dialogDetalhesEvento_Valor}" styleClass="negrito"/>
-          <h:outputText value="#{eventosMB.evento.valor}">
-            <f:convertNumber minFractionDigits="2" type="currency" />
-          </h:outputText>
         </h:panelGrid>
 
         <p:panel styleClass="panelCru" style="text-align: center;">
@@ -171,6 +189,7 @@
 
             <p:column width="30" headerText="#{msgs.global_detalhes}">
               <p:commandButton value="Detalhes" title="Detalhes" oncomplete="dialogDetalhesEvento.show();"
+                               action="#{eventosMB.prepararExibicaoDetalhes}"
                                update=":formDetalhesEvento:dialogDetalhesEvento">
                 <f:setPropertyActionListener value="#{evento}" target="#{eventosMB.evento}" />
               </p:commandButton>

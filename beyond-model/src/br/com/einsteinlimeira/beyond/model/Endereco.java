@@ -16,11 +16,13 @@ public class Endereco extends Entidade {
 
   private Cidade cidade;
 
+  private String coordenada;
+
   public Endereco() {
   }
 
   public Endereco(int id, String bairro, String cep, String logradouro, String complemento,
-    String numero, Casa casa, Cidade cidade) {
+      String numero, Casa casa, Cidade cidade, String coordenada) {
     super(id);
     this.bairro = bairro;
     this.cep = cep;
@@ -29,6 +31,7 @@ public class Endereco extends Entidade {
     this.numero = numero;
     this.casa = casa;
     this.cidade = cidade;
+    this.coordenada = coordenada;
   }
 
   public String getBairro() {
@@ -85,5 +88,13 @@ public class Endereco extends Entidade {
 
   public void setCidade(Cidade cidade) {
     this.cidade = cidade;
+  }
+
+  public String getCoordenada() {
+    return coordenada;
+  }
+
+  public void setCoordenada(String coordenada) {
+    this.coordenada = coordenada;
   }
 }

@@ -56,7 +56,7 @@ public class CasaDAOImpl implements CasaDAO {
       PreparedStatement preparedStatement = conexao.prepareStatement(INCLUIR_CASA_QUERY,
               Statement.RETURN_GENERATED_KEYS);
       preparedStatement.setString(1, entidade.getNome());
-      preparedStatement.setInt(2, entidade.getCnpj());
+      preparedStatement.setString(2, entidade.getCnpj());
       preparedStatement.setString(3, entidade.getResponsavel());
       preparedStatement.setInt(4, idEndereco);
       
@@ -214,7 +214,7 @@ public class CasaDAOImpl implements CasaDAO {
       conexao = BancoDeDados.getInstancia().getConexao();
       PreparedStatement preparedStatement = conexao.prepareStatement(EDITA_CASA_QUERY);
       preparedStatement.setString(1, entidade.getNome());
-      preparedStatement.setInt(2, entidade.getCnpj());
+      preparedStatement.setString(2, entidade.getCnpj());
       preparedStatement.setString(3, entidade.getResponsavel());
       preparedStatement.setObject(4, entidade.getMatriz() == null ? null : entidade.getMatriz().getId());
       
@@ -248,21 +248,27 @@ public class CasaDAOImpl implements CasaDAO {
 
       int casaId;
       String casaNome;
-      int casacnpj;
+      String casacnpj;
       String casaResponsavel;
       int enderecoId;
+      int matrizId;
       Endereco endereco;
+      Casa matriz;
 
       while (resultSet.next()) {
         casaId = resultSet.getInt("Id");
         casaNome = resultSet.getString("nome");
-        casacnpj = resultSet.getInt("cnpj");
+        casacnpj = resultSet.getString("cnpj");
         casaResponsavel = resultSet.getString("responsavel");
         enderecoId = resultSet.getByte("enderecoId");
 
         endereco = enderecoDAO.getPeloId(enderecoId);
-
-        casas.add(new Casa(casaId, casaNome, casacnpj, casaResponsavel, endereco, null, null, null, null));
+        
+        matrizId = resultSet.getInt("matrizid");
+        matriz = resultSet.wasNull() ? null : getPeloId(matrizId);
+        
+        casas.add(new Casa(casaId, casaNome, casacnpj, casaResponsavel, endereco, matriz, null, null,
+            null));
       }
 
       return casas;

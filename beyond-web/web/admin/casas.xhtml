@@ -5,10 +5,15 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 template="../templates/template.xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core">
+
+  <ui:define name="headerExtra">
+    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+  </ui:define>
 
   <ui:define name="titulo">
     <h:outputText value="#{msgs.Evento_casa}"/>
@@ -21,59 +26,80 @@ and open the template in the editor.
               onShow="document.getElementById('formEdicao:nome').focus();" >
       <h:form id="formEdicao">
         <h:panelGrid id="panelEdicao" columns="1">
-          <h:panelGrid id="panelEdicaoCampos" columns="2" cellspacing="4">
-            <h:outputLabel value="#{msgs.Casa_nome}"/>
-            <p:inputText id="nome" value="#{casasMB.casa.nome}"
-                         required="true" requiredMessage="#{msgs.Casa_nome_naoInformado}"/>
+          <p:panelGrid id="panelEdicaoColunas" styleClass="panelGridSemBordas">
+            <p:row>
+              <p:column>
+                <h:panelGrid id="panelEdicaoCampos" columns="2" cellspacing="4">
+                  <h:outputLabel value="#{msgs.Casa_nome}"/>
+                  <p:inputText id="nome" value="#{casasMB.casa.nome}"
+                               required="true" requiredMessage="#{msgs.Casa_nome_naoInformado}"/>
 
-            <h:outputLabel value="#{msgs.Casa_responsavel}"/>
-            <p:inputText id="responsavel" value="#{casasMB.casa.responsavel}" required="true"
-                         requiredMessage="#{msgs.Casa_responsavel_naoInformado}"/>
+                  <h:outputLabel value="#{msgs.Casa_responsavel}"/>
+                  <p:inputText id="responsavel" value="#{casasMB.casa.responsavel}" required="true"
+                               requiredMessage="#{msgs.Casa_responsavel_naoInformado}"/>
 
-            <h:outputLabel value="#{msgs.Casa_cnpj}"/>
-            <p:inputText id="cpnj" value="#{casasMB.casa.cnpj}" required="true"
-                         requiredMessage="#{msgs.Casa_cpnj_naoInformado}"/>
+                  <h:outputLabel value="#{msgs.Casa_cnpj}"/>
+                  <p:inputText id="cpnj" value="#{casasMB.casa.cnpj}" required="true"
+                               requiredMessage="#{msgs.Casa_cpnj_naoInformado}"/>
 
-            <h:outputLabel value="#{msgs.Casa_matriz}" />
-            <p:selectOneMenu value="#{casasMB.casa.matriz}" converter="#{casaConverter}">
-              <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
-              <f:selectItems value="#{casasMB.casas}" var="matriz" itemLabel="#{matriz.nome}" itemValue="#{matriz}" />
-            </p:selectOneMenu>
+                  <h:outputLabel value="#{msgs.Casa_matriz}" />
+                  <p:selectOneMenu value="#{casasMB.casa.matriz}" converter="#{casaConverter}">
+                    <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
+                    <f:selectItems value="#{casasMB.casas}" var="matriz" itemLabel="#{matriz.nome}" itemValue="#{matriz}" />
+                  </p:selectOneMenu>
 
-            <h:outputLabel value="#{msgs.Casa_cidade}" />
-            <p:selectOneMenu value="#{casasMB.casa.endereco.cidade}" converter="#{cidadeConverter}">
-              <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
-              <f:selectItems value="#{cidadesMB.entidades}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}" />
-            </p:selectOneMenu>
+                  <h:outputLabel value="#{msgs.Casa_cidade}" />
+                  <p:selectOneMenu value="#{casasMB.casa.endereco.cidade}" converter="#{cidadeConverter}">
+                    <f:selectItem itemLabel="#{null}" itemValue="#{null}" />
+                    <f:selectItems value="#{cidadesMB.cidades}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}" />
+                  </p:selectOneMenu>
 
-            <h:outputLabel value="#{msgs.Endereco_bairro}"/>
-            <p:inputText id="bairro" value="#{casasMB.casa.endereco.bairro}"
-                         required="true" requiredMessage="#{msgs.Endereco_bairro_naoInformado}"/>
+                  <h:outputLabel value="#{msgs.Endereco_bairro}"/>
+                  <p:inputText id="bairro" value="#{casasMB.casa.endereco.bairro}"
+                               required="true" requiredMessage="#{msgs.Endereco_bairro_naoInformado}"/>
 
-            <h:outputLabel value="#{msgs.Endereco_cep}"/>
-            <p:inputText id="cep" value="#{casasMB.casa.endereco.cep}"
-                         required="true" requiredMessage="#{msgs.Endereco_cep_naoInformado}"/>
+                  <h:outputLabel value="#{msgs.Endereco_cep}"/>
+                  <p:inputText id="cep" value="#{casasMB.casa.endereco.cep}"
+                               required="true" requiredMessage="#{msgs.Endereco_cep_naoInformado}"/>
 
-            <h:outputLabel value="#{msgs.Endereco_logradouro}"/>
-            <p:inputText id="logradouro" value="#{casasMB.casa.endereco.logradouro}"
-                         required="true" requiredMessage="#{msgs.Endereco_logradouro_naoInformado}"/>
+                  <h:outputLabel value="#{msgs.Endereco_logradouro}"/>
+                  <p:inputText id="logradouro" value="#{casasMB.casa.endereco.logradouro}"
+                               required="true" requiredMessage="#{msgs.Endereco_logradouro_naoInformado}"/>
 
-            <h:outputLabel value="#{msgs.Endereco_complemento}"/>
-            <p:inputText id="complemento" value="#{casasMB.casa.endereco.complemento}" />
+                  <h:outputLabel value="#{msgs.Endereco_complemento}"/>
+                  <p:inputText id="complemento" value="#{casasMB.casa.endereco.complemento}" />
 
-            <h:outputLabel value="#{msgs.Endereco_numero}"/>
-            <p:inputText id="numero" value="#{casasMB.casa.endereco.numero}" />
+                  <h:outputLabel value="#{msgs.Endereco_numero}"/>
+                  <p:inputText id="numero" value="#{casasMB.casa.endereco.numero}" />
 
-          </h:panelGrid>
+                  <h:outputLabel value="#{msgs.Endereco_coordenada}"/>
+                  <p:inputText id="coordenada" value="#{casasMB.casa.endereco.coordenada}" />
+                </h:panelGrid>
+              </p:column>
 
-          <p:messages id="edicaoMessages" showDetail="true"/>
+              <p:column>
+                <p:gmap id="mapa" center="-22.023527,-48.240967" zoom="7" type="ROADMAP" 
+                        binding="#{casasMB.map}"
+                        style="width:400px;height:400px" model="#{casasMB.mapModel}">
+                  <p:ajax event="markerDrag" listener="#{casasMB.pontoSelecionado}"
+                          update="coordenada"/>
+                </p:gmap>
+              </p:column>
+            </p:row>
 
+            <p:row>
+              <p:column colspan="2">
+                <p:messages id="edicaoMessages" showDetail="true"/>
+              </p:column>
+            </p:row>
+          </p:panelGrid>
+          
           <f:facet name="footer">
             <h:panelGrid id="panelEdicaoButtons" columns="2" cellspacing="4">
               <p:commandButton id="buttonOk" value="#{msgs.global_ok}"
                                actionListener="#{casasMB.salvar()}"
-                               update="panelEdicao :formListagem:tableCasas"
-                               oncomplete="if(!(args.validationFailed() || args.Exception)) editor.hide()"/>
+                               update="panelEdicaoCampos edicaoMessages :formListagem:tableCasas"
+                               oncomplete="if(!(args.validationFailed || args.Exception)) editor.hide()"/>
               <p:commandButton id="buttonCancelar" value="#{msgs.global_cancelar}"
                                onclick="editor.hide();"/>
             </h:panelGrid>
@@ -105,7 +131,7 @@ and open the template in the editor.
 
     <!-- Listagem -->
     <h:form id="formListagem">
-      <p:dataTable id="tableCasas" var="casa" value="#{casasMB.entidades}"
+      <p:dataTable id="tableCasas" var="casa" value="#{casasMB.casas}"
                    selection="#{casasMB.entidadeSelecionada}" selectionMode="single"
                    rowKey="#{casa.id}">
         <p:column sortBy="#{casa.nome}" headerText="#{msgs.Casa_nome}">

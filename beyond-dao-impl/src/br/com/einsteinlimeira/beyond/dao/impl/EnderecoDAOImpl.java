@@ -40,8 +40,9 @@ public class EnderecoDAOImpl implements EnderecoDAO {
       + "     cep, "
       + "     logradouro, "
       + "     complemento,"
-      + "     numero) "
-      + " values(?, ?, ?, ?, ?, ?)";
+      + "     numero,"
+      + "     coordenada) "
+      + " values(?, ?, ?, ?, ?, ?, ?)";
 
   /**
    * {@inheritDoc}
@@ -62,6 +63,7 @@ public class EnderecoDAOImpl implements EnderecoDAO {
       preparedStatement.setString(4, entidade.getLogradouro());
       preparedStatement.setString(5, entidade.getComplemento());
       preparedStatement.setString(6, entidade.getNumero());
+      preparedStatement.setString(7, entidade.getCoordenada());
 
       preparedStatement.executeUpdate();
 
@@ -180,7 +182,8 @@ public class EnderecoDAOImpl implements EnderecoDAO {
       + "   cep = ?, "
       + "   logradouro = ?, "
       + "   complemento = ?, "
-      + "   numero = ? "
+      + "   numero = ?, "
+      + "   coordenada = ? "
       + " where "
       + "   id = ? ";
 
@@ -202,8 +205,9 @@ public class EnderecoDAOImpl implements EnderecoDAO {
       preparedStatement.setString(4, entidade.getLogradouro());
       preparedStatement.setString(5, entidade.getComplemento());
       preparedStatement.setString(6, entidade.getNumero());
+      preparedStatement.setString(7, entidade.getCoordenada());
 
-      preparedStatement.setInt(7, entidade.getId());
+      preparedStatement.setInt(8, entidade.getId());
 
       preparedStatement.executeUpdate();
     }
@@ -239,6 +243,7 @@ public class EnderecoDAOImpl implements EnderecoDAO {
       String enderecoComplemento;
       String enderecoNumero;
       Cidade cidade;
+      String enderecoCoordenada;
 
       while (resultSet.next()) {
         enderecoId = resultSet.getInt("Id");
@@ -248,11 +253,12 @@ public class EnderecoDAOImpl implements EnderecoDAO {
         enderecoLogradouro = resultSet.getString("logradouro");
         enderecoComplemento = resultSet.getString("complemento");
         enderecoNumero = resultSet.getString("numero");
+        enderecoCoordenada = resultSet.getString("coordenada");
 
         cidade = cidadeDAO.getPeloId(cidadeId);
 
         enderecos.add(new Endereco(enderecoId, enderecoBairro, enderecoCep, enderecoLogradouro,
-            enderecoComplemento, enderecoNumero, null, cidade));
+            enderecoComplemento, enderecoNumero, null, cidade, enderecoCoordenada));
       }
 
       return enderecos;

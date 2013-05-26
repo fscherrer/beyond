@@ -17,10 +17,16 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.primefaces.component.gmap.GMap;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 
 /**
  * ManagedBean para manipulação de {@link Evento}.
@@ -119,6 +125,21 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
   private List<Evento> eventosFiltrados;
 
   /**
+   * Modelo para o Mapa.
+   */
+  private DefaultMapModel mapModel;
+
+  /**
+   * Flag para indicar se o Mapa deve ou não ser exibido (no dialog de detalhes).
+   */
+  private boolean exibirMapa;
+
+  /**
+   * Mapa.
+   */
+  private UIComponent map;
+
+  /**
    * {@inheritDoc}
    */
   @Override
@@ -132,11 +153,11 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
   @Override
   public Evento getNovaEntidade() {
     Evento evento = new Evento();
-    
-    if(!loginMB.isAdministrador()){
+
+    if (!loginMB.isAdministrador()) {
       evento.setCasa(loginMB.getUsuarioAutenticado().getCasa());
     }
-    
+
     return evento;
   }
 
@@ -250,6 +271,55 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
   // criado devido aos warnings e falta de code completion do NB com o tipo genérico
   public Evento getEvento() {
     return getEntidade();
+  }
+
+  /**
+   * Retorna o Modelo para o Mapa do evento selecionado.
+   * 
+   * @return 
+   *   Modelo para o Mapa.
+   */
+  public MapModel getMapModel() {
+    return mapModel;
+  }
+
+  /**
+   * Retorna se o Mapa do Endereço da Casa do Evento deve ser ou não exibido.
+   * 
+   * @return 
+   *   <code>True</code> se deve ser exibido.
+   */
+  public boolean isExibirMapa() {
+    return exibirMapa;
+  }
+
+  public void prepararExibicaoDetalhes() {
+    exibirMapa = false;
+    mapModel = null;
+
+    String coordenada = entidade.getCasa().getEndereco().getCoordenada();
+
+    if (coordenada != null && !coordenada.trim().isEmpty()) {
+      Marker marker;
+      String[] latLng = coordenada.split(",");
+
+      try {
+        marker = new Marker(new LatLng(
+            Double.parseDouble(latLng[0]),
+            Double.parseDouble(latLng[1])),
+            entidade.getCasa().getNome());
+
+        mapModel = new DefaultMapModel();
+        mapModel.addOverlay(marker);
+
+        ((GMap) map).setCenter(coordenada);
+
+        exibirMapa = true;
+      }
+      catch (NumberFormatException nfe) {
+        // não mostra map
+      }
+    }
   }
 
   /**
@@ -520,10 +590,10 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
   @Override
   public void carregarEntidades() {
     // só carrega a lista de eventos aqui se for a página de eventos (para manipulação)
-    if (!FacesContext.getCurrentInstance().getViewRoot().getViewId().endsWith("eventos.xhtml")){
+    if (!FacesContext.getCurrentInstance().getViewRoot().getViewId().endsWith("eventos.xhtml")) {
       return;
     }
-    
+
     try {
       List<Casa> casasFiltrar = null;
 
@@ -581,5 +651,13 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
   // criado devido aos warnings e falta de code completion do NB com o tipo genérico
   public List<Evento> getEventos() {
     return entidades;
+  }
+
+  public UIComponent getMap() {
+    return map;
+  }
+
+  public void setMap(UIComponent map) {
+    this.map = map;
   }
 }
