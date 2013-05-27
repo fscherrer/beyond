@@ -100,6 +100,7 @@ public class LoginMB implements Serializable {
    *   Outcome para a área administrativa ou <code>null</code> caso a operação falhe (dados do 
    * usuário incorretos).
    */
+  @LogInterceptor
   public String doLogin() {
     try {
       usuarioAutenticado = usuarioServices.getUsuario(usuario, senha);
@@ -129,6 +130,7 @@ public class LoginMB implements Serializable {
    * @return 
    *   Outcome para onde deve ir.
    */
+  @LogInterceptor
   public String doLogout() {
     logado = false;
     administrador = false;
