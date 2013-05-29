@@ -49,4 +49,6 @@
     <!-- activity estilos -->
     <string name="title_activity_estilo">EstiloActivity</string>
 
+    <!--  activity mapa -->
+    <string name="title_activity_mapa">Mapa</string>
 </resources>

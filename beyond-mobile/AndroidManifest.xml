@@ -34,17 +34,16 @@
         android:glEsVersion="0x00020000"
         android:required="true" />
 
-    <!--  https://developers.google.com/maps/documentation/android/start#adding_the_api_key_to_your_application -->
+    <!-- https://developers.google.com/maps/documentation/android/start#adding_the_api_key_to_your_application -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        
-        <meta-data 
+        <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBoMDhPrirte7TslVzBdAYk8QMzC0ojpds"/>
-                
+            android:value="AIzaSyBoMDhPrirte7TslVzBdAYk8QMzC0ojpds" />
+
         <activity
             android:name="br.com.einsteinlimeira.beyond.mobile.EventosActivity"
             android:label="@string/app_name"
@@ -95,8 +94,17 @@
         </activity>
         <activity
             android:name="br.com.einsteinlimeira.beyond.mobile.BandaActivity"
-            android:label="@string/title_activity_banda" 
-            android:theme="@android:style/Theme.Black.NoTitleBar">
+            android:label="@string/title_activity_banda"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="br.com.einsteinlimeira.beyond.mobile.MapaActivity"
+            android:label="@string/title_activity_mapa" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
