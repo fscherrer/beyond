@@ -51,4 +51,8 @@
 
     <!--  activity mapa -->
     <string name="title_activity_mapa">Mapa</string>
+    
+    <!--  activity evento_detalhe -->
+    <string name="evento_localizacao">Localização</string>
+    <string name="evento_mapaNaoDefinido">Mapa não definido</string>
 </resources>

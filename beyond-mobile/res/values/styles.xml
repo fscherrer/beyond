@@ -25,6 +25,11 @@
         <item name="android:padding">5dp</item>
     </style>
     
+    <style name="evento_localizacao" parent="@style/evento_titulo">
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">4dp</item>
+    </style>
+    
     <style name="evento_detalhes">
         <item name="android:textColor">@color/cinzaEscuro</item>
         <item name="android:textSize">18sp</item>

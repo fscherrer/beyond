@@ -12,8 +12,9 @@
         android:layout_height="wrap_content" />
 
     <RelativeLayout
+        android:id="@+id/evento_relativeLayout_detalhes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/brancoAlpha"
         android:layout_below="@id/evento_texto_titulo"
         android:padding="5dp">
@@ -58,7 +59,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/evento_texto_data" />
+    </RelativeLayout>
+    
+    <TextView
+        android:id="@+id/evento_texto_localizacao"
+        style="@style/evento_localizacao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/evento_relativeLayout_detalhes"
+        android:text="@string/evento_localizacao"
+        android:layout_marginTop="3dp"
+        android:textStyle="bold" />
+    
+    <RelativeLayout
+        android:id="@+id/evento_relativeLayout_mapa"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/evento_texto_localizacao"
+        android:background="@color/brancoAlpha"
+        android:padding="5dp" >
 
+        <LinearLayout
+            android:id="@+id/evento_linearLayout_mapa"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent" >
+
+            <fragment
+                android:id="@+id/evento_mapa"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                class="com.google.android.gms.maps.SupportMapFragment" />
+        </LinearLayout>
+        
+        <TextView 
+            android:id="@+id/evento_texto_mapaNaoDefinido"
+            android:text="@string/evento_mapaNaoDefinido"
+            style="@style/evento_detalhes"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:gravity="center" />
+        
     </RelativeLayout>
 
 </RelativeLayout>

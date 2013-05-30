@@ -2,6 +2,9 @@ package br.com.einsteinlimeira.beyond.mobile;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import br.com.einsteinlimeira.beyond.mobile.util.DateUtils;
 import br.com.einsteinlimeira.beyond.mobile.util.EntidadeUtils;
@@ -9,7 +12,13 @@ import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Endereco;
 import br.com.einsteinlimeira.beyond.model.Evento;
 
-public class EventoDetalheActivity extends GlobalActivity {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+public class EventoDetalheActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +56,43 @@ public class EventoDetalheActivity extends GlobalActivity {
 
 		((TextView) findViewById(R.id.evento_texto_valor)).setText(resources
 				.getString(R.string.evento_valor, evento.getValor()));
+		
+		// Mapa
+		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+		    .findFragmentById(R.id.evento_mapa);
+		
+		boolean exibirMapa = false;
+		
+    String coordenada = endereco.getCoordenada();
+    
+    if (coordenada != null && coordenada.trim().length() > 0) {
+      String[] partesCoordenada = endereco.getCoordenada().split(",");
 
+      try {
+        LatLng latLng = new LatLng(Double.parseDouble(partesCoordenada[0]),
+            Double.parseDouble(partesCoordenada[1]));
+
+        GoogleMap googleMap = mapFragment.getMap();
+        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+        googleMap.addMarker(new MarkerOptions()
+            .position(latLng)
+            .title(casa.getNome())
+            .snippet(evento.getNome()));
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+        
+        exibirMapa = true;
+      }
+      catch (NumberFormatException nfe) {
+        // vai exibir "Mapa não definido"
+      }
+    }
+    
+    if(!exibirMapa){
+      ((LinearLayout)findViewById(R.id.evento_linearLayout_mapa)).setVisibility(View.INVISIBLE);
+      ((TextView)findViewById(R.id.evento_texto_mapaNaoDefinido)).setVisibility(View.VISIBLE);
+    }
 	}
 }
