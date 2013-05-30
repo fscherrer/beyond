@@ -22,6 +22,12 @@ public class Requisicao {
   public static final String TIPO_CASA = "casa";
   
   /**
+   * Valor a ser informado no parâmetro {@link #PARAMETRO_TIPO} para requisições referentes a 
+   * Cidades
+   */
+  public static final String TIPO_CIDADE = "cidade";
+  
+  /**
    * Valor para indicar solicitações de todas as entidades de um tipo
    *@see Requisicao
    */
