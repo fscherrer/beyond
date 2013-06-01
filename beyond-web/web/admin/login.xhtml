@@ -51,8 +51,6 @@
                                    action="#{loginMB.doLogin}"
                                    update="panelMensagens usuario senha mensagensGlobaisLogin">  
                   </p:commandButton>
-                  <p:commandButton value="Cancelar" icon="ui-icon-cancel"
-                                   action="index" />
                 </h:panelGroup>
               </f:facet>  
             </p:panelGrid>  
@@ -63,7 +61,7 @@
               <div style="height: 2px;"/>
               <p:message for="senha" display="text" />
             </p:panel>
-            
+
             <p:messages id="mensagensGlobaisLogin" globalOnly="true" showDetail="true" />
           </div>
         </div>
