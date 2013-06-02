@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import br.com.einsteinlimeira.beyond.mobile.util.ParcelableList;
 
 public class PrincipalActivity extends GlobalActivity {
@@ -19,10 +20,15 @@ public class PrincipalActivity extends GlobalActivity {
 	private List<String> estilosFiltrados;
 	private List<Integer> idsBandasFiltradas;
 	
+	private TextView textViewCidadesFiltradas;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_principal);
+		
+		textViewCidadesFiltradas = (TextView)findViewById(R.id.principal_textViewCidadesFiltradas);
+		textViewCidadesFiltradas.setVisibility(View.INVISIBLE);
 		
 		botaoCasa = (ImageButton) findViewById(R.id.btn_casa);
 		botaoCasa.setOnClickListener(new OnClickListener() {
@@ -78,6 +84,7 @@ public class PrincipalActivity extends GlobalActivity {
           if(data.hasExtra(Constantes.EXTRA_CIDADES_FILTRADAS)){
             idsCidadesFiltradas = ((ParcelableList<Integer>)data.getParcelableExtra(
                 Constantes.EXTRA_CIDADES_FILTRADAS)).getList();
+            filtroCidadesAlterado();
           }
           break;
 
@@ -87,4 +94,18 @@ public class PrincipalActivity extends GlobalActivity {
       }
 	  }
 	}
+  
+  /**
+   * Reprocessa as cidades filtrada para redefinir o balãozinho com a 
+   * quantidade filtrada.
+   */
+  private void filtroCidadesAlterado() {
+    textViewCidadesFiltradas.setVisibility(idsCidadesFiltradas.isEmpty()
+        ? View.INVISIBLE
+        : View.VISIBLE);
+
+    textViewCidadesFiltradas.setText(idsCidadesFiltradas.isEmpty()
+        ? null
+        : String.valueOf(idsCidadesFiltradas.size()));
+  }
 }

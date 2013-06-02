@@ -77,7 +77,7 @@ public class Listas {
 		Cidade cidadeDois = new Cidade(2, "Limeira", null);
 		Cidade cidadeTres = new Cidade(3, "Iracemápol(i|e)s", null);
 		Cidade cidadeQuatro = new Cidade(4, "Bate-pau", null);
-		Cidade cidadeCinco = new Cidade(4, "Americana", null);
+		Cidade cidadeCinco = new Cidade(5, "Americana", null);
 		Cidade cidadeSeis = new Cidade(6, "Campinas", null);
 		
 		cidades.add(cidadeUm);

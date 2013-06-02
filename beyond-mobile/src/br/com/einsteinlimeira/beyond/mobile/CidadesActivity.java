@@ -13,7 +13,8 @@ public class CidadesActivity extends Activity {
 	private ListView listViewListaCidades;
   private EntidadeListAdapter<Cidade> adaptador;
 
-	@Override
+  @Override
+  @SuppressWarnings("unchecked")
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.listagem_entidade);
@@ -26,6 +27,13 @@ public class CidadesActivity extends Activity {
         return entidade.getNome();
       }
     };
+    
+    Intent intentOrigem = getIntent();
+    
+    if(intentOrigem.hasExtra(Constantes.EXTRA_CIDADES_FILTRADAS)){
+      adaptador.setIdsEntidadesSelecionadas(((ParcelableList<Integer>)intentOrigem.
+          getParcelableExtra(Constantes.EXTRA_CIDADES_FILTRADAS)).getList());
+    }
     
 		listViewListaCidades.setAdapter(adaptador);	
 	}

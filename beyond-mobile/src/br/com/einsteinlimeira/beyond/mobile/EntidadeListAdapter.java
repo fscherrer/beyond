@@ -1,6 +1,7 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -153,5 +154,15 @@ public abstract class EntidadeListAdapter<E extends Entidade> extends BaseAdapte
    */
   public List<Integer> getIdsEntidadesSelecionadas() {
     return new ArrayList<Integer>(idsEntidadesSelecionadas);
+  }
+  
+  /**
+   * Define os IDs das Entidades já selecionadas.
+   * 
+   * @param idsEntidadesSelecionadas
+   *   IDs das Entidades já selecionadas.
+   */
+  public void setIdsEntidadesSelecionadas(Collection<Integer> idsEntidadesSelecionadas){
+    this.idsEntidadesSelecionadas.addAll(idsEntidadesSelecionadas);
   }
 }

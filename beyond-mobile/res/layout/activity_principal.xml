@@ -27,6 +27,20 @@
         android:background="@color/preto"
         android:contentDescription="@string/global_cidade"
         android:src="@drawable/cidade" />
+    
+    <TextView 
+        android:id="@+id/principal_textViewCidadesFiltradas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_cidade"
+        android:layout_toRightOf="@id/btn_cidade"
+        android:background="@drawable/quadrado"
+        android:layout_marginTop="-15dp"
+        android:layout_marginLeft="-15dp"
+        android:padding="3dp"
+        android:minWidth="25dp"
+        android:gravity="center"
+        android:textColor="@color/branco"/>
 
     <ImageButton
         android:id="@+id/btn_banda"
@@ -35,7 +49,7 @@
         android:layout_alignLeft="@+id/btn_cidade"
         android:layout_below="@+id/btn_cidade"
         android:layout_marginTop="5dp"
-        android:background="@color/preto"
+        android:background="@null"
         android:contentDescription="@string/global_banda"
         android:src="@drawable/banda" />
 
