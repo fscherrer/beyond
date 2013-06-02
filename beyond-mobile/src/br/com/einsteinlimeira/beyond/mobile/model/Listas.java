@@ -86,17 +86,25 @@ public class Listas {
 		cidades.add(cidadeQuatro);
 		cidades.add(cidadeCinco);
 		cidades.add(cidadeSeis);
+		cidades.add(new Cidade(7, "Teste 7", null));
+		cidades.add(new Cidade(8, "Teste 8", null));
+		cidades.add(new Cidade(9, "Teste 9", null));
+		cidades.add(new Cidade(10, "Teste 10", null));
+		cidades.add(new Cidade(11, "Teste 11", null));
+		cidades.add(new Cidade(12, "Teste 12", null));
+		cidades.add(new Cidade(13, "Teste 13", null));
+		cidades.add(new Cidade(14, "Teste 14", null));
 		
 		
 		try {
-			eventos.add(new Evento(1, "Evento 1", DateUtils.dateHourFormat.parse("08/02/2013 22:30"), 15d, null, bandasUm, null));
-			eventos.add(new Evento(2, "Evento 2", DateUtils.dateHourFormat.parse("08/03/2013 21:30"), 20d, null, bandasDois, null));
-			eventos.add(new Evento(3, "Evento 3", DateUtils.dateHourFormat.parse("08/04/2013 23:30"), 25d, null, bandasTres, null));
-			eventos.add(new Evento(4, "Evento 4", DateUtils.dateHourFormat.parse("08/05/2013 22:00"), 15d, null, bandasUm, null));
-			eventos.add(new Evento(5, "Evento 5", DateUtils.dateHourFormat.parse("08/06/2013 20:30"), 30d, null, bandasDois, null));
-			eventos.add(new Evento(6, "Evento 6", DateUtils.dateHourFormat.parse("08/07/2013 21:30"), 20d, null, bandasQuatro, null));
-			eventos.add(new Evento(7, "Evento 7", DateUtils.dateHourFormat.parse("08/08/2013 21:00"), 25d, null, bandasUm, null));
-			eventos.add(new Evento(8, "Evento 8", DateUtils.dateHourFormat.parse("08/09/2013 19:30"), 15d, null, bandasDois, null));
+			eventos.add(new Evento(1, "Evento 1", DateUtils.dateHourFormat.parse("08/02/2013 22:30"), 15d, null, bandasUm));
+			eventos.add(new Evento(2, "Evento 2", DateUtils.dateHourFormat.parse("08/03/2013 21:30"), 20d, null, bandasDois));
+			eventos.add(new Evento(3, "Evento 3", DateUtils.dateHourFormat.parse("08/04/2013 23:30"), 25d, null, bandasTres));
+			eventos.add(new Evento(4, "Evento 4", DateUtils.dateHourFormat.parse("08/05/2013 22:00"), 15d, null, bandasUm));
+			eventos.add(new Evento(5, "Evento 5", DateUtils.dateHourFormat.parse("08/06/2013 20:30"), 30d, null, bandasDois));
+			eventos.add(new Evento(6, "Evento 6", DateUtils.dateHourFormat.parse("08/07/2013 21:30"), 20d, null, bandasQuatro));
+			eventos.add(new Evento(7, "Evento 7", DateUtils.dateHourFormat.parse("08/08/2013 21:00"), 25d, null, bandasUm));
+			eventos.add(new Evento(8, "Evento 8", DateUtils.dateHourFormat.parse("08/09/2013 19:30"), 15d, null, bandasDois));
 			
 		} catch (ParseException e) {
 			e.printStackTrace();

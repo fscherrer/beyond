@@ -1,47 +1,48 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
-import br.com.einsteinlimeira.beyond.mobile.model.Listas;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ListView;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.ListView;
+import br.com.einsteinlimeira.beyond.mobile.model.Listas;
+import br.com.einsteinlimeira.beyond.mobile.util.ParcelableList;
+import br.com.einsteinlimeira.beyond.model.Cidade;
 
 public class CidadesActivity extends Activity {
 	
 	private ListView listViewListaCidades;
-	private Button botaoVoltar, botaoAvancar;
+  private EntidadeListAdapter<Cidade> adaptador;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_cidade);
+		setContentView(R.layout.listagem_entidade);
 		
-		listViewListaCidades = (ListView)findViewById(R.id.lista_cidades);
-		AdaptadorCidade adaptador = new AdaptadorCidade(Listas.cidades, CidadesActivity.this);
+		listViewListaCidades = (ListView)findViewById(R.id.listagem_entidade_listView);
+		adaptador = new EntidadeListAdapter<Cidade>(Listas.cidades, CidadesActivity.this) {
+      
+      @Override
+      public String getText(Cidade entidade) {
+        return entidade.getNome();
+      }
+    };
+    
 		listViewListaCidades.setAdapter(adaptador);	
-		
-		botaoVoltar = (Button) findViewById(R.id.botao_voltar_cidade);
-		botaoVoltar.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-		botaoAvancar = (Button) findViewById(R.id.botao_avancar_cidade);
-		botaoAvancar.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
 	}
 
+	/**
+	 * Define o resultado via {@link #setResult(int, Intent)}.
+	 * <br />.
+	 * {@inheritDoc}
+	 */
+  @Override
+  public void finish() {
+    // define o resultado para a activity que chamou essa
+    Intent retorno = new Intent();
+    retorno.putExtra(Constantes.EXTRA_CIDADES_FILTRADAS, 
+        new ParcelableList<Integer>(adaptador.getIdsEntidadesSelecionadas()));
+    setResult(RESULT_OK, retorno);
+    
+    super.finish();
+  }
 }

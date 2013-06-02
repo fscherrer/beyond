@@ -1,14 +1,23 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import br.com.einsteinlimeira.beyond.mobile.util.ParcelableList;
 
 public class PrincipalActivity extends GlobalActivity {
 	
 	private ImageButton botaoCasa, botaoCidade, botaoBanda, botaoEstilo;
+	
+	private List<Integer> idsCidadesFiltradas;
+	private List<Integer> idsCasasFiltradas;
+	private List<String> estilosFiltrados;
+	private List<Integer> idsBandasFiltradas;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +30,7 @@ public class PrincipalActivity extends GlobalActivity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(PrincipalActivity.this, CasasActivity.class);
+				
 				startActivity(intent);
 			}
 		});
@@ -31,8 +41,9 @@ public class PrincipalActivity extends GlobalActivity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(PrincipalActivity.this, CidadesActivity.class);
-				startActivity(intent);
-				
+				intent.putExtra(Constantes.EXTRA_CIDADES_FILTRADAS, 
+				    new ParcelableList<Integer>(idsCidadesFiltradas));
+				startActivityForResult(intent, Constantes.REQUEST_CODE_FILTRO_CIDADE);
 			}
 		});
 		
@@ -56,5 +67,24 @@ public class PrincipalActivity extends GlobalActivity {
 			}
 		});
 	}
+	
+  @Override
+  @SuppressWarnings("unchecked")
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	  if(resultCode == RESULT_OK){
+	    switch (requestCode) {
+	      // filtro de Cidades
+        case Constantes.REQUEST_CODE_FILTRO_CIDADE:
+          if(data.hasExtra(Constantes.EXTRA_CIDADES_FILTRADAS)){
+            idsCidadesFiltradas = ((ParcelableList<Integer>)data.getParcelableExtra(
+                Constantes.EXTRA_CIDADES_FILTRADAS)).getList();
+          }
+          break;
 
+        default:
+          Log.w(Constantes.TAG, "Request Code desconhecido: " + requestCode);
+          break;
+      }
+	  }
+	}
 }
