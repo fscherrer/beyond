@@ -34,9 +34,14 @@ public class CasasMB extends BaseManagedBeanEntidade<Casa> {
   private LatLng latLngInicial = new LatLng(-22.023527, -48.240967);
 
   /**
-   * Mapa.
+   * Coordenada para o centro do mapa.
    */
-  private UIComponent map;
+  private String coordenada;
+  
+  /**
+   * Zoom do mapa.
+   */
+  private int zoom;
 
   /**
    * Services de Casa.
@@ -112,18 +117,20 @@ public class CasasMB extends BaseManagedBeanEntidade<Casa> {
     mapModel = new DefaultMapModel();
 
     Marker marker;
-    String coordenada = entidade.getEndereco().getCoordenada();
+    coordenada = latLngInicial.getLat() + "," + latLngInicial.getLng();
+    zoom = 7;
+    String coordenadaEnderecoCasa = entidade.getEndereco().getCoordenada();
 
-    if (coordenada != null && !coordenada.trim().isEmpty()) {
-      String[] latLng = coordenada.split(",");
+    if (coordenadaEnderecoCasa != null && !coordenadaEnderecoCasa.trim().isEmpty()) {
+      String[] latLng = coordenadaEnderecoCasa.split(",");
 
       try {
         marker = new Marker(new LatLng(
             Double.parseDouble(latLng[0]),
             Double.parseDouble(latLng[1])));
 
-        ((GMap) map).setCenter(coordenada);
-        ((GMap) map).setZoom(15);
+        coordenada = coordenadaEnderecoCasa;
+        zoom = 15;
       }
       catch (NumberFormatException nfe) {
         marker = new Marker(latLngInicial);
@@ -146,8 +153,8 @@ public class CasasMB extends BaseManagedBeanEntidade<Casa> {
     mapModel.addOverlay(marker);
     marker.setDraggable(true);
 
-    ((GMap) map).setCenter(latLngInicial.getLat() + "," + latLngInicial.getLng());
-    ((GMap) map).setZoom(7);
+    coordenada = latLngInicial.getLat() + "," + latLngInicial.getLng();
+    zoom = 7;
   }
 
   public void pontoSelecionado(MarkerDragEvent event) {
@@ -155,11 +162,23 @@ public class CasasMB extends BaseManagedBeanEntidade<Casa> {
     entidade.getEndereco().setCoordenada(latlng.getLat() + "," + latlng.getLng());
   }
 
-  public UIComponent getMap() {
-    return map;
+  /**
+   * Retorna a coordenada para centralização do Mapa.
+   * 
+   * @return 
+   *   Coordenada para centralização.
+   */
+  public String getCoordenada() {
+    return coordenada;
   }
 
-  public void setMap(UIComponent map) {
-    this.map = map;
+  /**
+   * Retorna o zoom desejado para o mapa.
+   * 
+   * @return 
+   *   Zoom desejado.
+   */
+  public int getZoom() {
+    return zoom;
   }
 }

@@ -78,8 +78,7 @@ and open the template in the editor.
               </p:column>
 
               <p:column>
-                <p:gmap id="mapa" center="-22.023527,-48.240967" zoom="7" type="ROADMAP" 
-                        binding="#{casasMB.map}"
+                <p:gmap id="mapa" center="#{casasMB.coordenada}" zoom="#{casasMB.zoom}" type="ROADMAP" 
                         style="width:400px;height:400px" model="#{casasMB.mapModel}">
                   <p:ajax event="markerDrag" listener="#{casasMB.pontoSelecionado}"
                           update="coordenada"/>
