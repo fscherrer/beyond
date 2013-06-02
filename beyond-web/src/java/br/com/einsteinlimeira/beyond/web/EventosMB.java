@@ -17,10 +17,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import org.primefaces.component.gmap.GMap;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.map.DefaultMapModel;
@@ -135,9 +133,9 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
   private boolean exibirMapa;
 
   /**
-   * Mapa.
+   * Coordenada para centralização do Mapa.
    */
-  private UIComponent map;
+  private String coordenada;
 
   /**
    * {@inheritDoc}
@@ -297,11 +295,13 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
     exibirMapa = false;
     mapModel = null;
 
-    String coordenada = entidade.getCasa().getEndereco().getCoordenada();
+    coordenada = "-22.023527,-48.240967";
+    
+    String coordenadaEnderecoCasa = entidade.getCasa().getEndereco().getCoordenada();
 
-    if (coordenada != null && !coordenada.trim().isEmpty()) {
+    if (coordenadaEnderecoCasa != null && !coordenadaEnderecoCasa.trim().isEmpty()) {
       Marker marker;
-      String[] latLng = coordenada.split(",");
+      String[] latLng = coordenadaEnderecoCasa.split(",");
 
       try {
         marker = new Marker(new LatLng(
@@ -312,8 +312,8 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
         mapModel = new DefaultMapModel();
         mapModel.addOverlay(marker);
 
-        ((GMap) map).setCenter(coordenada);
-
+        coordenada = coordenadaEnderecoCasa;
+        
         exibirMapa = true;
       }
       catch (NumberFormatException nfe) {
@@ -653,11 +653,13 @@ public class EventosMB extends BaseManagedBeanEntidade<Evento> {
     return entidades;
   }
 
-  public UIComponent getMap() {
-    return map;
-  }
-
-  public void setMap(UIComponent map) {
-    this.map = map;
+  /**
+   * Retorna a coordenada para centralização do Mapa.
+   * 
+   * @return 
+   *   Coordenada para centralização.
+   */
+  public String getCoordenada() {
+    return coordenada;
   }
 }

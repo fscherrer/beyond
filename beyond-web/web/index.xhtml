@@ -65,8 +65,8 @@
           </h:panelGrid>
 
           <h:panelGroup layout="block" styleClass="panelCru" style="margin: 0px auto;">
-            <p:gmap id="mapa" center="-22.023527,-48.240967" zoom="15" type="ROADMAP" 
-                    binding="#{eventosMB.map}" model="#{eventosMB.mapModel}"
+            <p:gmap id="mapa" center="#{eventosMB.coordenada}" zoom="15" type="ROADMAP" 
+                    model="#{eventosMB.mapModel}"
                     style="width:380px;height:350px" 
                     rendered="#{eventosMB.exibirMapa}">
             </p:gmap>
