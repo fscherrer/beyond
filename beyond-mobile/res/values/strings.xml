@@ -55,4 +55,5 @@
     <!--  activity evento_detalhe -->
     <string name="evento_localizacao">Localização</string>
     <string name="evento_mapaNaoDefinido">Mapa não definido</string>
+    <string name="visualizar_eventos">Visualizar Eventos</string>
 </resources>
