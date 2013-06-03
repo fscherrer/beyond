@@ -7,11 +7,15 @@ import br.com.einsteinlimeira.beyond.model.Banda;
 public class EntidadeUtils {
 	public static String bandasToString(List<Banda> bandas) {
 		StringBuilder stringBuilderBandas = new StringBuilder();
-		for (Banda banda : bandas) {
-			stringBuilderBandas.append(banda.getNome()).append(", ");
+
+		if (!bandas.isEmpty()) {
+			for (Banda banda : bandas) {
+				stringBuilderBandas.append(banda.getNome()).append(", ");
+			}
+			stringBuilderBandas.delete(stringBuilderBandas.length() - 2,
+					stringBuilderBandas.length());
 		}
-		stringBuilderBandas.delete(stringBuilderBandas.length() - 2,
-				stringBuilderBandas.length());
+
 		return stringBuilderBandas.toString();
 	}
 }
