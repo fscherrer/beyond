@@ -18,12 +18,10 @@ import android.util.Log;
 import br.com.einsteinlimeira.beyond.mobile.Constantes;
 import br.com.einsteinlimeira.beyond.mobile.R;
 import br.com.einsteinlimeira.beyond.mobile.util.HttpUtils;
-import br.com.einsteinlimeira.beyond.model.Evento;
+import br.com.einsteinlimeira.beyond.model.dto.CacheExterno;
 import br.com.einsteinlimeira.beyond.protocol.Requisicao;
-import br.com.einsteinlimeira.beyond.protocol.RequisicaoEvento;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class AtualizaBaseServices {
   /**
@@ -31,9 +29,6 @@ public class AtualizaBaseServices {
    * 
    * @param contexto
    *   Contexto da operação.
-   * 
-   * @return 
-   *   Lista de Eventos.
    * 
    * @throws IOException se ocorrer algum problema de I/O ao realizar a requisição remota.
    */
@@ -57,10 +52,7 @@ public class AtualizaBaseServices {
 
     List<NameValuePair> parametros = new ArrayList<NameValuePair>();
     parametros.add(new BasicNameValuePair(Requisicao.PARAMETRO_TIPO,
-        Requisicao.TIPO_EVENTO));
-    parametros.add(new BasicNameValuePair(
-        RequisicaoEvento.PARAMETRO_EVENTO,
-        Requisicao.TODAS));
+        Requisicao.TIPO_CACHE));
 
     try {
       httpPost.setEntity(new UrlEncodedFormEntity(parametros));
@@ -79,8 +71,9 @@ public class AtualizaBaseServices {
       else {
         String json = HttpUtils.getString(httpResponse);
 
-        return new Gson().fromJson(json, new TypeToken<List<Evento>>() {
-        }.getType());
+        CacheExterno cacheExterno = new Gson().fromJson(json, CacheExterno.class);
+        
+        // TODO; continuar
       }
     }
     catch (IOException ioe) {
