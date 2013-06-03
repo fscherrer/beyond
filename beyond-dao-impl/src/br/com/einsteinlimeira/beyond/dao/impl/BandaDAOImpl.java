@@ -3,6 +3,7 @@ package br.com.einsteinlimeira.beyond.dao.impl;
 import br.com.einsteinlimeira.beyond.dao.BandaDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
 import br.com.einsteinlimeira.beyond.model.Banda;
+import br.com.einsteinlimeira.beyond.model.dto.BandaDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -302,4 +303,53 @@ public class BandaDAOImpl implements BandaDAO {
       throw new DAOException(mensagem, sqle);
     }
   }
+  
+  /**
+   * Query para obtenção de DTOs.
+   */
+  private static final String DTO_QUERY = ""
+      + " select "
+      + "   banda.id, "
+      + "   banda.nome, "
+      + "   banda.estilo "
+      + " from "
+      + "   banda ";
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<BandaDTO> getDTOs() throws DAOException {
+    try {
+      List<BandaDTO> dtos = new ArrayList<BandaDTO>();
+
+      int bandaId;
+      String bandaNome;
+      String bandaEstilo;
+
+      ResultSet resultSet = BancoDeDados.getInstancia().executarQuery(DTO_QUERY);
+
+      while (resultSet.next()) {
+        bandaId = resultSet.getInt("Id");
+        bandaNome = resultSet.getString("nome");
+        bandaEstilo = resultSet.getString("estilo");
+
+        dtos.add(new BandaDTO(bandaId, bandaNome, bandaEstilo));
+      }
+
+      return dtos;
+    }
+    catch (SQLException sqle) {
+      final String mensagem = "Falha ao extrair dados do resultSet";
+
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    }
+    catch (BancoDeDadosException bdde) {
+      final String mensagem = "Falha ao obter DTOs";
+
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+  }  
 }

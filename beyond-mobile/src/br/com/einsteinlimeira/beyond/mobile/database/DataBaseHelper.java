@@ -53,6 +53,39 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
   @Override
   public void onCreate(SQLiteDatabase db) {
+    // Casa
+    db.execSQL("create table casa (" +
+        "_id integer not null primary key, " +
+        "nome text not null, " +
+        "logradouro text not null, " +
+        "numero text not null, " +
+        "bairro text, " +
+        "cep text not null, " +
+        "coordenada text, " +
+        "cidadeid integer not null);");
+    
+    // Cidade
+    db.execSQL("create table cidade (" +
+        "_id integer not null primary key, " +
+        "nome text not null);");
+    
+    // Banda
+    db.execSQL("create table banda (" +
+        "_id integer not null primary key, " +
+        "nome text not null);");
+    
+    // Evento
+    db.execSQL("create table evento (" +
+        "_id integer not null primary key, " +
+        "nome text not null, " +
+        "valor real not null, " +
+        "casaid integer not null);");
+    
+    // EventoBanda
+    db.execSQL("create table eventobanda (" +
+        "eventoid integer not null, " +
+        "bandaid integer not null);");
+    
   }
 
   @Override

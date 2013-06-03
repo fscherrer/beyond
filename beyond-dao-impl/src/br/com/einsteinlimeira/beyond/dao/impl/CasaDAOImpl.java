@@ -5,6 +5,7 @@ import br.com.einsteinlimeira.beyond.dao.DAOException;
 import br.com.einsteinlimeira.beyond.dao.EnderecoDAO;
 import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Endereco;
+import br.com.einsteinlimeira.beyond.model.dto.CasaDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -280,4 +281,72 @@ public class CasaDAOImpl implements CasaDAO {
       throw new DAOException(mensagem, sqle);
     }
   }
+  
+  /**
+   * Query para obtenção de DTOs.
+   */
+  private static final String DTO_QUERY = ""
+      + " select "
+      + "   casa.id, "
+      + "   casa.nome, "
+      + "   endereco.logradouro, "
+      + "   endereco.numero, "
+      + "   endereco.bairro, "
+      + "   endereco.cep, "
+      + "   endereco.coordenada, "
+      + "   cidade.id as cidadeid "
+      + " from "
+      + "   casa "
+      + "     join endereco on endereco.id = casa.enderecoid "
+      + "     join cidade on cidade.id = endereco.cidadeid";
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<CasaDTO> getDTOs() throws DAOException {
+    try {
+      List<CasaDTO> dtos = new ArrayList<CasaDTO>();
+
+      int casaId;
+      String casaNome;
+      String casaEnderecoLogradouro;
+      String casaEnderecoNumero;
+      String casaEnderecoBairro;
+      String casaEnderecoCep;
+      String casaEnderecoCoordenada;
+      int casaEnderecoCidadeId;
+
+      ResultSet resultSet = BancoDeDados.getInstancia().executarQuery(DTO_QUERY);
+
+      while (resultSet.next()) {
+        casaId = resultSet.getInt("Id");
+        casaNome = resultSet.getString("nome");
+        casaEnderecoLogradouro = resultSet.getString("logradouro");
+        casaEnderecoNumero = resultSet.getString("numero");
+        casaEnderecoBairro = resultSet.getString("bairro");
+        casaEnderecoCep = resultSet.getString("cep");
+        casaEnderecoCoordenada = resultSet.getString("coordenada");
+        casaEnderecoCidadeId = resultSet.getInt("cidadeid");
+
+
+        dtos.add(new CasaDTO(casaId, casaNome, casaEnderecoLogradouro, casaEnderecoNumero,
+            casaEnderecoBairro, casaEnderecoCep, casaEnderecoCoordenada, casaEnderecoCidadeId));
+      }
+
+      return dtos;
+    }
+    catch (SQLException sqle) {
+      final String mensagem = "Falha ao extrair dados do resultSet";
+
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    }
+    catch (BancoDeDadosException bdde) {
+      final String mensagem = "Falha ao obter DTOs";
+
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+  }  
 }

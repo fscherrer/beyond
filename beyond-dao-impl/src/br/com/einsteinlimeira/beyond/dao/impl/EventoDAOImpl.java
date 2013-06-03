@@ -7,6 +7,7 @@ import br.com.einsteinlimeira.beyond.dao.EventoDAO;
 import br.com.einsteinlimeira.beyond.model.Banda;
 import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Evento;
+import br.com.einsteinlimeira.beyond.model.dto.EventoDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -472,4 +473,82 @@ public class EventoDAOImpl implements EventoDAO {
       throw new DAOException(mensagem, bdde);
     }
   }
+ 
+  /**
+   * Query para obtenção de DTOs.
+   */
+  private static final String DTO_QUERY = ""
+      + " select "
+      + "   evento.id, "
+      + "   evento.nome, "
+      + "   evento.valor, "
+      + "   evento.dataHora, "
+      + "   eventobanda.bandaid, "
+      + "   evento.casaid "
+      + " from "
+      + "   evento "
+      + "     left join eventobanda on eventobanda.eventoid = evento.id "
+      + " where "
+      + "   dataHora >= now() "
+      + " order by "
+      + "   evento.id ";
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<EventoDTO> getDTOs() throws DAOException {
+    try {
+      List<EventoDTO> dtos = new ArrayList<EventoDTO>();
+
+      int eventoId;
+      String eventoNome;
+      double eventoValor;
+      Date eventoDataHora;
+      int eventoCasaId;
+      int bandaId;
+      
+      EventoDTO dto = null;
+      
+      int eventoIdAtual = 0;
+
+      ResultSet resultSet = BancoDeDados.getInstancia().executarQuery(DTO_QUERY);
+
+      while (resultSet.next()) {
+        eventoId = resultSet.getInt("id");
+        eventoNome = resultSet.getString("nome");
+        eventoValor = resultSet.getDouble("valor");
+        eventoDataHora = resultSet.getTimestamp("dataHora");
+        eventoCasaId = resultSet.getInt("casaid");
+
+        if (eventoId != eventoIdAtual) {
+          dto = new EventoDTO(eventoId, eventoNome, eventoValor, eventoDataHora, 
+              new ArrayList<Integer>(), eventoCasaId);
+          dtos.add(dto);
+        }
+        
+        bandaId = resultSet.getInt("bandaid");
+
+        if(!resultSet.wasNull()){
+          dto.getIdsBandas().add(bandaId);
+        }
+        
+        eventoIdAtual = eventoId;
+      }
+
+      return dtos;
+    }
+    catch (SQLException sqle) {
+      final String mensagem = "Falha ao extrair dados do resultSet";
+
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    }
+    catch (BancoDeDadosException bdde) {
+      final String mensagem = "Falha ao obter DTOs";
+
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
+    }
+  }  
 }

@@ -6,6 +6,7 @@ import br.com.einsteinlimeira.beyond.model.Banda;
 import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.EntidadeUtils;
 import br.com.einsteinlimeira.beyond.model.Evento;
+import br.com.einsteinlimeira.beyond.model.dto.EventoDTO;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.EventoServices;
 import java.util.List;
@@ -118,6 +119,20 @@ public class EventoServicesImpl implements EventoServices {
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
           "Falha na chamada à camada de acesso a dados para obter Eventos filtrados", daoe);
+    }
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<EventoDTO> getDTOs() throws EntidadeServicesException {
+    try {
+      return eventoDAO.getDTOs();
+    }
+    catch (DAOException daoe) {
+      throw new EntidadeServicesException(
+          "Falha na chamada à camada de acesso a dados para obter DTOs de Evento", daoe);
     }
   }
 }

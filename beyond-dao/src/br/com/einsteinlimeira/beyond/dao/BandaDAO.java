@@ -1,12 +1,13 @@
 package br.com.einsteinlimeira.beyond.dao;
 
 import br.com.einsteinlimeira.beyond.model.Banda;
+import br.com.einsteinlimeira.beyond.model.dto.BandaDTO;
 import java.util.List;
 
 /**
  * Define o DAO de {@link Banda}.
  */
-public interface BandaDAO extends EntidadeDAO<Banda> {
+public interface BandaDAO extends EntidadeDAO<Banda>, EntidadeDTODAO<BandaDTO> {
 
   /**
    * Retorna a lista de estilos definidos nas bandas.

@@ -28,6 +28,12 @@ public class Requisicao {
   public static final String TIPO_CIDADE = "cidade";
   
   /**
+   * Valor a ser informado no parâmetro {@link #PARAMETRO_TIPO} obtenção dos dados para 
+   * armazenamento em cache externo.
+   */
+  public static final String TIPO_CACHE = "cache";
+  
+  /**
    * Valor para indicar solicitações de todas as entidades de um tipo
    *@see Requisicao
    */

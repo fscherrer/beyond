@@ -3,6 +3,7 @@ package br.com.einsteinlimeira.beyond.services.impl;
 import br.com.einsteinlimeira.beyond.dao.CidadeDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
 import br.com.einsteinlimeira.beyond.model.Cidade;
+import br.com.einsteinlimeira.beyond.model.dto.CidadeDTO;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.CidadeServices;
 import java.util.List;
@@ -87,6 +88,20 @@ public class CidadeServicesImpl implements CidadeServices {
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
           "Falha na chamada à camada de acesso a dados para remover Cidade", daoe);
+    }
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<CidadeDTO> getDTOs() throws EntidadeServicesException {
+    try {
+      return cidadeDAO.getDTOs();
+    }
+    catch (DAOException daoe) {
+      throw new EntidadeServicesException(
+          "Falha na chamada à camada de acesso a dados para obter DTOs de Cidade", daoe);
     }
   }
 }

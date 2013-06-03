@@ -2,10 +2,17 @@ package br.com.einsteinlimeira.beyond.web.servlets;
 
 import br.com.einsteinlimeira.beyond.model.Casa;
 import br.com.einsteinlimeira.beyond.model.Evento;
+import br.com.einsteinlimeira.beyond.model.dto.BandaDTO;
+import br.com.einsteinlimeira.beyond.model.dto.CacheExterno;
+import br.com.einsteinlimeira.beyond.model.dto.CasaDTO;
+import br.com.einsteinlimeira.beyond.model.dto.CidadeDTO;
+import br.com.einsteinlimeira.beyond.model.dto.EventoDTO;
 import br.com.einsteinlimeira.beyond.protocol.Requisicao;
 import br.com.einsteinlimeira.beyond.protocol.RequisicaoCasa;
 import br.com.einsteinlimeira.beyond.protocol.RequisicaoEvento;
+import br.com.einsteinlimeira.beyond.services.BandaServices;
 import br.com.einsteinlimeira.beyond.services.CasaServices;
+import br.com.einsteinlimeira.beyond.services.CidadeServices;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.EventoServices;
 import com.google.gson.Gson;
@@ -44,6 +51,18 @@ public class FrontControllerServlet extends HttpServlet {
      */
     @Inject
     private CasaServices casaServices;
+    
+    /**
+     * Services de Cidade.
+     */
+    @Inject
+    private CidadeServices cidadeServices;
+    
+    /**
+     * Services de Banda.
+     */
+    @Inject
+    private BandaServices bandaServices;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -79,6 +98,9 @@ public class FrontControllerServlet extends HttpServlet {
       }
       else if (tipoRequisicao.equals(Requisicao.TIPO_CASA)) {
         processaRequisicaoCasa(request, response);
+      }
+      else if (tipoRequisicao.equals(Requisicao.TIPO_CACHE)) {
+        processaRequisicaoCache(request, response);
       }
       else {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "O tipo de requisição informado ("
@@ -178,6 +200,38 @@ public class FrontControllerServlet extends HttpServlet {
             }
         }
     }
+
+  /**
+   * Método responsável pelo processamento de requisições de dados para cache externo.
+   * 
+   * @param request
+   * @param response
+   * @throws IOException 
+   */
+  private void processaRequisicaoCache(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
+    final String mensagemFalha = "Falha ao obter dados para cache";
+    response.setCharacterEncoding("UTF-8");
+
+    try {
+      List<CidadeDTO> dtosCidade = cidadeServices.getDTOs();
+      List<CasaDTO> dtosCasa = casaServices.getDTOs();
+      List<BandaDTO> dtosBanda = bandaServices.getDTOs();
+      List<EventoDTO> dtosEvento = eventoServices.getDTOs();
+      
+      CacheExterno cacheExterno = new CacheExterno();
+      cacheExterno.setCidades(dtosCidade);
+      cacheExterno.setCasas(dtosCasa);
+      cacheExterno.setBandas(dtosBanda);
+      cacheExterno.setEventos(dtosEvento);
+
+      writeResponse(response, new Gson().toJson(cacheExterno));
+    }
+    catch (EntidadeServicesException ese) {
+      LOGGER.log(Level.SEVERE, mensagemFalha, ese);
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, mensagemFalha);
+    }
+  }
 
     private void writeResponse(HttpServletResponse response, String responseString)
             throws IOException {

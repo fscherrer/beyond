@@ -3,6 +3,7 @@ package br.com.einsteinlimeira.beyond.services.impl;
 import br.com.einsteinlimeira.beyond.dao.BandaDAO;
 import br.com.einsteinlimeira.beyond.dao.DAOException;
 import br.com.einsteinlimeira.beyond.model.Banda;
+import br.com.einsteinlimeira.beyond.model.dto.BandaDTO;
 import br.com.einsteinlimeira.beyond.services.EntidadeServicesException;
 import br.com.einsteinlimeira.beyond.services.BandaServices;
 import java.util.List;
@@ -114,6 +115,20 @@ public class BandaServicesImpl implements BandaServices {
     catch (DAOException daoe) {
       throw new EntidadeServicesException(
           "Falha na chamada à camada de acesso a dados para listar Bandas filtradas", daoe);
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<BandaDTO> getDTOs() throws EntidadeServicesException {
+    try {
+      return bandaDAO.getDTOs();
+    }
+    catch (DAOException daoe) {
+      throw new EntidadeServicesException(
+          "Falha na chamada à camada de acesso a dados para obter DTOs de Banda", daoe);
     }
   }
 }

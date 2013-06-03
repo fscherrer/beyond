@@ -5,6 +5,7 @@ import br.com.einsteinlimeira.beyond.dao.DAOException;
 import br.com.einsteinlimeira.beyond.dao.UfDAO;
 import br.com.einsteinlimeira.beyond.model.Cidade;
 import br.com.einsteinlimeira.beyond.model.Uf;
+import br.com.einsteinlimeira.beyond.model.dto.CidadeDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -226,6 +227,56 @@ public class CidadeDAOImpl implements CidadeDAO {
 
       LOGGER.log(Level.SEVERE, mensagem, sqle);
       throw new DAOException(mensagem, sqle);
+    }
+  }
+  
+  /**
+   * Query para obtenção de DTOs.
+   */
+  private static final String DTO_QUERY = ""
+      + " select "
+      + "   cidade.id, "
+      + "   cidade.nome, "
+      + "   uf.sigla as ufsigla "
+      + " from "
+      + "   cidade "
+      + "     join uf on uf.id = cidade.ufid";
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<CidadeDTO> getDTOs() throws DAOException {
+    try {
+      List<CidadeDTO> dtos = new ArrayList<CidadeDTO>();
+
+      int cidadeId;
+      String cidadeNome;
+      String cidadeUfSigla;
+
+      ResultSet resultSet = BancoDeDados.getInstancia().executarQuery(DTO_QUERY);
+
+      while (resultSet.next()) {
+        cidadeId = resultSet.getInt("Id");
+        cidadeNome = resultSet.getString("nome");
+        cidadeUfSigla = resultSet.getString("ufsigla");
+
+        dtos.add(new CidadeDTO(cidadeId, cidadeNome, cidadeUfSigla));
+      }
+
+      return dtos;
+    }
+    catch (SQLException sqle) {
+      final String mensagem = "Falha ao extrair dados do resultSet";
+
+      LOGGER.log(Level.SEVERE, mensagem, sqle);
+      throw new DAOException(mensagem, sqle);
+    }
+    catch (BancoDeDadosException bdde) {
+      final String mensagem = "Falha ao obter DTOs";
+
+      LOGGER.log(Level.SEVERE, mensagem, bdde);
+      throw new DAOException(mensagem, bdde);
     }
   }
 }

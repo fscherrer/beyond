@@ -1,12 +1,13 @@
 package br.com.einsteinlimeira.beyond.dao;
 
 import br.com.einsteinlimeira.beyond.model.Evento;
+import br.com.einsteinlimeira.beyond.model.dto.EventoDTO;
 import java.util.List;
 
 /**
  * Define o DAO de {@link Evento}.
  */
-public interface EventoDAO extends EntidadeDAO<Evento> {
+public interface EventoDAO extends EntidadeDAO<Evento>, EntidadeDTODAO<EventoDTO> {
 
   /**
    * Retorna a lista de {@link Evento}s filtrados.

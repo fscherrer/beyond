@@ -1,12 +1,13 @@
 package br.com.einsteinlimeira.beyond.dao;
 
 import br.com.einsteinlimeira.beyond.model.Casa;
+import br.com.einsteinlimeira.beyond.model.dto.CasaDTO;
 import java.util.List;
 
 /**
  * Define o DAO de {@link Casa}.
  */
-public interface CasaDAO extends EntidadeDAO<Casa> {
+public interface CasaDAO extends EntidadeDAO<Casa>, EntidadeDTODAO<CasaDTO> {
 
   /**
    * Retorna as Casas das Cidades <code>idsCidades</code>.
