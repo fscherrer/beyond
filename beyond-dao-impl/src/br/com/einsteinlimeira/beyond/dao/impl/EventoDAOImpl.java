@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,7 +75,7 @@ public class EventoDAOImpl implements EventoDAO {
               Statement.RETURN_GENERATED_KEYS);
       preparedStatement.setString(1, entidade.getNome());
       preparedStatement.setObject(2, entidade.getCasa() == null ? null : entidade.getCasa().getId());
-      preparedStatement.setDate(3, new java.sql.Date(entidade.getDatahora().getTime()));
+      preparedStatement.setTimestamp(3, new Timestamp(entidade.getDatahora().getTime()));
       preparedStatement.setDouble(4, entidade.getValor());
 
       preparedStatement.executeUpdate();
@@ -253,7 +254,7 @@ public class EventoDAOImpl implements EventoDAO {
       PreparedStatement preparedStatement = conexao.prepareStatement(EDITA_EVENTO_QUERY);
       preparedStatement.setString(1, entidade.getNome());
       preparedStatement.setObject(2, entidade.getCasa() == null ? null : entidade.getCasa().getId());
-      preparedStatement.setDate(3, new java.sql.Date(entidade.getDatahora().getTime()));
+      preparedStatement.setTimestamp(3, new Timestamp(entidade.getDatahora().getTime()));
       preparedStatement.setDouble(4, entidade.getValor());
       preparedStatement.setInt(5, entidade.getId());
 
