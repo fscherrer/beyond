@@ -89,7 +89,7 @@
                 android:id="@+id/evento_mapa"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                class="com.google.android.gms.maps.SupportMapFragment" />
+                class="com.google.android.gms.maps.SupportMapFragment"/>
         </LinearLayout>
         
         <TextView 
@@ -101,6 +101,15 @@
             android:layout_height="match_parent"
             android:visibility="invisible"
             android:gravity="center" />
+
+        <CheckBox
+            android:id="@+id/check_loc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/evento_linearLayout_mapa"
+            android:layout_alignLeft="@+id/evento_linearLayout_mapa"
+            android:text="@string/exibir_localizacao" 
+            android:textColor="@color/preto"/>
         
     </RelativeLayout>
 
