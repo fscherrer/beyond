@@ -1,10 +1,10 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
-import br.com.einsteinlimeira.beyond.model.Evento;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import br.com.einsteinlimeira.beyond.mobile.services.AtualizaBaseServices;
 
 public class InicialActivity extends GlobalActivity {
   private TextView textViewInformacoes;
@@ -29,14 +30,16 @@ public class InicialActivity extends GlobalActivity {
     buttonTentarNovamente = (Button) findViewById(R.id.inicial_buttonTentarNovamente);
 
     OnClickListener onClickListener = new OnClickListener() {
+      protected boolean sucesso;
 
       @Override
       public void onClick(View v) {
         if (atualizando) {
-          Log.i(Constantes.TAG, "Tentativa de atualização com outra atualização já em curso. Ignorando.");
+          Log.i(Constantes.TAG,
+              "Tentativa de atualização com outra atualização já em curso. Ignorando.");
         }
         else {
-          new ObtemEventosAsyncTask(InicialActivity.this) {
+          new AsyncTask<Void, Void, Void>() {
             private ProgressDialog progressDialog;
 
             @Override
@@ -52,10 +55,24 @@ public class InicialActivity extends GlobalActivity {
             }
 
             @Override
-            protected void onPostExecute(ArrayList<Evento> result) {
+            protected Void doInBackground(Void... params) {
+              try {
+                sucesso = new AtualizaBaseServices().atualiza(InicialActivity.this);
+              }
+              catch (IOException e) {
+                Log.e(Constantes.TAG,
+                    InicialActivity.this.getResources().getString(R.string.global_erro_requisicao),
+                    e);
+              }
+
+              return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
               progressDialog.dismiss();
 
-              if (problema) {
+              if (!sucesso) {
                 Toast.makeText(InicialActivity.this,
                     getResources().getString(R.string.global_erro_requisicao), Toast.LENGTH_LONG)
                     .show();
@@ -63,10 +80,7 @@ public class InicialActivity extends GlobalActivity {
                 buttonTentarNovamente.setVisibility(Button.VISIBLE);
               }
               else {
-                Intent intent = new Intent(InicialActivity.this, EventosActivity.class);
-                intent.putExtra("eventos", result);
-                startActivity(intent);
-                InicialActivity.this.finish();
+                startPrincipalETermina();
               }
 
               Log.i(Constantes.TAG, "Atualizado");
@@ -85,4 +99,11 @@ public class InicialActivity extends GlobalActivity {
     textViewInformacoes.setText(R.string.toque_inicial);
   }
 
+  /**
+   * Inicial a {@link PrincipalActivity} e chama finish() dessa.
+   */
+  private void startPrincipalETermina(){
+    startActivity(new Intent(InicialActivity.this, PrincipalActivity.class));
+    InicialActivity.this.finish();
+  }
 }

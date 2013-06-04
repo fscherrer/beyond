@@ -51,49 +51,49 @@ public class EventosActivity extends GlobalActivity {
 		});
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	  super.onCreateOptionsMenu(menu);
-	  
-	  MenuItem menuItem = menu.add(R.string.global_atualizar);
-	  menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-      
-      @Override
-      public boolean onMenuItemClick(MenuItem item) {
-        atualizarEventos();
-        return true;
-      }
-    });
-	  
-	  return true;
-	}
-	
-	private void atualizarEventos(){
-	  new ObtemEventosAsyncTask(this) {
-      private ProgressDialog progressDialog;
-
-      @Override
-      protected void onPreExecute() {
-        progressDialog = new ProgressDialog(EventosActivity.this);
-        progressDialog.setMessage(getResources().getString(
-            R.string.global_aguarde));
-        progressDialog.show();
-      }
-
-      @Override
-      protected void onPostExecute(ArrayList<Evento> result) {
-        progressDialog.dismiss();
-
-        if (problema) {
-          Toast.makeText(EventosActivity.this,
-              getResources().getString(R.string.global_erro_requisicao), Toast.LENGTH_LONG)
-              .show();
-        }
-        else {
-          adaptador.setEventos(result);
-          adaptador.notifyDataSetChanged();
-        }
-      }
-    }.execute();
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//	  super.onCreateOptionsMenu(menu);
+//	  
+//	  MenuItem menuItem = menu.add(R.string.global_atualizar);
+//	  menuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+//      
+//      @Override
+//      public boolean onMenuItemClick(MenuItem item) {
+//        atualizarEventos();
+//        return true;
+//      }
+//    });
+//	  
+//	  return true;
+//	}
+//	
+//	private void atualizarEventos(){
+//	  new ObtemEventosAsyncTask(this) {
+//      private ProgressDialog progressDialog;
+//
+//      @Override
+//      protected void onPreExecute() {
+//        progressDialog = new ProgressDialog(EventosActivity.this);
+//        progressDialog.setMessage(getResources().getString(
+//            R.string.global_aguarde));
+//        progressDialog.show();
+//      }
+//
+//      @Override
+//      protected void onPostExecute(ArrayList<Evento> result) {
+//        progressDialog.dismiss();
+//
+//        if (problema) {
+//          Toast.makeText(EventosActivity.this,
+//              getResources().getString(R.string.global_erro_requisicao), Toast.LENGTH_LONG)
+//              .show();
+//        }
+//        else {
+//          adaptador.setEventos(result);
+//          adaptador.notifyDataSetChanged();
+//        }
+//      }
+//    }.execute();
+//	}
 }

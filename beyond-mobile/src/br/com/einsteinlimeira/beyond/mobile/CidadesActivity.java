@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
-import br.com.einsteinlimeira.beyond.mobile.model.Listas;
+import br.com.einsteinlimeira.beyond.mobile.services.CidadeServices;
 import br.com.einsteinlimeira.beyond.mobile.util.ParcelableList;
-import br.com.einsteinlimeira.beyond.model.Cidade;
+import br.com.einsteinlimeira.beyond.model.dto.CidadeDTO;
 
 public class CidadesActivity extends Activity {
 	
 	private ListView listViewListaCidades;
-  private EntidadeListAdapter<Cidade> adaptador;
+  private EntidadeListAdapter<CidadeDTO> adaptador;
 
   @Override
   @SuppressWarnings("unchecked")
@@ -20,10 +20,12 @@ public class CidadesActivity extends Activity {
 		setContentView(R.layout.listagem_entidade);
 		
 		listViewListaCidades = (ListView)findViewById(R.id.listagem_entidade_listView);
-		adaptador = new EntidadeListAdapter<Cidade>(Listas.cidades, CidadesActivity.this) {
+		adaptador = new EntidadeListAdapter<CidadeDTO>(
+		    new CidadeServices().listar(this), 
+		    CidadesActivity.this) {
       
       @Override
-      public String getText(Cidade entidade) {
+      public String getText(CidadeDTO entidade) {
         return entidade.getNome();
       }
     };

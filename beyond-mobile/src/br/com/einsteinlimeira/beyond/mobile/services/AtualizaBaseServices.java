@@ -15,10 +15,12 @@ import org.apache.http.message.BasicNameValuePair;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 import br.com.einsteinlimeira.beyond.mobile.Constantes;
 import br.com.einsteinlimeira.beyond.mobile.R;
 import br.com.einsteinlimeira.beyond.mobile.util.HttpUtils;
 import br.com.einsteinlimeira.beyond.model.dto.CacheExterno;
+import br.com.einsteinlimeira.beyond.model.dto.CidadeDTO;
 import br.com.einsteinlimeira.beyond.protocol.Requisicao;
 
 import com.google.gson.Gson;
@@ -32,7 +34,7 @@ public class AtualizaBaseServices {
    * 
    * @throws IOException se ocorrer algum problema de I/O ao realizar a requisição remota.
    */
-  public void atualiza(Context contexto) throws IOException {
+  public boolean atualiza(Context contexto) throws IOException {
     SharedPreferences sharedPreferences = contexto.getSharedPreferences(
         Constantes.CONFIGURACAO_SHARED_PREFERENCES,
         Context.MODE_PRIVATE);
@@ -65,15 +67,34 @@ public class AtualizaBaseServices {
       if (statusCode != 200) {
         String reasonPhrase = httpResponse.getStatusLine().getReasonPhrase();
         Log.e(Constantes.TAG, "A chamada falhou. Retorno: " + statusCode + ": " + reasonPhrase);
-        throw new IllegalStateException("Falha na chamada HTTP. Retorno: " + statusCode + ": "
-            + reasonPhrase);
+        return false;
       }
       else {
         String json = HttpUtils.getString(httpResponse);
 
         CacheExterno cacheExterno = new Gson().fromJson(json, CacheExterno.class);
         
-        // TODO; continuar
+         // O approach tomado é, por ora, remover todos os dados atualmente na base e 
+         // inserir tudo novamente.
+        
+        CidadeServices cidadeServices = new CidadeServices();
+        // remove as cidades já na base
+        cidadeServices.removerTodas(contexto);
+        
+        List<CidadeDTO> cidades = cacheExterno.getCidades();
+        if(!cidades.isEmpty()){
+          
+          for (CidadeDTO cidade : cidades) {
+            if(!cidadeServices.inserir(cidade, contexto)){
+              Toast.makeText(contexto, "Falha ao incluir cidade no cache", Toast.LENGTH_LONG).show();
+              return false;
+            }
+          }
+        }
+        
+        Log.i(Constantes.TAG, "Atualização da base de dados local realizada com sucesso");
+        
+        return true;
       }
     }
     catch (IOException ioe) {

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Helper para acesso à base de dados local da aplicação.
  */
 public class DataBaseHelper extends SQLiteOpenHelper {
+
   /**
    * Nome do banco de dados.
    */
@@ -67,7 +68,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // Cidade
     db.execSQL("create table cidade (" +
         "_id integer not null primary key, " +
-        "nome text not null);");
+        "nome text not null, " +
+        "siglauf text not null);");
     
     // Banda
     db.execSQL("create table banda (" +
