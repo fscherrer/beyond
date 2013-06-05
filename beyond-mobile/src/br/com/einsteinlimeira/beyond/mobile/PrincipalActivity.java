@@ -14,67 +14,77 @@ import br.com.einsteinlimeira.beyond.mobile.util.ParcelableList;
 public class PrincipalActivity extends GlobalActivity {
 	
 	private ImageButton botaoCasa, botaoCidade, botaoBanda, botaoEstilo;
-	
+
 	private List<Integer> idsCidadesFiltradas;
 	private List<Integer> idsCasasFiltradas;
 	private List<String> estilosFiltrados;
 	private List<Integer> idsBandasFiltradas;
-	
+
 	private TextView textViewCidadesFiltradas;
-	
+	private TextView textViewCasasFiltradas;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_principal);
-		
-		textViewCidadesFiltradas = (TextView)findViewById(R.id.principal_textViewCidadesFiltradas);
+
+		textViewCidadesFiltradas = (TextView) findViewById(R.id.principal_textViewCidadesFiltradas);
 		textViewCidadesFiltradas.setVisibility(View.INVISIBLE);
-		
+
+		textViewCasasFiltradas = (TextView) findViewById(R.id.principal_textViewCasasFiltradas);
+		textViewCasasFiltradas.setVisibility(View.INVISIBLE);
+
 		botaoCasa = (ImageButton) findViewById(R.id.btn_casa);
 		botaoCasa.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(PrincipalActivity.this, CasasActivity.class);
-				
-				startActivity(intent);
+				Intent intent = new Intent(PrincipalActivity.this,
+						CasasActivity.class);
+				intent.putExtra(Constantes.EXTRA_CASAS_FILTRADAS,
+						new ParcelableList<Integer>(idsCasasFiltradas));
+				startActivityForResult(intent,
+						Constantes.REQUEST_CODE_FILTRO_CASA);
 			}
 		});
-		
+
 		botaoCidade = (ImageButton) findViewById(R.id.btn_cidade);
 		botaoCidade.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(PrincipalActivity.this, CidadesActivity.class);
-				intent.putExtra(Constantes.EXTRA_CIDADES_FILTRADAS, 
-				    new ParcelableList<Integer>(idsCidadesFiltradas));
-				startActivityForResult(intent, Constantes.REQUEST_CODE_FILTRO_CIDADE);
+				Intent intent = new Intent(PrincipalActivity.this,
+						CidadesActivity.class);
+				intent.putExtra(Constantes.EXTRA_CIDADES_FILTRADAS,
+						new ParcelableList<Integer>(idsCidadesFiltradas));
+				startActivityForResult(intent,
+						Constantes.REQUEST_CODE_FILTRO_CIDADE);
 			}
 		});
-		
+
 		botaoBanda = (ImageButton) findViewById(R.id.btn_banda);
 		botaoBanda.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(PrincipalActivity.this, BandaActivity.class);
+				Intent intent = new Intent(PrincipalActivity.this,
+						BandaActivity.class);
 				startActivity(intent);
 			}
 		});
-		
+
 		botaoEstilo = (ImageButton) findViewById(R.id.btn_estilo);
 		botaoEstilo.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO intent for open activity estilo.
-				
+
 			}
 		});
 	}
-	
-  @Override
+
+	@Override
   @SuppressWarnings("unchecked")
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	  if(resultCode == RESULT_OK){
@@ -84,9 +94,18 @@ public class PrincipalActivity extends GlobalActivity {
           if(data.hasExtra(Constantes.EXTRA_CIDADES_FILTRADAS)){
             idsCidadesFiltradas = ((ParcelableList<Integer>)data.getParcelableExtra(
                 Constantes.EXTRA_CIDADES_FILTRADAS)).getList();
-            filtroCidadesAlterado();
+            filtroCidadesAlterado();           
           }
           break;
+        //lucas
+        case Constantes.REQUEST_CODE_FILTRO_CASA:
+        	if(data.hasExtra(Constantes.EXTRA_CASAS_FILTRADAS)){
+        		idsCasasFiltradas = ((ParcelableList<Integer>)data.getParcelableExtra
+        				(Constantes.EXTRA_CASAS_FILTRADAS)).getList();
+        		filtroCasasAlterado();
+        	}
+        	break;
+          
 
         default:
           Log.w(Constantes.TAG, "Request Code desconhecido: " + requestCode);
@@ -94,18 +113,25 @@ public class PrincipalActivity extends GlobalActivity {
       }
 	  }
 	}
-  
-  /**
-   * Reprocessa as cidades filtrada para redefinir o balãozinho com a 
-   * quantidade filtrada.
-   */
-  private void filtroCidadesAlterado() {
-    textViewCidadesFiltradas.setVisibility(idsCidadesFiltradas.isEmpty()
-        ? View.INVISIBLE
-        : View.VISIBLE);
 
-    textViewCidadesFiltradas.setText(idsCidadesFiltradas.isEmpty()
-        ? null
-        : String.valueOf(idsCidadesFiltradas.size()));
-  }
+	/**
+	 * Reprocessa as cidades filtrada para redefinir o balãozinho com a
+	 * quantidade filtrada.
+	 */
+	private void filtroCidadesAlterado() {
+		textViewCidadesFiltradas
+				.setVisibility(idsCidadesFiltradas.isEmpty() ? View.INVISIBLE
+						: View.VISIBLE);
+
+		textViewCidadesFiltradas.setText(idsCidadesFiltradas.isEmpty() ? null
+				: String.valueOf(idsCidadesFiltradas.size()));
+	}
+	private void filtroCasasAlterado() {
+		textViewCasasFiltradas
+				.setVisibility(idsCasasFiltradas.isEmpty() ? View.INVISIBLE
+						: View.VISIBLE);
+
+		textViewCasasFiltradas.setText(idsCasasFiltradas.isEmpty() ? null
+				: String.valueOf(idsCasasFiltradas.size()));
+	}
 }

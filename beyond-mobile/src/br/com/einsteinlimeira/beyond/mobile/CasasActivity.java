@@ -1,45 +1,61 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
-import br.com.einsteinlimeira.beyond.mobile.model.Listas;
-
-import android.os.Bundle;
 import android.app.Activity;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.content.Intent;
+import android.os.Bundle;
 import android.widget.ListView;
+import br.com.einsteinlimeira.beyond.mobile.services.CasaServices;
+import br.com.einsteinlimeira.beyond.mobile.util.ParcelableList;
+import br.com.einsteinlimeira.beyond.model.dto.CasaDTO;
 
 public class CasasActivity extends Activity {
 
-	private ListView listaCasas;
-	private Button botaoVoltar, botaoAvancar;
-	
+	private ListView listViewListaCasas;
+	private EntidadeListAdapter<CasaDTO> adaptador;
+
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_casas);
-		
-		listaCasas = (ListView) findViewById(R.id.lista_casas);
-		AdaptadorCasa adaptador = new AdaptadorCasa(Listas.casas, this);
-		listaCasas.setAdapter(adaptador);
-		
-		botaoVoltar = (Button) findViewById(R.id.botao_voltar_casa);
-		botaoVoltar.setOnClickListener(new OnClickListener() {
-			
+		setContentView(R.layout.listagem_entidade);
+
+		listViewListaCasas = (ListView) findViewById(R.id.listagem_entidade_listView);
+		adaptador = new EntidadeListAdapter<CasaDTO>(
+				new CasaServices().listar(this),
+				CasasActivity.this) {
+
 			@Override
-			public void onClick(View v) {
-				
+			public String getText(CasaDTO entidade) {
+				return entidade.getNome();
 			}
-		});
-		
-		botaoAvancar = (Button) findViewById(R.id.botao_avancar_casa);
-		botaoAvancar.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-			}
-		});
+		};
+
+		Intent intentOrigem = getIntent();
+
+		if (intentOrigem.hasExtra(Constantes.EXTRA_CASAS_FILTRADAS)) {
+			adaptador
+					.setIdsEntidadesSelecionadas(((ParcelableList<Integer>) intentOrigem
+							.getParcelableExtra(Constantes.EXTRA_CASAS_FILTRADAS))
+							.getList());
+		}
+
+		listViewListaCasas.setAdapter(adaptador);
 	}
 
+	/**
+	 * Define o resultado via {@link #setResult(int, Intent)}. <br />
+	 * . {@inheritDoc}
+	 */
+	@Override
+	public void finish() {
+		// define o resultado para a activity que chamou essa
+		Intent retorno = new Intent();
+		retorno.putExtra(
+				Constantes.EXTRA_CASAS_FILTRADAS,
+				new ParcelableList<Integer>(adaptador
+						.getIdsEntidadesSelecionadas()));
+		setResult(RESULT_OK, retorno);
+
+		super.finish();
+	}
 }

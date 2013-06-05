@@ -20,6 +20,7 @@ import br.com.einsteinlimeira.beyond.mobile.Constantes;
 import br.com.einsteinlimeira.beyond.mobile.R;
 import br.com.einsteinlimeira.beyond.mobile.util.HttpUtils;
 import br.com.einsteinlimeira.beyond.model.dto.CacheExterno;
+import br.com.einsteinlimeira.beyond.model.dto.CasaDTO;
 import br.com.einsteinlimeira.beyond.model.dto.CidadeDTO;
 import br.com.einsteinlimeira.beyond.protocol.Requisicao;
 
@@ -30,9 +31,9 @@ public class AtualizaBaseServices {
    * Atualiza a base de dados local a partir dos dados remotos.
    * 
    * @param contexto
-   *   Contexto da opera√ß√£o.
+   *   Contexto da operaÁ„o.
    * 
-   * @throws IOException se ocorrer algum problema de I/O ao realizar a requisi√ß√£o remota.
+   * @throws IOException se ocorrer algum problema de I/O ao realizar a requisiÁ„o remota.
    */
   public boolean atualiza(Context contexto) throws IOException {
     SharedPreferences sharedPreferences = contexto.getSharedPreferences(
@@ -91,6 +92,21 @@ public class AtualizaBaseServices {
             }
           }
         }
+        
+        CasaServices casaServices = new CasaServices();
+        // remove as casas j· na base
+        casaServices.removerTodas(contexto);
+        
+        List<CasaDTO> casas = cacheExterno.getCasas();
+        if(!casas.isEmpty()){
+          
+          for (CasaDTO casa : casas) {
+            if(!casaServices.inserir(casa, contexto)){
+              Toast.makeText(contexto, "Falha ao incluir casa no cache", Toast.LENGTH_LONG).show();
+              return false;
+            }
+          }
+        }        
         
         Log.i(Constantes.TAG, "Atualiza√ß√£o da base de dados local realizada com sucesso");
         

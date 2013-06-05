@@ -36,7 +36,10 @@ public abstract class EntidadeDAO<E extends Entidade> {
 
     ContentValues contentValues = getContentValues(entidade);
 
-    return writableDatabase.insert(getNomeTabela(), null, contentValues) > 0;
+    long resultado = writableDatabase.insert(getNomeTabela(), null, contentValues);
+    writableDatabase.close();
+    
+    return resultado > 0;
   }
   
   /**
@@ -76,6 +79,7 @@ public abstract class EntidadeDAO<E extends Entidade> {
     SQLiteDatabase writableDatabase = dataBaseHelper.getWritableDatabase();
 
     writableDatabase.delete(getNomeTabela(), null, null);
+    writableDatabase.close();
   }
 
 
@@ -100,6 +104,8 @@ public abstract class EntidadeDAO<E extends Entidade> {
     while(cursor.moveToNext()){
       dtos.add(getAPartirDoCursor(cursor));
     }
+    
+    readableDatabase.close();
     
     return dtos;
   }
