@@ -8,15 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import br.com.einsteinlimeira.beyond.mobile.model.EventoSimplificadoDTO;
 import br.com.einsteinlimeira.beyond.mobile.util.DateUtils;
-import br.com.einsteinlimeira.beyond.model.Evento;
 
 public class AdaptadorEvento extends BaseAdapter {
 
-	private List<Evento> eventos;
+	private List<EventoSimplificadoDTO> eventos;
 	private Context contexto;
 
-	public AdaptadorEvento(List<Evento> eventos, Context contexto) {
+	public AdaptadorEvento(List<EventoSimplificadoDTO> eventos, Context contexto) {
 		this.eventos = eventos;
 		this.contexto = contexto;
 	}
@@ -44,7 +44,7 @@ public class AdaptadorEvento extends BaseAdapter {
 		View view = inflater.inflate(R.layout.activity_linha_eventos, null);
 
 		((TextView) view.findViewById(R.id.dia_evento)).setText(DateUtils.diaFormat.format(eventos.get(
-        positon).getDatahora()));
+        positon).getDataHora()));
 		
 		TextView textViewNomeEvento = (TextView) view
 		    .findViewById(R.id.nome_evento);
@@ -54,12 +54,12 @@ public class AdaptadorEvento extends BaseAdapter {
 		TextView textViewDataEvento = (TextView) view
 				.findViewById(R.id.data_evento);
 		textViewDataEvento.setText(DateUtils.dateFormat.format(eventos.get(
-				positon).getDatahora()));
+				positon).getDataHora()));
 
 		return view;
 	}
 
-	public void setEventos(List<Evento> eventos) {
+	public void setEventos(List<EventoSimplificadoDTO> eventos) {
     this.eventos = eventos;
   }
 }

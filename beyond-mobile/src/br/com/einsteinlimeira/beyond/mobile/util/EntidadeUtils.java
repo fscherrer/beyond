@@ -2,14 +2,14 @@ package br.com.einsteinlimeira.beyond.mobile.util;
 
 import java.util.List;
 
-import br.com.einsteinlimeira.beyond.model.Banda;
+import br.com.einsteinlimeira.beyond.model.dto.BandaDTO;
 
 public class EntidadeUtils {
-	public static String bandasToString(List<Banda> bandas) {
+	public static String bandasToString(List<BandaDTO> bandas) {
 		StringBuilder stringBuilderBandas = new StringBuilder();
 
 		if (!bandas.isEmpty()) {
-			for (Banda banda : bandas) {
+			for (BandaDTO banda : bandas) {
 				stringBuilderBandas.append(banda.getNome()).append(", ");
 			}
 			stringBuilderBandas.delete(stringBuilderBandas.length() - 2,

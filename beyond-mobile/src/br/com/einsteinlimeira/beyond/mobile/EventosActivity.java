@@ -1,17 +1,14 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import br.com.einsteinlimeira.beyond.mobile.util.EntidadeUtils;
-import br.com.einsteinlimeira.beyond.model.Evento;
+import br.com.einsteinlimeira.beyond.mobile.model.EventoSimplificadoDTO;
 
 public class EventosActivity extends GlobalActivity {
 
@@ -24,7 +21,7 @@ public class EventosActivity extends GlobalActivity {
 		setContentView(R.layout.activity_eventos);
 		
 		@SuppressWarnings("unchecked")
-		List<Evento> eventos = (List<Evento>) getIntent().getExtras().getSerializable("eventos");
+		List<EventoSimplificadoDTO> eventos = (List<EventoSimplificadoDTO>) getIntent().getExtras().getSerializable("eventos");
 		
 		listaEventos = (ListView) findViewById(R.id.lista_eventos);
 		adaptador = new AdaptadorEvento(eventos, this);
@@ -34,9 +31,7 @@ public class EventosActivity extends GlobalActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-				Evento eventoSelecionado = (Evento) listaEventos.getAdapter().getItem(position);
-				
-				Log.i(Constantes.TAG, "Evento selecionado: " + EntidadeUtils.bandasToString(eventoSelecionado.getBandas()));
+				EventoSimplificadoDTO eventoSelecionado = (EventoSimplificadoDTO) listaEventos.getAdapter().getItem(position);
 				
 				Intent intent = new Intent(EventosActivity.this, EventoDetalheActivity.class);
 				intent.putExtra("evento", eventoSelecionado);

@@ -22,6 +22,7 @@ import br.com.einsteinlimeira.beyond.mobile.util.HttpUtils;
 import br.com.einsteinlimeira.beyond.model.dto.CacheExterno;
 import br.com.einsteinlimeira.beyond.model.dto.CasaDTO;
 import br.com.einsteinlimeira.beyond.model.dto.CidadeDTO;
+import br.com.einsteinlimeira.beyond.model.dto.EventoDTO;
 import br.com.einsteinlimeira.beyond.protocol.Requisicao;
 
 import com.google.gson.Gson;
@@ -31,9 +32,9 @@ public class AtualizaBaseServices {
    * Atualiza a base de dados local a partir dos dados remotos.
    * 
    * @param contexto
-   *   Contexto da operaÁ„o.
+   *   Contexto da opera√ß√£o.
    * 
-   * @throws IOException se ocorrer algum problema de I/O ao realizar a requisiÁ„o remota.
+   * @throws IOException se ocorrer algum problema de I/O ao realizar a requisi√ß√£o remota.
    */
   public boolean atualiza(Context contexto) throws IOException {
     SharedPreferences sharedPreferences = contexto.getSharedPreferences(
@@ -78,6 +79,7 @@ public class AtualizaBaseServices {
          // O approach tomado √©, por ora, remover todos os dados atualmente na base e 
          // inserir tudo novamente.
         
+        // Cidades
         CidadeServices cidadeServices = new CidadeServices();
         // remove as cidades j√° na base
         cidadeServices.removerTodas(contexto);
@@ -92,9 +94,10 @@ public class AtualizaBaseServices {
             }
           }
         }
-        
+
+        // Casas
         CasaServices casaServices = new CasaServices();
-        // remove as casas j· na base
+        // remove as casas jÔøΩ na base
         casaServices.removerTodas(contexto);
         
         List<CasaDTO> casas = cacheExterno.getCasas();
@@ -106,7 +109,26 @@ public class AtualizaBaseServices {
               return false;
             }
           }
-        }        
+        }
+
+        
+        // Eventos
+        EventoServices eventoServices = new EventoServices();
+        // remove os eventos j√° na base
+        eventoServices.removerTodos(contexto);
+        
+        List<EventoDTO> eventos = cacheExterno.getEventos();
+        // TODO: habilitar
+//        if(!eventos.isEmpty()){
+//          
+//          for (EventoDTO evento : eventos) {
+//            if(!eventoServices.inserir(evento, contexto)){
+//              Toast.makeText(contexto, "Falha ao incluir evento no cache", Toast.LENGTH_LONG).show();
+//              return false;
+//            }
+//          }
+//        }
+
         
         Log.i(Constantes.TAG, "Atualiza√ß√£o da base de dados local realizada com sucesso");
         

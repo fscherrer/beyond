@@ -1,5 +1,9 @@
 package br.com.einsteinlimeira.beyond.mobile.database;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -17,7 +21,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
   /**
    * Versão do banco de dados.
    */
-  public static final int VERSAO_BANCO_DADOS = 1;
+  public static final int VERSAO_BANCO_DADOS = 2;
+  
+  /**
+   * DateFormat para se trabalhar com data e hora como text no SQLite, já que não
+   * suporta nada como datetime.<br />
+   * Detalhes vide: http://www.sqlite.org/datatype3.html
+   */
+  public static final DateFormat ISO_8601_FORMAT =
+      new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
   /**
    * Cria um novo helper para manipulação do banco de dados local (banco {@link #NOME_BANCO_DADOS},
@@ -81,6 +93,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         "_id integer not null primary key, " +
         "nome text not null, " +
         "valor real not null, " +
+        "datahora text not null, " +
         "casaid integer not null);");
     
     // EventoBanda
@@ -92,7 +105,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    // salvar dados?
+    db.execSQL("drop table casa");
+    db.execSQL("drop table cidade");
+    db.execSQL("drop table banda");
+    db.execSQL("drop table evento");
+    db.execSQL("drop table eventobanda");
+    
     onCreate(db);
   }
 }

@@ -13,11 +13,10 @@ import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import br.com.einsteinlimeira.beyond.mobile.model.EventoDetalhadoDTO;
 import br.com.einsteinlimeira.beyond.mobile.util.DateUtils;
 import br.com.einsteinlimeira.beyond.mobile.util.EntidadeUtils;
-import br.com.einsteinlimeira.beyond.model.Casa;
-import br.com.einsteinlimeira.beyond.model.Endereco;
-import br.com.einsteinlimeira.beyond.model.Evento;
+import br.com.einsteinlimeira.beyond.model.dto.CasaDTO;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,7 +36,7 @@ public class EventoDetalheActivity extends FragmentActivity {
 		setContentView(R.layout.activity_evento_detalhe);
 		checkloc = (CheckBox) findViewById(R.id.check_loc);
 
-		Evento evento = (Evento) getIntent().getExtras().getSerializable(
+		EventoDetalhadoDTO evento = (EventoDetalhadoDTO) getIntent().getExtras().getSerializable(
 				"evento");
 
 		Resources resources = getResources();
@@ -45,21 +44,24 @@ public class EventoDetalheActivity extends FragmentActivity {
 		((TextView) findViewById(R.id.evento_texto_titulo)).setText(evento
 				.getNome());
 
-		Casa casa = evento.getCasa();
-		Endereco endereco = casa.getEndereco();
+		CasaDTO casa = evento.getCasa();
 
 		((TextView) findViewById(R.id.evento_texto_casa)).setText(casa
 				.getNome());
 
 		((TextView) findViewById(R.id.evento_texto_local_logradouro))
 				.setText(resources.getString(R.string.evento_local_logradouro,
-						endereco.getLogradouro(), endereco.getNumero(),
-						endereco.getBairro()));
+						casa.getLogradouro(), casa.getNumero(),
+						casa.getBairro()));
 
+		// TODO: incluir Cidade e SiglaUf no EventoDetalhadoDTO
+//		((TextView) findViewById(R.id.evento_texto_local_cidade))
+//				.setText(resources.getString(R.string.evento_local_cidade,
+//				    casa.getCidade(), casa.getSiglaUf(), casa.getCep()));
+		
 		((TextView) findViewById(R.id.evento_texto_local_cidade))
-				.setText(resources.getString(R.string.evento_local_cidade,
-						endereco.getCidade().getNome(), endereco.getCidade()
-								.getUf().getSigla(), endereco.getCep()));
+		.setText(resources.getString(R.string.evento_local_cidade,
+		    "CIDADE!!!", "UF", casa.getCep()));
 
 		((TextView) findViewById(R.id.evento_texto_banda)).setText(resources
 				.getString(R.string.evento_banda,
@@ -67,14 +69,14 @@ public class EventoDetalheActivity extends FragmentActivity {
 
 		((TextView) findViewById(R.id.evento_texto_data)).setText(resources
 				.getString(R.string.evento_data,
-						DateUtils.dateHourFormat.format(evento.getDatahora())));
+						DateUtils.dateHourFormat.format(evento.getDataHora())));
 
 		((TextView) findViewById(R.id.evento_texto_valor)).setText(resources
 				.getString(R.string.evento_valor, evento.getValor()));
 
 		// Mapa
 
-		// localização
+		// localizaï¿½ï¿½o
 		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 		markerOptions = new MarkerOptions();
@@ -117,10 +119,10 @@ public class EventoDetalheActivity extends FragmentActivity {
 
 		boolean exibirMapa = false;
 
-		String coordenada = endereco.getCoordenada();
+		String coordenada = casa.getCoordenada();
 
 		if (coordenada != null && coordenada.trim().length() > 0) {
-			String[] partesCoordenada = endereco.getCoordenada().split(",");
+			String[] partesCoordenada = casa.getCoordenada().split(",");
 
 			try {
 				LatLng latLng = new LatLng(
@@ -140,7 +142,7 @@ public class EventoDetalheActivity extends FragmentActivity {
 			} catch (NumberFormatException nfe) {
 
 			}
-			// seleciona localização atual
+			// seleciona localizaï¿½ï¿½o atual
 			checkloc.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -161,6 +163,7 @@ public class EventoDetalheActivity extends FragmentActivity {
 			});
 
 		}
+		
 		// vai exibir "Mapa nÃ£o definido"
 		if (!exibirMapa) {
 			((LinearLayout) findViewById(R.id.evento_linearLayout_mapa))

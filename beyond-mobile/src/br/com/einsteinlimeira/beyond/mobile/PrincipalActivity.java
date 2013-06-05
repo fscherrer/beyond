@@ -1,5 +1,6 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -9,12 +10,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import br.com.einsteinlimeira.beyond.mobile.model.EventoSimplificadoDTO;
+import br.com.einsteinlimeira.beyond.mobile.services.EventoServices;
 import br.com.einsteinlimeira.beyond.mobile.util.ParcelableList;
 
 public class PrincipalActivity extends GlobalActivity {
 	
 	private ImageButton botaoCasa, botaoCidade, botaoBanda, botaoEstilo;
-
+	private ImageButton botaoVisualizarEventos;
+	
 	private List<Integer> idsCidadesFiltradas;
 	private List<Integer> idsCasasFiltradas;
 	private List<String> estilosFiltrados;
@@ -39,12 +43,10 @@ public class PrincipalActivity extends GlobalActivity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(PrincipalActivity.this,
-						CasasActivity.class);
+				Intent intent = new Intent(PrincipalActivity.this, CasasActivity.class);
 				intent.putExtra(Constantes.EXTRA_CASAS_FILTRADAS,
 						new ParcelableList<Integer>(idsCasasFiltradas));
-				startActivityForResult(intent,
-						Constantes.REQUEST_CODE_FILTRO_CASA);
+				startActivityForResult(intent, Constantes.REQUEST_CODE_FILTRO_CASA);
 			}
 		});
 
@@ -53,12 +55,10 @@ public class PrincipalActivity extends GlobalActivity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(PrincipalActivity.this,
-						CidadesActivity.class);
+				Intent intent = new Intent(PrincipalActivity.this, CidadesActivity.class);
 				intent.putExtra(Constantes.EXTRA_CIDADES_FILTRADAS,
-						new ParcelableList<Integer>(idsCidadesFiltradas));
-				startActivityForResult(intent,
-						Constantes.REQUEST_CODE_FILTRO_CIDADE);
+				    new ParcelableList<Integer>(idsCidadesFiltradas));
+				startActivityForResult(intent, Constantes.REQUEST_CODE_FILTRO_CIDADE);
 			}
 		});
 
@@ -67,8 +67,7 @@ public class PrincipalActivity extends GlobalActivity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(PrincipalActivity.this,
-						BandaActivity.class);
+				Intent intent = new Intent(PrincipalActivity.this, BandaActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -82,6 +81,20 @@ public class PrincipalActivity extends GlobalActivity {
 
 			}
 		});
+		
+		botaoVisualizarEventos = (ImageButton)findViewById(R.id.btn_vis_eventos);
+		botaoVisualizarEventos.setOnClickListener(new OnClickListener() {
+      
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(PrincipalActivity.this, EventosActivity.class);
+        // TODO: aplicar filtros
+        // TODO: usar Parcelable ao invés de Serializable 
+        intent.putExtra("eventos", new ArrayList<EventoSimplificadoDTO>(
+            new EventoServices().listar(PrincipalActivity.this)));
+        startActivity(intent);
+      }
+    });
 	}
 
 	@Override
@@ -89,7 +102,7 @@ public class PrincipalActivity extends GlobalActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	  if(resultCode == RESULT_OK){
 	    switch (requestCode) {
-	      // filtro de Cidades
+	    // filtro de Cidades
         case Constantes.REQUEST_CODE_FILTRO_CIDADE:
           if(data.hasExtra(Constantes.EXTRA_CIDADES_FILTRADAS)){
             idsCidadesFiltradas = ((ParcelableList<Integer>)data.getParcelableExtra(
@@ -97,7 +110,7 @@ public class PrincipalActivity extends GlobalActivity {
             filtroCidadesAlterado();           
           }
           break;
-        //lucas
+        // filtro de Casas
         case Constantes.REQUEST_CODE_FILTRO_CASA:
         	if(data.hasExtra(Constantes.EXTRA_CASAS_FILTRADAS)){
         		idsCasasFiltradas = ((ParcelableList<Integer>)data.getParcelableExtra
@@ -115,17 +128,23 @@ public class PrincipalActivity extends GlobalActivity {
 	}
 
 	/**
-	 * Reprocessa as cidades filtrada para redefinir o balãozinho com a
+	 * Reprocessa as cidades filtradas para redefinir o balãozinho com a
 	 * quantidade filtrada.
 	 */
 	private void filtroCidadesAlterado() {
-		textViewCidadesFiltradas
-				.setVisibility(idsCidadesFiltradas.isEmpty() ? View.INVISIBLE
-						: View.VISIBLE);
+		textViewCidadesFiltradas.setVisibility(idsCidadesFiltradas.isEmpty()
+		    ? View.INVISIBLE
+		    : View.VISIBLE);
 
-		textViewCidadesFiltradas.setText(idsCidadesFiltradas.isEmpty() ? null
-				: String.valueOf(idsCidadesFiltradas.size()));
+		textViewCidadesFiltradas.setText(idsCidadesFiltradas.isEmpty()
+		    ? null
+			: String.valueOf(idsCidadesFiltradas.size()));
 	}
+	
+	/**
+	 * Reprocessa as casas filtradas para redefinir o balãozinho com a
+	 * quantidade filtrada.
+	 */
 	private void filtroCasasAlterado() {
 		textViewCasasFiltradas
 				.setVisibility(idsCasasFiltradas.isEmpty() ? View.INVISIBLE
