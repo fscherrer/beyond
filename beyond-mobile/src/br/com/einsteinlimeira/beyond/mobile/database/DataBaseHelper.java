@@ -21,7 +21,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
   /**
    * Versão do banco de dados.
    */
-  public static final int VERSAO_BANCO_DADOS = 2;
+  public static final int VERSAO_BANCO_DADOS = 3;
   
   /**
    * DateFormat para se trabalhar com data e hora como text no SQLite, já que não
@@ -86,7 +86,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // Banda
     db.execSQL("create table banda (" +
         "_id integer not null primary key, " +
-        "nome text not null);");
+        "nome text not null, " +
+        "estilo text not null);");
     
     // Evento
     db.execSQL("create table evento (" +

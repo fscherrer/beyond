@@ -19,6 +19,7 @@ import android.widget.Toast;
 import br.com.einsteinlimeira.beyond.mobile.Constantes;
 import br.com.einsteinlimeira.beyond.mobile.R;
 import br.com.einsteinlimeira.beyond.mobile.util.HttpUtils;
+import br.com.einsteinlimeira.beyond.model.dto.BandaDTO;
 import br.com.einsteinlimeira.beyond.model.dto.CacheExterno;
 import br.com.einsteinlimeira.beyond.model.dto.CasaDTO;
 import br.com.einsteinlimeira.beyond.model.dto.CidadeDTO;
@@ -129,6 +130,21 @@ public class AtualizaBaseServices {
 //          }
 //        }
 
+        // Bandas
+        BandaServices bandaServices = new BandaServices();
+        //remove as bandas já na base
+        bandaServices.removerTodas(contexto);
+        
+        List<BandaDTO> bandas = cacheExterno.getBandas();
+        if(!bandas.isEmpty()){
+        	
+        	for(BandaDTO banda : bandas){
+        		if(!bandaServices.inserir(banda, contexto)){
+        			Toast.makeText(contexto, "Falha ao incluir banda no cache", Toast.LENGTH_LONG).show();
+        			return false;
+        		}
+        	}
+        }        
         
         Log.i(Constantes.TAG, "Atualização da base de dados local realizada com sucesso");
         

@@ -26,6 +26,7 @@ public class PrincipalActivity extends GlobalActivity {
 
 	private TextView textViewCidadesFiltradas;
 	private TextView textViewCasasFiltradas;
+	private TextView textViewBandasFiltradas;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,9 @@ public class PrincipalActivity extends GlobalActivity {
 		textViewCasasFiltradas = (TextView) findViewById(R.id.principal_textViewCasasFiltradas);
 		textViewCasasFiltradas.setVisibility(View.INVISIBLE);
 
+		textViewBandasFiltradas = (TextView) findViewById(R.id.principal_textViewBandasFiltradas);
+		textViewBandasFiltradas.setVisibility(View.INVISIBLE);
+		
 		botaoCasa = (ImageButton) findViewById(R.id.btn_casa);
 		botaoCasa.setOnClickListener(new OnClickListener() {
 
@@ -68,7 +72,9 @@ public class PrincipalActivity extends GlobalActivity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(PrincipalActivity.this, BandaActivity.class);
-				startActivity(intent);
+				intent.putExtra(Constantes.EXTRA_BANDAS_FILTRADAS,
+						new ParcelableList<Integer>(idsBandasFiltradas));
+				startActivityForResult(intent, Constantes.REQUEST_CODE_FILTRO_BANDA);
 			}
 		});
 
@@ -118,6 +124,13 @@ public class PrincipalActivity extends GlobalActivity {
         		filtroCasasAlterado();
         	}
         	break;
+        	
+        case Constantes.REQUEST_CODE_FILTRO_BANDA:
+        	if(data.hasExtra(Constantes.EXTRA_BANDAS_FILTRADAS)){
+        		idsBandasFiltradas = ((ParcelableList<Integer>)data.getParcelableExtra(
+        				Constantes.EXTRA_BANDAS_FILTRADAS)).getList();
+        		filtroBandasAlterado();
+        	}
           
 
         default:
@@ -153,4 +166,14 @@ public class PrincipalActivity extends GlobalActivity {
 		textViewCasasFiltradas.setText(idsCasasFiltradas.isEmpty() ? null
 				: String.valueOf(idsCasasFiltradas.size()));
 	}
+	
+	private void filtroBandasAlterado(){
+		textViewBandasFiltradas
+			.setVisibility(idsBandasFiltradas.isEmpty() ? View.INVISIBLE
+					: View.VISIBLE);
+		
+		textViewBandasFiltradas.setText(idsBandasFiltradas.isEmpty() ? null
+				: String.valueOf(idsBandasFiltradas.size()));
+	}
+	
 }
