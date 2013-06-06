@@ -2,10 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EventoDetalheActivity"
-    android:background="@drawable/guitarra" >
-    
-     <TextView
+    android:background="@drawable/guitarra"
+    tools:context=".EventoDetalheActivity" >
+
+    <TextView
         android:id="@+id/evento_texto_titulo"
         style="@style/evento_titulo"
         android:layout_width="match_parent"
@@ -15,9 +15,9 @@
         android:id="@+id/evento_relativeLayout_detalhes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/brancoAlpha"
         android:layout_below="@id/evento_texto_titulo"
-        android:padding="5dp">
+        android:background="@color/brancoAlpha"
+        android:padding="5dp" >
 
         <TextView
             android:id="@+id/evento_texto_banda"
@@ -25,27 +25,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView 
+        <TextView
             android:id="@+id/evento_texto_casa"
             style="@style/evento_detalhes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/evento_texto_banda"/>
-        
-        <TextView 
+            android:layout_below="@+id/evento_texto_banda" />
+
+        <TextView
             android:id="@+id/evento_texto_local_logradouro"
             style="@style/evento_detalhes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/evento_texto_casa"/>
+            android:layout_below="@+id/evento_texto_casa" />
 
-        <TextView 
+        <TextView
             android:id="@+id/evento_texto_local_cidade"
             style="@style/evento_detalhes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/evento_texto_local_logradouro"/>
-        
+            android:layout_below="@+id/evento_texto_local_logradouro" />
+
         <TextView
             android:id="@+id/evento_texto_data"
             style="@style/evento_detalhes"
@@ -60,17 +60,17 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/evento_texto_data" />
     </RelativeLayout>
-    
+
     <TextView
         android:id="@+id/evento_texto_localizacao"
         style="@style/evento_localizacao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/evento_relativeLayout_detalhes"
-        android:text="@string/evento_localizacao"
         android:layout_marginTop="3dp"
+        android:text="@string/evento_localizacao"
         android:textStyle="bold" />
-    
+
     <RelativeLayout
         android:id="@+id/evento_relativeLayout_mapa"
         android:layout_width="match_parent"
@@ -89,18 +89,18 @@
                 android:id="@+id/evento_mapa"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                class="com.google.android.gms.maps.SupportMapFragment"/>
+                class="com.google.android.gms.maps.SupportMapFragment" />
         </LinearLayout>
-        
-        <TextView 
+
+        <TextView
             android:id="@+id/evento_texto_mapaNaoDefinido"
-            android:text="@string/evento_mapaNaoDefinido"
             style="@style/evento_detalhes"
-            android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="@string/evento_mapaNaoDefinido"
+            android:textSize="18sp"
+            android:visibility="invisible" />
 
         <CheckBox
             android:id="@+id/check_loc"
@@ -108,9 +108,11 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/evento_linearLayout_mapa"
             android:layout_alignLeft="@+id/evento_linearLayout_mapa"
-            android:text="@string/exibir_localizacao" 
-            android:textColor="@color/preto"/>
-        
+            android:background="@color/brancoAlpha"
+            android:paddingRight="8dp"
+            android:text="@string/exibir_localizacao"
+            android:textColor="@color/preto" >
+        </CheckBox>
     </RelativeLayout>
 
 </RelativeLayout>

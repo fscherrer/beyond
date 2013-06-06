@@ -129,7 +129,7 @@ public class EventoDetalheActivity extends FragmentActivity {
 						Double.parseDouble(partesCoordenada[0]),
 						Double.parseDouble(partesCoordenada[1]));
 
-				GoogleMap googleMap = mapFragment.getMap();
+				googleMap = mapFragment.getMap();
 				googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
 				googleMap.addMarker(new MarkerOptions().position(latLng)
