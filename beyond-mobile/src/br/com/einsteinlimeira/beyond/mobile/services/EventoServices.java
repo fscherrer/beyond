@@ -50,4 +50,17 @@ public class EventoServices {
   public List<EventoSimplificadoDTO> listar(Context context) {
     return new EventoDAO().listar(context);
   }
+  
+  /**
+   * Retorna os detalhes do Evento.
+   * 
+   * @param context
+   *   Context.
+   *   
+   * @return
+   *   Detalhes do Evento.
+   */
+  public EventoDetalhadoDTO getDetalhes(int id, Context context) {
+    return new EventoDAO().getDetalhes(id, context);
+  }
 }

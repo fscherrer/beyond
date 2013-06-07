@@ -76,21 +76,22 @@ public class AtualizaBaseServices {
         String json = HttpUtils.getString(httpResponse);
 
         CacheExterno cacheExterno = new Gson().fromJson(json, CacheExterno.class);
-        
-         // O approach tomado é, por ora, remover todos os dados atualmente na base e 
-         // inserir tudo novamente.
-        
+
+        // O approach tomado é, por ora, remover todos os dados atualmente na base e
+        // inserir tudo novamente.
+
         // Cidades
         CidadeServices cidadeServices = new CidadeServices();
         // remove as cidades já na base
         cidadeServices.removerTodas(contexto);
-        
+
         List<CidadeDTO> cidades = cacheExterno.getCidades();
-        if(!cidades.isEmpty()){
-          
+        if (!cidades.isEmpty()) {
+
           for (CidadeDTO cidade : cidades) {
-            if(!cidadeServices.inserir(cidade, contexto)){
-              Toast.makeText(contexto, "Falha ao incluir cidade no cache", Toast.LENGTH_LONG).show();
+            if (!cidadeServices.inserir(cidade, contexto)) {
+              Toast.makeText(contexto, "Falha ao incluir cidade no cache", Toast.LENGTH_LONG)
+                  .show();
               return false;
             }
           }
@@ -98,56 +99,55 @@ public class AtualizaBaseServices {
 
         // Casas
         CasaServices casaServices = new CasaServices();
-        // remove as casas j� na base
+        // remove as casas já na base
         casaServices.removerTodas(contexto);
-        
+
         List<CasaDTO> casas = cacheExterno.getCasas();
-        if(!casas.isEmpty()){
-          
+        if (!casas.isEmpty()) {
+
           for (CasaDTO casa : casas) {
-            if(!casaServices.inserir(casa, contexto)){
+            if (!casaServices.inserir(casa, contexto)) {
               Toast.makeText(contexto, "Falha ao incluir casa no cache", Toast.LENGTH_LONG).show();
               return false;
             }
           }
         }
 
-        
+        // Bandas
+        BandaServices bandaServices = new BandaServices();
+        // remove as bandas já na base
+        bandaServices.removerTodas(contexto);
+
+        List<BandaDTO> bandas = cacheExterno.getBandas();
+        if (!bandas.isEmpty()) {
+
+          for (BandaDTO banda : bandas) {
+            if (!bandaServices.inserir(banda, contexto)) {
+              Toast.makeText(contexto, "Falha ao incluir banda no cache", Toast.LENGTH_LONG).show();
+              return false;
+            }
+          }
+        }
+
         // Eventos
         EventoServices eventoServices = new EventoServices();
         // remove os eventos já na base
         eventoServices.removerTodos(contexto);
-        
-        List<EventoDTO> eventos = cacheExterno.getEventos();
-        // TODO: habilitar
-//        if(!eventos.isEmpty()){
-//          
-//          for (EventoDTO evento : eventos) {
-//            if(!eventoServices.inserir(evento, contexto)){
-//              Toast.makeText(contexto, "Falha ao incluir evento no cache", Toast.LENGTH_LONG).show();
-//              return false;
-//            }
-//          }
-//        }
 
-        // Bandas
-        BandaServices bandaServices = new BandaServices();
-        //remove as bandas já na base
-        bandaServices.removerTodas(contexto);
-        
-        List<BandaDTO> bandas = cacheExterno.getBandas();
-        if(!bandas.isEmpty()){
-        	
-        	for(BandaDTO banda : bandas){
-        		if(!bandaServices.inserir(banda, contexto)){
-        			Toast.makeText(contexto, "Falha ao incluir banda no cache", Toast.LENGTH_LONG).show();
-        			return false;
-        		}
-        	}
-        }        
-        
+        List<EventoDTO> eventos = cacheExterno.getEventos();
+        if (!eventos.isEmpty()) {
+
+          for (EventoDTO evento : eventos) {
+            if (!eventoServices.inserir(evento, contexto)) {
+              Toast.makeText(contexto, "Falha ao incluir evento no cache", Toast.LENGTH_LONG)
+                  .show();
+              return false;
+            }
+          }
+        }
+
         Log.i(Constantes.TAG, "Atualização da base de dados local realizada com sucesso");
-        
+
         return true;
       }
     }

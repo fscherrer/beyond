@@ -14,6 +14,7 @@ import br.com.einsteinlimeira.beyond.mobile.database.DataBaseHelper;
 import br.com.einsteinlimeira.beyond.mobile.model.EventoDetalhadoDTO;
 import br.com.einsteinlimeira.beyond.mobile.model.EventoSimplificadoDTO;
 import br.com.einsteinlimeira.beyond.model.dto.BandaDTO;
+import br.com.einsteinlimeira.beyond.model.dto.CasaDTO;
 import br.com.einsteinlimeira.beyond.model.dto.EventoDTO;
 
 /**
@@ -39,6 +40,7 @@ public class EventoDAO {
     ContentValues contentValues = new ContentValues();
     contentValues.put("_id", evento.getId());
     contentValues.put("nome", evento.getNome());
+    contentValues.put("valor", evento.getValor());
     contentValues.put("datahora", DataBaseHelper.ISO_8601_FORMAT.format(evento.getDataHora()));
     contentValues.put("casaid", evento.getIdCasa());
 
@@ -76,7 +78,7 @@ public class EventoDAO {
 
     writableDatabase.delete("eventobanda", null, null);
     writableDatabase.delete("evento", null, null);
-    
+
     writableDatabase.close();
   }
 
@@ -93,8 +95,8 @@ public class EventoDAO {
     DataBaseHelper dataBaseHelper = new DataBaseHelper(context);
     SQLiteDatabase readableDatabase = dataBaseHelper.getReadableDatabase();
 
-    Cursor cursor = readableDatabase.query(false, "evento", new String[] { "_id", "nome",
-        "datahora" }, null, null, null, null, null, "datahora");
+    Cursor cursor = readableDatabase.query("evento", new String[] { "_id", "nome",
+        "datahora" }, null, null, null, null, "datahora");
 
     List<EventoSimplificadoDTO> dtos = new ArrayList<EventoSimplificadoDTO>();
 
@@ -120,7 +122,7 @@ public class EventoDAO {
         continue;
       }
     }
-    
+
     readableDatabase.close();
 
     return dtos;
@@ -140,7 +142,7 @@ public class EventoDAO {
     SQLiteDatabase readableDatabase = dataBaseHelper.getReadableDatabase();
 
     Cursor cursor =
-        readableDatabase.query(false, "evento", null, "id = " + id, null, null, null, null, "_id");
+        readableDatabase.query("evento", null, "_id = " + id, null, null, null, "_id");
 
     EventoDetalhadoDTO dto = null;
 
@@ -151,19 +153,19 @@ public class EventoDAO {
     int casaidColumnIndex = cursor.getColumnIndex("casaid");
     int bandaidColumnIndex = cursor.getColumnIndex("bandaid");
 
-    // CasaDAO casaDAO = new CasaDAO();
-    // BandaDAO bandaDAO = new BandaDAO();
+    CasaDAO casaDAO = new CasaDAO();
+    BandaDAO bandaDAO = new BandaDAO();
 
     while (cursor.moveToNext()) {
       try {
-        // CasaDTO casaDTO = casaDAO.getCasa(cursor.getInt(casaidColumnIndex));
+        CasaDTO casaDTO = casaDAO.getPeloId(context, cursor.getInt(casaidColumnIndex));
 
         dto = new EventoDetalhadoDTO(id,
             cursor.getString(nomeColumnIndex),
             cursor.getDouble(valorColumnIndex),
             DataBaseHelper.ISO_8601_FORMAT.parse(cursor.getString(datahoraColumnIndex)),
             new ArrayList<BandaDTO>(),
-            null); // TODO: inserir a CasaDTO aqui quando CasaDAO estiver ok
+            casaDTO);
       }
       catch (ParseException e) {
         Log.e(Constantes.TAG, "Falha ao parsear datahora: " +
@@ -175,8 +177,7 @@ public class EventoDAO {
       }
 
       if (!cursor.isNull(bandaidColumnIndex)) {
-        // TODO: inserir a BandaDTO aqui quando BandaDAO estiver ok
-        // dto.getBandas().add(casaDAO.getCasa(cursor.getInt(casaidColumnIndex)));
+        dto.getBandas().add(bandaDAO.getPeloId(context, cursor.getInt(bandaidColumnIndex)));
       }
     }
 

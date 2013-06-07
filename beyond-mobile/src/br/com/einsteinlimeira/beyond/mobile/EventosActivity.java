@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import br.com.einsteinlimeira.beyond.mobile.model.EventoSimplificadoDTO;
+import br.com.einsteinlimeira.beyond.mobile.services.EventoServices;
 
 public class EventosActivity extends GlobalActivity {
 
@@ -34,7 +35,8 @@ public class EventosActivity extends GlobalActivity {
 				EventoSimplificadoDTO eventoSelecionado = (EventoSimplificadoDTO) listaEventos.getAdapter().getItem(position);
 				
 				Intent intent = new Intent(EventosActivity.this, EventoDetalheActivity.class);
-				intent.putExtra("evento", eventoSelecionado);
+				intent.putExtra("evento", new EventoServices().getDetalhes(
+				    eventoSelecionado.getId(), EventosActivity.this));
 				
 				startActivity(intent);
 			}
