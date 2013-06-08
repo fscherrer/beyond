@@ -74,6 +74,7 @@ public class CasaDAO extends EntidadeDAO<CasaDTO> {
       dto = getAPartirDoCursor(cursor);
     }
     
+    readableDatabase.close();
     return dto;
   }
 }

@@ -25,7 +25,6 @@ public class BandaActivity extends Activity {
 			
 			@Override
 			public String getText(BandaDTO entidade) {
-				// TODO Auto-generated method stub
 				return entidade.getNome();
 			}
 		};

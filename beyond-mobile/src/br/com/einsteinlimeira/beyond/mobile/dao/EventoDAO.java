@@ -142,7 +142,16 @@ public class EventoDAO {
     SQLiteDatabase readableDatabase = dataBaseHelper.getReadableDatabase();
 
     Cursor cursor =
-        readableDatabase.query("evento", null, "_id = " + id, null, null, null, "_id");
+        readableDatabase.rawQuery("" +
+        		" select " +
+        		"   evento.*, " +
+        		"   eventobanda.bandaid " +
+        		" from " +
+        		"   evento " +
+        		"     left join eventobanda " +
+        		"       on eventobanda.eventoid = " + id + 
+        		" where " +
+        		"   evento._id = " + id, null);
 
     EventoDetalhadoDTO dto = null;
 
@@ -156,31 +165,35 @@ public class EventoDAO {
     CasaDAO casaDAO = new CasaDAO();
     BandaDAO bandaDAO = new BandaDAO();
 
-    while (cursor.moveToNext()) {
+    if (cursor.moveToNext()) {
       try {
         CasaDTO casaDTO = casaDAO.getPeloId(context, cursor.getInt(casaidColumnIndex));
+        
+        List<BandaDTO> bandas = new ArrayList<BandaDTO>();
 
         dto = new EventoDetalhadoDTO(id,
             cursor.getString(nomeColumnIndex),
             cursor.getDouble(valorColumnIndex),
             DataBaseHelper.ISO_8601_FORMAT.parse(cursor.getString(datahoraColumnIndex)),
-            new ArrayList<BandaDTO>(),
+            bandas,
             casaDTO);
+        
+        do {
+          if (!cursor.isNull(bandaidColumnIndex)) {
+            bandas.add(bandaDAO.getPeloId(context, cursor.getInt(bandaidColumnIndex)));
+          }
+        } while (cursor.moveToNext());
       }
       catch (ParseException e) {
         Log.e(Constantes.TAG, "Falha ao parsear datahora: " +
             cursor.getString(datahoraColumnIndex) + " do Evento de id: " +
             cursor.getInt(idColumnIndex)
-            + ". Evento ignorado e NÃO adicionado à base local", e);
+            + ". Detalhes do Evento NÃO retornados", e);
         readableDatabase.close();
         return null;
       }
-
-      if (!cursor.isNull(bandaidColumnIndex)) {
-        dto.getBandas().add(bandaDAO.getPeloId(context, cursor.getInt(bandaidColumnIndex)));
-      }
     }
-
+    
     readableDatabase.close();
     return dto;
   }

@@ -65,6 +65,7 @@ public class BandaDAO extends EntidadeDAO<BandaDTO> {
       dto = getAPartirDoCursor(cursor);
     }
     
+    readableDatabase.close();
     return dto;
   }
 }
