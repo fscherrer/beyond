@@ -87,16 +87,55 @@ public class EventoDAO {
    * 
    * @param context
    *   Context.
+   * @param idsCasas
+   *   IDs das Casas das quais deseja obter os Eventos (filtro).
+   * @param idsBandas
+   *   IDs das Bandas das quais deseja obter os Eventos (filtro).
    *   
    * @return
    *   Eventos presentes na base.
    */
-  public List<EventoSimplificadoDTO> listar(Context context) {
+  public List<EventoSimplificadoDTO> listar(Context context, int[] idsCasas, int[] idsBandas) {
     DataBaseHelper dataBaseHelper = new DataBaseHelper(context);
     SQLiteDatabase readableDatabase = dataBaseHelper.getReadableDatabase();
 
-    Cursor cursor = readableDatabase.query("evento", new String[] { "_id", "nome",
-        "datahora" }, null, null, null, null, "datahora");
+    StringBuilder where = new StringBuilder();
+
+    // filtro casas
+    if (idsCasas != null && idsCasas.length > 0) {
+      where.append(DAOUtils.getFiltroQuery("evento.casaid", idsCasas));
+    }
+
+    // filtro bandas (especial, já que um evento pode ter várias bandas)
+    if (idsBandas != null && idsBandas.length > 0) {
+      if (where.length() > 0) {
+        where.append(" and ");
+      }
+
+      // não posso simplesmente filtrar eventobanda.bandaid pois um evento pode ter várias bandas
+      // no caso de filtrado "Stratovários", as demais bandas de um evento em que "Stratovários"
+      // participa devem aparecer junto
+      where.append("exists (select 0 from eventobanda where eventoid = evento._id and ");
+      where.append(DAOUtils.getFiltroQuery("eventobanda.bandaid", idsBandas));
+      where.append(")");
+    }
+
+    if (where.length() > 0) {
+      where.insert(0, " where ");
+    }
+
+    Cursor cursor = readableDatabase.rawQuery("" +
+        " select distinct " +
+        "   evento._id, " +
+        "   evento.nome, " +
+        "   evento.dataHora " +
+        " from " +
+        "   evento " +
+        "     left join eventobanda " +
+        "       on eventobanda.eventoid = evento._id " +
+        " " + where.toString() +
+        " order by " +
+        "   datahora ", null);
 
     List<EventoSimplificadoDTO> dtos = new ArrayList<EventoSimplificadoDTO>();
 
@@ -143,15 +182,21 @@ public class EventoDAO {
 
     Cursor cursor =
         readableDatabase.rawQuery("" +
-        		" select " +
-        		"   evento.*, " +
-        		"   eventobanda.bandaid " +
-        		" from " +
-        		"   evento " +
-        		"     left join eventobanda " +
-        		"       on eventobanda.eventoid = " + id + 
-        		" where " +
-        		"   evento._id = " + id, null);
+            " select " +
+            "   evento.*, " +
+            "   eventobanda.bandaid," +
+            "   cidade.nome as cidade, " +
+            "   cidade.siglauf " +
+            " from " +
+            "   evento " +
+            "     left join eventobanda " +
+            "       on eventobanda.eventoid = " + id +
+            "     join casa " +
+            "       on casa._id = evento.casaid " +
+            "     join cidade " +
+            "       on cidade._id = casa.cidadeid " +
+            " where " +
+            "   evento._id = " + id, null);
 
     EventoDetalhadoDTO dto = null;
 
@@ -161,6 +206,8 @@ public class EventoDAO {
     int datahoraColumnIndex = cursor.getColumnIndex("datahora");
     int casaidColumnIndex = cursor.getColumnIndex("casaid");
     int bandaidColumnIndex = cursor.getColumnIndex("bandaid");
+    int cidadeColumnIndex = cursor.getColumnIndex("cidade");
+    int siglaufColumnIndex = cursor.getColumnIndex("siglauf");
 
     CasaDAO casaDAO = new CasaDAO();
     BandaDAO bandaDAO = new BandaDAO();
@@ -168,7 +215,7 @@ public class EventoDAO {
     if (cursor.moveToNext()) {
       try {
         CasaDTO casaDTO = casaDAO.getPeloId(context, cursor.getInt(casaidColumnIndex));
-        
+
         List<BandaDTO> bandas = new ArrayList<BandaDTO>();
 
         dto = new EventoDetalhadoDTO(id,
@@ -176,8 +223,10 @@ public class EventoDAO {
             cursor.getDouble(valorColumnIndex),
             DataBaseHelper.ISO_8601_FORMAT.parse(cursor.getString(datahoraColumnIndex)),
             bandas,
-            casaDTO);
-        
+            casaDTO,
+            cursor.getString(cidadeColumnIndex),
+            cursor.getString(siglaufColumnIndex));
+
         do {
           if (!cursor.isNull(bandaidColumnIndex)) {
             bandas.add(bandaDAO.getPeloId(context, cursor.getInt(bandaidColumnIndex)));
@@ -193,7 +242,7 @@ public class EventoDAO {
         return null;
       }
     }
-    
+
     readableDatabase.close();
     return dto;
   }

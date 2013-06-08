@@ -43,12 +43,16 @@ public class EventoServices {
    * 
    * @param context
    *   Contexto.
+   * @param idsCasas
+   *   IDs das Casas das quais deseja obter os Eventos (filtro).
+   * @param idsBandas
+   *   IDs das Bandas das quais deseja obter os Eventos (filtro).
    *   
    * @return
    *   Lista de Eventos.
    */
-  public List<EventoSimplificadoDTO> listar(Context context) {
-    return new EventoDAO().listar(context);
+  public List<EventoSimplificadoDTO> listar(Context context, int[] idsCasas, int[] idsBandas) {
+    return new EventoDAO().listar(context, idsCasas, idsBandas);
   }
   
   /**

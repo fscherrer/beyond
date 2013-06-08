@@ -39,12 +39,14 @@
 
     <!-- activity casas -->
     <string name="title_activity_casas">Casas</string>
+    <string name="activity_casas_informacaoFiltro">Exibindo apenas as Casas das Cidades filtradas</string>
 
     <!-- activity cidades -->
     <string name="title_activity_cidade">Cidades</string>
 
     <!-- activity bandas -->
     <string name="title_activity_banda">BandaActivity</string>
+    <string name="activity_bandas_informacaoFiltro">Exibindo apenas as Bandas dos Estilos filtrados</string>
 
     <!-- activity estilos -->
     <string name="title_activity_estilo">EstiloActivity</string>

@@ -11,16 +11,16 @@ import br.com.einsteinlimeira.beyond.model.dto.CidadeDTO;
 public class CidadesActivity extends Activity {
 	
 	private ListView listViewListaCidades;
-  private EntidadeListAdapter<CidadeDTO> adaptador;
+  private ListAdapterGenerico<CidadeDTO, Integer> adaptador;
 
   @Override
   @SuppressWarnings("unchecked")
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.listagem_entidade);
+		setContentView(R.layout.listagem_elemento);
 		
-		listViewListaCidades = (ListView)findViewById(R.id.listagem_entidade_listView);
-		adaptador = new EntidadeListAdapter<CidadeDTO>(
+		listViewListaCidades = (ListView)findViewById(R.id.listagem_elemento_listView);
+		adaptador = new ListAdapterGenerico<CidadeDTO, Integer>(
 		    new CidadeServices().listar(this), 
 		    CidadesActivity.this) {
       
@@ -28,12 +28,17 @@ public class CidadesActivity extends Activity {
       public String getText(CidadeDTO entidade) {
         return entidade.getNome();
       }
+      
+      @Override
+      public Integer getIdentificador(CidadeDTO elemento) {
+        return elemento.getId();
+      }
     };
     
     Intent intentOrigem = getIntent();
     
     if(intentOrigem.hasExtra(Constantes.EXTRA_CIDADES_FILTRADAS)){
-      adaptador.setIdsEntidadesSelecionadas(((ParcelableList<Integer>)intentOrigem.
+      adaptador.setIdentificadoresElementosSelecionados(((ParcelableList<Integer>)intentOrigem.
           getParcelableExtra(Constantes.EXTRA_CIDADES_FILTRADAS)).getList());
     }
     
@@ -50,7 +55,7 @@ public class CidadesActivity extends Activity {
     // define o resultado para a activity que chamou essa
     Intent retorno = new Intent();
     retorno.putExtra(Constantes.EXTRA_CIDADES_FILTRADAS, 
-        new ParcelableList<Integer>(adaptador.getIdsEntidadesSelecionadas()));
+        new ParcelableList<Integer>(adaptador.getIdentificadoresElementosSelecionados()));
     setResult(RESULT_OK, retorno);
     
     super.finish();

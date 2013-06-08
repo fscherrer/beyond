@@ -11,21 +11,26 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import br.com.einsteinlimeira.beyond.mobile.model.EventoSimplificadoDTO;
+import br.com.einsteinlimeira.beyond.mobile.services.BandaServices;
+import br.com.einsteinlimeira.beyond.mobile.services.CasaServices;
 import br.com.einsteinlimeira.beyond.mobile.services.EventoServices;
+import br.com.einsteinlimeira.beyond.mobile.util.CollectionUtilities;
 import br.com.einsteinlimeira.beyond.mobile.util.ParcelableList;
+import br.com.einsteinlimeira.beyond.model.EntidadeUtils;
 
 public class PrincipalActivity extends GlobalActivity {
 	
 	private ImageButton botaoCasa, botaoCidade, botaoBanda, botaoEstilo;
 	private ImageButton botaoVisualizarEventos;
 	
-	private List<Integer> idsCidadesFiltradas;
-	private List<Integer> idsCasasFiltradas;
-	private List<String> estilosFiltrados;
-	private List<Integer> idsBandasFiltradas;
+	private List<Integer> idsCidadesFiltradas = new ArrayList<Integer>();
+	private List<Integer> idsCasasFiltradas = new ArrayList<Integer>();
+	private List<String> estilosFiltrados = new ArrayList<String>();
+	private List<Integer> idsBandasFiltradas = new ArrayList<Integer>();
 
 	private TextView textViewCidadesFiltradas;
 	private TextView textViewCasasFiltradas;
+	private TextView textViewEstilosFiltrados;
 	private TextView textViewBandasFiltradas;
 
 	@Override
@@ -39,6 +44,9 @@ public class PrincipalActivity extends GlobalActivity {
 		textViewCasasFiltradas = (TextView) findViewById(R.id.principal_textViewCasasFiltradas);
 		textViewCasasFiltradas.setVisibility(View.INVISIBLE);
 
+		textViewEstilosFiltrados = (TextView) findViewById(R.id.principal_textViewEstilosFiltrados);
+		textViewEstilosFiltrados.setVisibility(View.INVISIBLE);
+		
 		textViewBandasFiltradas = (TextView) findViewById(R.id.principal_textViewBandasFiltradas);
 		textViewBandasFiltradas.setVisibility(View.INVISIBLE);
 		
@@ -50,6 +58,8 @@ public class PrincipalActivity extends GlobalActivity {
 				Intent intent = new Intent(PrincipalActivity.this, CasasActivity.class);
 				intent.putExtra(Constantes.EXTRA_CASAS_FILTRADAS,
 						new ParcelableList<Integer>(idsCasasFiltradas));
+				intent.putExtra(Constantes.EXTRA_CIDADES_FILTRADAS,
+				    new ParcelableList<Integer>(idsCidadesFiltradas));
 				startActivityForResult(intent, Constantes.REQUEST_CODE_FILTRO_CASA);
 			}
 		});
@@ -74,6 +84,8 @@ public class PrincipalActivity extends GlobalActivity {
 				Intent intent = new Intent(PrincipalActivity.this, BandaActivity.class);
 				intent.putExtra(Constantes.EXTRA_BANDAS_FILTRADAS,
 						new ParcelableList<Integer>(idsBandasFiltradas));
+        intent.putExtra(Constantes.EXTRA_ESTILOS_FILTRADOS,
+            new ParcelableList<String>(estilosFiltrados));
 				startActivityForResult(intent, Constantes.REQUEST_CODE_FILTRO_BANDA);
 			}
 		});
@@ -83,8 +95,10 @@ public class PrincipalActivity extends GlobalActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO intent for open activity estilo.
-
+        Intent intent = new Intent(PrincipalActivity.this, EstilosActivity.class);
+        intent.putExtra(Constantes.EXTRA_ESTILOS_FILTRADOS,
+            new ParcelableList<String>(estilosFiltrados));
+        startActivityForResult(intent, Constantes.REQUEST_CODE_FILTRO_ESTILO);
 			}
 		});
 		
@@ -93,14 +107,51 @@ public class PrincipalActivity extends GlobalActivity {
       
       @Override
       public void onClick(View v) {
+        int[] idsCasasFiltrar = null;
+        int[] idsBandasFiltrar = null;
+        
+        // casas filtradas diretamente
+        if(!idsCasasFiltradas.isEmpty()){
+          idsCasasFiltrar = CollectionUtilities.getArrayPrimitivo(idsCasasFiltradas);
+        }
+        // casas filtradas indiretamente através das Cidades filtradas
+        else if(!idsCidadesFiltradas.isEmpty()){
+          idsCasasFiltrar = EntidadeUtils.getIDs(new CasaServices().listar(
+              PrincipalActivity.this, CollectionUtilities.getArrayPrimitivo(idsCidadesFiltradas)));
+        }
+        
+        // bandas filtradas diretamente
+        if(!idsBandasFiltradas.isEmpty()){
+          idsBandasFiltrar = CollectionUtilities.getArrayPrimitivo(idsBandasFiltradas);
+        }
+        // bandas filtradas indiretamente através dos Estilos filtrados
+        else if(!idsCidadesFiltradas.isEmpty()){
+          idsBandasFiltrar = EntidadeUtils.getIDs(new BandaServices().listar(
+              PrincipalActivity.this, estilosFiltrados));
+        }
+        
         Intent intent = new Intent(PrincipalActivity.this, EventosActivity.class);
-        // TODO: aplicar filtros
+        
         // TODO: usar Parcelable ao invés de Serializable 
         intent.putExtra("eventos", new ArrayList<EventoSimplificadoDTO>(
-            new EventoServices().listar(PrincipalActivity.this)));
+            new EventoServices().listar(
+                PrincipalActivity.this,
+                idsCasasFiltrar,
+                idsBandasFiltrar)));
         startActivity(intent);
       }
     });
+		
+		boolean pintarBotoesParaDepuracao = false;
+    if(pintarBotoesParaDepuracao){
+		  int cor = getResources().getColor(R.color.verde);
+		  
+		  botaoCidade.setBackgroundColor(cor);
+		  botaoCasa.setBackgroundColor(cor);
+		  botaoEstilo.setBackgroundColor(cor);
+		  botaoBanda.setBackgroundColor(cor);
+		  botaoVisualizarEventos.setBackgroundColor(cor);
+		}
 	}
 
 	@Override
@@ -108,7 +159,7 @@ public class PrincipalActivity extends GlobalActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	  if(resultCode == RESULT_OK){
 	    switch (requestCode) {
-	    // filtro de Cidades
+	      // filtro de Cidades
         case Constantes.REQUEST_CODE_FILTRO_CIDADE:
           if(data.hasExtra(Constantes.EXTRA_CIDADES_FILTRADAS)){
             idsCidadesFiltradas = ((ParcelableList<Integer>)data.getParcelableExtra(
@@ -116,6 +167,7 @@ public class PrincipalActivity extends GlobalActivity {
             filtroCidadesAlterado();           
           }
           break;
+          
         // filtro de Casas
         case Constantes.REQUEST_CODE_FILTRO_CASA:
         	if(data.hasExtra(Constantes.EXTRA_CASAS_FILTRADAS)){
@@ -125,6 +177,16 @@ public class PrincipalActivity extends GlobalActivity {
         	}
         	break;
         	
+        // filtro de Estilos
+        case Constantes.REQUEST_CODE_FILTRO_ESTILO:
+          if(data.hasExtra(Constantes.EXTRA_ESTILOS_FILTRADOS)){
+            estilosFiltrados = ((ParcelableList<String>)data.getParcelableExtra
+                (Constantes.EXTRA_ESTILOS_FILTRADOS)).getList();
+            filtroEstilosAlterado();
+          }
+          break;
+        	
+        // filtro de Bandas
         case Constantes.REQUEST_CODE_FILTRO_BANDA:
         	if(data.hasExtra(Constantes.EXTRA_BANDAS_FILTRADAS)){
         		idsBandasFiltradas = ((ParcelableList<Integer>)data.getParcelableExtra(
@@ -142,7 +204,7 @@ public class PrincipalActivity extends GlobalActivity {
 
 	/**
 	 * Reprocessa as cidades filtradas para redefinir o balãozinho com a
-	 * quantidade filtrada.
+	 * quantidade filtrada e reseta as Casas filtradas.
 	 */
 	private void filtroCidadesAlterado() {
 		textViewCidadesFiltradas.setVisibility(idsCidadesFiltradas.isEmpty()
@@ -152,6 +214,9 @@ public class PrincipalActivity extends GlobalActivity {
 		textViewCidadesFiltradas.setText(idsCidadesFiltradas.isEmpty()
 		    ? null
 			: String.valueOf(idsCidadesFiltradas.size()));
+		
+		idsCasasFiltradas.clear();
+		filtroCasasAlterado();
 	}
 	
 	/**
@@ -167,6 +232,27 @@ public class PrincipalActivity extends GlobalActivity {
 				: String.valueOf(idsCasasFiltradas.size()));
 	}
 	
+	/**
+	 * Reprocessa os estilos filtradas para redefinir o balãozinho com a
+	 * quantidade filtrada e reseta as Bandas filtradas..
+	 */
+	private void filtroEstilosAlterado() {
+	  textViewEstilosFiltrados
+	  .setVisibility(estilosFiltrados.isEmpty() ? View.INVISIBLE
+	      : View.VISIBLE);
+	  
+	  textViewEstilosFiltrados.setText(estilosFiltrados.isEmpty() ? null
+	      : String.valueOf(estilosFiltrados.size()));
+	   
+    idsBandasFiltradas.clear();
+    filtroBandasAlterado();
+	}
+	
+	 
+  /**
+   * Reprocessa as bandas filtradas para redefinir o balãozinho com a
+   * quantidade filtrada.
+   */
 	private void filtroBandasAlterado(){
 		textViewBandasFiltradas
 			.setVisibility(idsBandasFiltradas.isEmpty() ? View.INVISIBLE
@@ -175,5 +261,4 @@ public class PrincipalActivity extends GlobalActivity {
 		textViewBandasFiltradas.setText(idsBandasFiltradas.isEmpty() ? null
 				: String.valueOf(idsBandasFiltradas.size()));
 	}
-	
 }

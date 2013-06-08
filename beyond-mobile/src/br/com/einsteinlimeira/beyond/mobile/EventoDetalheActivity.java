@@ -54,15 +54,10 @@ public class EventoDetalheActivity extends FragmentActivity {
 						casa.getLogradouro(), casa.getNumero(),
 						casa.getBairro()));
 
-		// TODO: incluir Cidade e SiglaUf no EventoDetalhadoDTO
-//		((TextView) findViewById(R.id.evento_texto_local_cidade))
-//				.setText(resources.getString(R.string.evento_local_cidade,
-//				    casa.getCidade(), casa.getSiglaUf(), casa.getCep()));
-		
 		((TextView) findViewById(R.id.evento_texto_local_cidade))
-		.setText(resources.getString(R.string.evento_local_cidade,
-		    "CIDADE!!!", "UF", casa.getCep()));
-
+				.setText(resources.getString(R.string.evento_local_cidade,
+				    evento.getCidade(), evento.getSiglaUf(), casa.getCep()));
+		
 		((TextView) findViewById(R.id.evento_texto_banda)).setText(resources
 				.getString(R.string.evento_banda,
 						EntidadeUtils.bandasToString(evento.getBandas())));

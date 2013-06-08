@@ -21,14 +21,20 @@ public class EventoDetalhadoDTO extends Entidade {
 
   private CasaDTO casa;
 
+  private String cidade;
+
+  private String siglaUf;
+
   public EventoDetalhadoDTO(int id, String nome, double valor, Date dataHora,
-      List<BandaDTO> bandas, CasaDTO casa) {
+      List<BandaDTO> bandas, CasaDTO casa, String cidade, String siglaUf) {
     super(id);
     this.nome = nome;
     this.valor = valor;
     this.dataHora = dataHora;
     this.bandas = bandas;
     this.casa = casa;
+    this.cidade = cidade;
+    this.siglaUf = siglaUf;
   }
 
   public String getNome() {
@@ -69,5 +75,21 @@ public class EventoDetalhadoDTO extends Entidade {
 
   public void setCasa(CasaDTO casa) {
     this.casa = casa;
+  }
+
+  public String getCidade() {
+    return cidade;
+  }
+
+  public void setCidade(String cidade) {
+    this.cidade = cidade;
+  }
+
+  public String getSiglaUf() {
+    return siglaUf;
+  }
+
+  public void setSiglaUf(String siglaUf) {
+    this.siglaUf = siglaUf;
   }
 }

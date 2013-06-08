@@ -1,5 +1,8 @@
 package br.com.einsteinlimeira.beyond.mobile.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -76,5 +79,41 @@ public class CasaDAO extends EntidadeDAO<CasaDTO> {
     
     readableDatabase.close();
     return dto;
+  }
+  
+  /**
+   * Lista as Entidades presentes na base cuja cidade esteja entre <code>idsCidades</code> 
+   *   (se informado algum ID de Cidade).
+   * 
+   * @param context
+   *   Context.
+   * @param idsCidades
+   *   Ids das Cidades das quais deseja-se obter as Casas (filtro).
+   *   
+   * @return
+   *   Entidades presentes na base cuja cidade esteja entre <code>idsCidades</code> 
+   *   (se informado algum ID de Cidade).
+   */
+  public List<CasaDTO> listar(Context context, int[] idsCidades) {
+    DataBaseHelper dataBaseHelper = new DataBaseHelper(context);
+    SQLiteDatabase readableDatabase = dataBaseHelper.getReadableDatabase();
+    
+    String filtro = null;
+
+    if (idsCidades != null && idsCidades.length > 0) {
+      filtro = DAOUtils.getFiltroQuery(getNomeTabela() + ".cidadeid", idsCidades);
+    }
+
+    Cursor cursor =
+        readableDatabase.query(false, getNomeTabela(), null, filtro, null, null, null, null, null);
+    
+    List<CasaDTO> dtos = new ArrayList<CasaDTO>();
+    
+    while(cursor.moveToNext()){
+      dtos.add(getAPartirDoCursor(cursor));
+    }
+    
+    readableDatabase.close();
+    return dtos;
   }
 }

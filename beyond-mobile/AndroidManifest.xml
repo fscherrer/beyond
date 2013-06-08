@@ -104,6 +104,11 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
+            android:name="br.com.einsteinlimeira.beyond.mobile.EstilosActivity"
+            android:label="@string/title_activity_estilo"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
             android:name="br.com.einsteinlimeira.beyond.mobile.MapaActivity"
             android:label="@string/title_activity_mapa" >
             <intent-filter>

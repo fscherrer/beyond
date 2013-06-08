@@ -31,15 +31,16 @@
 Para a segunda fase:
 
  - MOBILE
-  [] Banco de dados
+  [X] Banco de dados
   [] GPS
   [X] Mapa
   [X] bandas na edição de eventos
   [X] cidades na edição de eventos
-  [] listar services bandas e cidades
+  [X] listar services bandas e cidades
   [ ] padronizar nomes de componentes: nomeRelevanteActivity_tipoComponente_nome
   [ ] usar transação na sincronização dos dados remotos
   [ ] permitir o usuário continuar caso a sincronização falhe
+  [ ] nas listagens, permitir seleção de todos/nenhum/inverter
 
  - WEB
   [x] Area administração para usuario da casa gerenciar seus eventos

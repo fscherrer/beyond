@@ -1,5 +1,11 @@
 package br.com.einsteinlimeira.beyond.mobile.dao;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -67,5 +73,88 @@ public class BandaDAO extends EntidadeDAO<BandaDTO> {
     
     readableDatabase.close();
     return dto;
+  }
+  
+  /**
+   * Retorna os estilos encontrados nas bandas.
+   * 
+   * @param context
+   *   Contexto.
+   *   
+   * @return
+   *   Lista de estilos.
+   */
+  public List<String> getEstilos(Context context) {
+    DataBaseHelper dataBaseHelper = new DataBaseHelper(context);
+    SQLiteDatabase readableDatabase = dataBaseHelper.getReadableDatabase();
+
+    Cursor cursor =
+        readableDatabase.query(false, getNomeTabela(), new String[]{"estilo"}, 
+            null, null, null, null, null, null);
+    
+    Set<String> estilos = new HashSet<String>();
+    
+    String estilo;
+    while(cursor.moveToNext()){
+      estilo = cursor.getString(0);
+      
+      if(estilo != null && estilo.trim().length() > 0){
+        for(String estiloSplitado: estilo.split(",")){
+          estilos.add(estiloSplitado.trim());
+        }
+      }
+    }
+    
+    readableDatabase.close();
+    
+    List<String> estilosOrdenados = new ArrayList<String>(estilos);
+    Collections.sort(estilosOrdenados);
+    
+    return estilosOrdenados;
+  }
+
+  /**
+   * Retorna as Bandas contendo algum dos <code>estilos</code> informados.
+   * 
+   * @param context
+   *   Contexto.
+   * @param estilos
+   *   Estilos a filtrar as bandas.
+   *   
+   * @return
+   *   Bandas que contém algum dos <code>estilos</code>.
+   */
+  public List<BandaDTO> listar(Context context, List<String> estilos) {
+    // se não filtrou nenhum estilo retorna todas
+    if(estilos == null || estilos.isEmpty()){
+      return listar(context);
+    }
+    
+    DataBaseHelper dataBaseHelper = new DataBaseHelper(context);
+    SQLiteDatabase readableDatabase = dataBaseHelper.getReadableDatabase();
+    
+    Cursor cursor =
+        readableDatabase.query(false, getNomeTabela(), null, null, null, null, null, null, null);
+    
+    List<BandaDTO> bandas = new ArrayList<BandaDTO>();
+    
+    int indexColunaEstilo = cursor.getColumnIndex("estilo");
+    
+    String estilo;
+    while(cursor.moveToNext()){
+      estilo = cursor.getString(indexColunaEstilo);
+      
+      if(estilo != null && estilo.trim().length() > 0){
+        for(String estiloSplitado: estilo.split(",")){
+          if(estilos.contains(estiloSplitado)){
+            bandas.add(getAPartirDoCursor(cursor));
+            break;
+          }
+        }
+      }
+    }
+    
+    readableDatabase.close();
+    return bandas;
   }
 }

@@ -6,11 +6,16 @@
     android:background="@color/preto"
     tools:context=".principal" >
     
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        tools:ignore="UselessParent" >
+    
      <ImageButton
         android:id="@+id/btn_cidade"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_marginTop="2dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="@color/preto"
         android:contentDescription="@string/global_cidade"
@@ -33,8 +38,8 @@
     <ImageButton
         android:id="@+id/btn_casa"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_below="@+id/principal_textViewCidadesFiltradas"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/principal_textViewCidadesFiltradas"
         android:layout_centerHorizontal="true"
         android:background="@color/preto"
         android:contentDescription="@string/global_casa"
@@ -57,15 +62,15 @@
      <ImageButton
         android:id="@+id/btn_estilo"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_below="@+id/principal_textViewCasasFiltradas"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/principal_textViewCasasFiltradas"
         android:layout_centerHorizontal="true"
         android:background="@color/preto"
         android:contentDescription="@string/global_estilo"
         android:src="@drawable/estilo" />
      
       <TextView 
-        android:id="@+id/principal_textViewEstilosFiltradas"
+        android:id="@+id/principal_textViewEstilosFiltrados"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_estilo"
@@ -82,8 +87,8 @@
     <ImageButton
         android:id="@+id/btn_banda"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:layout_below="@+id/principal_textViewEstilosFiltradas"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/principal_textViewEstilosFiltrados"
         android:layout_centerHorizontal="true"
         android:background="@color/preto"
         android:contentDescription="@string/global_banda"
@@ -105,13 +110,13 @@
      
       <ImageButton
         android:id="@+id/btn_vis_eventos"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/principal_textViewBandasFiltradas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/principal_textViewBandasFiltradas"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:background="@color/preto"
         android:contentDescription="@string/visualizar_eventos"
         android:src="@drawable/v_eventos" />   
-    
-
+    </RelativeLayout>
 </RelativeLayout>
