@@ -106,10 +106,12 @@
             android:id="@+id/check_loc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
             android:layout_alignBottom="@+id/evento_linearLayout_mapa"
             android:layout_alignLeft="@+id/evento_linearLayout_mapa"
             android:background="@color/brancoAlpha"
             android:paddingRight="8dp"
+            android:paddingLeft="40dp"
             android:text="@string/exibir_localizacao"
             android:textColor="@color/preto" >
         </CheckBox>

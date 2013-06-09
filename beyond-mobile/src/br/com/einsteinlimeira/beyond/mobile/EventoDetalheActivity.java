@@ -137,14 +137,14 @@ public class EventoDetalheActivity extends FragmentActivity {
 			} catch (NumberFormatException nfe) {
 
 			}
-			// seleciona localizaï¿½ï¿½o atual
+			// seleciona localização atual
 			checkloc.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					if (checkloc.isChecked()) {
 						Log.i("loc", "Adicionado marcador");
-						googleMap.addMarker(markerOptions);
+						googleMap.addMarker(markerOptions.title("Minha Localização"));						
 
 					} else
 						remove();
@@ -153,7 +153,7 @@ public class EventoDetalheActivity extends FragmentActivity {
 				private void remove() {
 					Log.i("loc", "Removido marcador");
 					googleMap.clear();
-				}
+					}
 
 			});
 
