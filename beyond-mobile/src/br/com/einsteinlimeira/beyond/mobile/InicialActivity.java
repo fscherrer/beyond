@@ -2,7 +2,9 @@ package br.com.einsteinlimeira.beyond.mobile;
 
 import java.io.IOException;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -78,6 +80,28 @@ public class InicialActivity extends GlobalActivity {
                     .show();
                 textViewInformacoes.setText(R.string.global_erro_requisicao);
                 buttonTentarNovamente.setVisibility(Button.VISIBLE);
+                
+                new AlertDialog.Builder(InicialActivity.this).
+                    setMessage(R.string.inicial_ContinuarCache)                    .
+                    setCancelable(true)                    .
+                    setPositiveButton(R.string.global_sim,
+                        new DialogInterface.OnClickListener() {
+
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                            startPrincipalETermina();
+                          }
+                        }).
+                    setNegativeButton(R.string.global_nao,
+                        new DialogInterface.OnClickListener() {
+
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                            // não faz nada
+                          }
+                        }).
+                    create().
+                    show();
               }
               else {
                 startPrincipalETermina();

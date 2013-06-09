@@ -21,6 +21,8 @@
     <string name="global_banda">Banda</string>
     <string name="global_cidade">Cidade</string>
     <string name="global_cancelar">Cancelar</string>
+    <string name="global_sim">Sim</string>
+    <string name="global_nao">Não</string>
 
     <!-- activity para testes HTTP -->
     <string name="title_activity_teste_http">Teste HTTP</string>
@@ -37,6 +39,7 @@
     <string name="logo_arock">Logo ARock</string>
     <string name="tentar_novamente">Tentar Novamente</string>
     <string name="toque_inicial">Toque na tela para continuar</string>
+    <string name="inicial_ContinuarCache">Não foi possível sincronizar os dados. Continuar com os dados da última sincronização?</string>
 
     <!-- activity casas -->
     <string name="title_activity_casas">Casas</string>

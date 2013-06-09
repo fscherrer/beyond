@@ -159,7 +159,7 @@ public class EventoDetalheActivity extends FragmentActivity {
               marker = googleMap.addMarker(markerOptions
                   .title(getResources().getString(R.string.evento_minhaLocalizacao)));
 
-              googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerOptions.getPosition(), 12));
+              googleMap.animateCamera(CameraUpdateFactory.newLatLng(markerOptions.getPosition()));
 
               markerAdicionado = true;
             }
