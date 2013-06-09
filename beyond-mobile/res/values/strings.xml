@@ -20,6 +20,7 @@
     <string name="global_casa">Casa</string>
     <string name="global_banda">Banda</string>
     <string name="global_cidade">Cidade</string>
+    <string name="global_cancelar">Cancelar</string>
 
     <!-- activity para testes HTTP -->
     <string name="title_activity_teste_http">Teste HTTP</string>
@@ -59,4 +60,7 @@
     <string name="evento_mapaNaoDefinido">Mapa não definido</string>
     <string name="visualizar_eventos">Visualizar Eventos</string>
     <string name="exibir_localizacao">Exibir minha localização</string>
+    <string name="evento_localizacaoNaoDisponivel">Localização indisponível. Certifique-se de que um recurso de Localização, como GPS, está habilitado.</string>
+    <string name="evento_minhaLocalizacao">Minha Localização</string>
+    <string name="evento_configurar">Configurar</string>
 </resources>

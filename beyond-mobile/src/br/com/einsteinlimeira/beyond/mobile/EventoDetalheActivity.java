@@ -1,6 +1,9 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationListener;
@@ -9,8 +12,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import br.com.einsteinlimeira.beyond.mobile.model.EventoDetalhadoDTO;
@@ -27,15 +31,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class EventoDetalheActivity extends FragmentActivity {
 
-  private CheckBox checkloc;
+  private CheckBox checkBoxExibirLocalizacao;
   private MarkerOptions markerOptions;
   private GoogleMap googleMap;
+  private LocationListener locationListener;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_evento_detalhe);
-    checkloc = (CheckBox) findViewById(R.id.check_loc);
+    checkBoxExibirLocalizacao = (CheckBox) findViewById(R.id.evento_checkBoxLocalizacao);
+    
+    // só habilita se conseguir obter a localização do usuário
+    checkBoxExibirLocalizacao.setEnabled(true);
 
     EventoDetalhadoDTO evento = (EventoDetalhadoDTO) getIntent().getExtras()
         .getSerializable("evento");
@@ -69,44 +77,6 @@ public class EventoDetalheActivity extends FragmentActivity {
         .getString(R.string.evento_valor, evento.getValor()));
 
     // Mapa
-
-    // localiza��o
-    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-    markerOptions = new MarkerOptions();
-
-    Log.i("loc", "Rodando");
-    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
-        0, new LocationListener() {
-
-          @Override
-          public void onLocationChanged(Location location) {
-            Log.i("loc", "Location: " + location.getLatitude() + ", "
-                + location.getLongitude());
-            markerOptions.position(new LatLng(location.getLatitude(), location
-                .getLongitude()));
-          }
-
-          @Override
-          public void onProviderDisabled(String provider) {
-            Log.i("loc", "Provider desabilitado: " + provider);
-
-          }
-
-          @Override
-          public void onProviderEnabled(String provider) {
-            Log.i("loc", "Provider habilitado: " + provider);
-
-          }
-
-          @Override
-          public void onStatusChanged(String provider, int status, Bundle extras) {
-            Log.i("loc", "Status: " + status);
-
-          }
-
-        });
-
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
         .findFragmentById(R.id.evento_mapa);
 
@@ -131,38 +101,106 @@ public class EventoDetalheActivity extends FragmentActivity {
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 
         exibirMapa = true;
-      } catch (NumberFormatException nfe) {
+      }
+      catch (NumberFormatException nfe) {
 
       }
-      // seleciona localiza��o atual
-      checkloc.setOnClickListener(new OnClickListener() {
-
-        private Marker marker;
-
-        @Override
-        public void onClick(View v) {
-          if (checkloc.isChecked()) {
-            Log.i("loc", "Adicionado marcador");
-            marker = googleMap.addMarker(markerOptions
-                .title("Minha Localiza��o"));
-
-          } else
-            remove();
-        }
-
-        private void remove() {
-          Log.i("loc", "Removido marcador");
-          marker.remove();
-        }
-
-      });
-
     }
 
+    if (exibirMapa) {
+      // localização
+      LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+      markerOptions = new MarkerOptions();
+
+      locationListener = new LocationListener() {
+
+        @Override
+        public void onLocationChanged(Location location) {
+          Log.i(Constantes.TAG, "Location: " + location.getLatitude() + ", "
+              + location.getLongitude());
+          markerOptions.position(new LatLng(location.getLatitude(), location
+              .getLongitude()));
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+          Log.i(Constantes.TAG, "Provider desabilitado: " + provider);
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+          Log.i("loc", "Provider habilitado: " + provider);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+          Log.i(Constantes.TAG, "Status: " + status);
+        }
+      };
+
+      locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
+          0, locationListener);
+      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
+          0, locationListener);
+      
+      // seleciona localização atual
+      checkBoxExibirLocalizacao.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        private Marker marker;
+        private boolean markerAdicionado;
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+          if (isChecked) {
+            // posição determinada
+            if (markerOptions.getPosition() != null) {
+              Log.i(Constantes.TAG, "Adicionado marcador da localização atual");
+              marker = googleMap.addMarker(markerOptions
+                  .title(getResources().getString(R.string.evento_minhaLocalizacao)));
+
+              googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerOptions.getPosition(), 12));
+
+              markerAdicionado = true;
+            }
+            // posição indeterminada
+            else {
+              new AlertDialog.Builder(EventoDetalheActivity.this).
+                  setMessage(R.string.evento_localizacaoNaoDisponivel).
+                  setCancelable(true).
+                  setPositiveButton(R.string.evento_configurar, new DialogInterface.OnClickListener() {
+                    
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                      startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                  }).
+                  setNegativeButton(R.string.global_cancelar, new DialogInterface.OnClickListener() {
+                    
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                      // não faz nada
+                    }
+                  }).
+                  create().
+                  show();
+              checkBoxExibirLocalizacao.setChecked(false);
+            }
+          }
+          else if (markerAdicionado) {
+            Log.i(Constantes.TAG, "Removido marcador da localização atual");
+            marker.remove();
+            
+            markerAdicionado = false;
+          }
+        }
+      });
+    }
     // vai exibir "Mapa não definido"
-    if (!exibirMapa) {
+    else {
       ((LinearLayout) findViewById(R.id.evento_linearLayout_mapa))
           .setVisibility(View.INVISIBLE);
+      checkBoxExibirLocalizacao.setVisibility(View.INVISIBLE);
       ((TextView) findViewById(R.id.evento_texto_mapaNaoDefinido))
           .setVisibility(View.VISIBLE);
     }
