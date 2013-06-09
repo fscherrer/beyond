@@ -10,6 +10,15 @@
         style="@style/evento_titulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    
+    <ImageButton
+        android:id="@+id/evento_compartilhar"
+        android:background="@android:drawable/ic_menu_share" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/evento_texto_titulo"
+        android:layout_marginLeft="-50dp"
+        android:contentDescription="@string/evento_compartilhar"/>
 
     <RelativeLayout
         android:id="@+id/evento_relativeLayout_detalhes"

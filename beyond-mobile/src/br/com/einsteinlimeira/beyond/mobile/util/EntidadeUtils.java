@@ -9,11 +9,16 @@ public class EntidadeUtils {
 		StringBuilder stringBuilderBandas = new StringBuilder();
 
 		if (!bandas.isEmpty()) {
-			for (BandaDTO banda : bandas) {
-				stringBuilderBandas.append(banda.getNome()).append(", ");
-			}
-			stringBuilderBandas.delete(stringBuilderBandas.length() - 2,
-					stringBuilderBandas.length());
+		  for(int i = 0 ; i < bandas.size(); i++){
+		    stringBuilderBandas.append(bandas.get(i).getNome());
+		  
+		    if(i + 2 < bandas.size()){
+		      stringBuilderBandas.append(", ");
+		    }
+		    else if(i + 1 < bandas.size()){
+		      stringBuilderBandas.append(" e ");
+		    }
+		  }
 		}
 
 		return stringBuilderBandas.toString();

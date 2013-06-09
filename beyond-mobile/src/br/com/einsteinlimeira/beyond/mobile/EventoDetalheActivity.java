@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -45,7 +46,7 @@ public class EventoDetalheActivity extends FragmentActivity {
     // só habilita se conseguir obter a localização do usuário
     checkBoxExibirLocalizacao.setEnabled(true);
 
-    EventoDetalhadoDTO evento = (EventoDetalhadoDTO) getIntent().getExtras()
+    final EventoDetalhadoDTO evento = (EventoDetalhadoDTO) getIntent().getExtras()
         .getSerializable("evento");
 
     Resources resources = getResources();
@@ -53,7 +54,7 @@ public class EventoDetalheActivity extends FragmentActivity {
     ((TextView) findViewById(R.id.evento_texto_titulo)).setText(evento
         .getNome());
 
-    CasaDTO casa = evento.getCasa();
+    final CasaDTO casa = evento.getCasa();
 
     ((TextView) findViewById(R.id.evento_texto_casa)).setText(casa.getNome());
 
@@ -75,6 +76,23 @@ public class EventoDetalheActivity extends FragmentActivity {
 
     ((TextView) findViewById(R.id.evento_texto_valor)).setText(resources
         .getString(R.string.evento_valor, evento.getValor()));
+    
+    View botaoCompartilhar = findViewById(R.id.evento_compartilhar);
+    botaoCompartilhar.setOnClickListener(new OnClickListener() {
+      
+      @Override
+      public void onClick(View v) {
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+            getResources().getString(R.string.evento_compartilhar_assunto, casa.getNome(), evento.getNome()));
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, 
+            getResources().getString(R.string.evento_compartilhar_texto, evento.getNome(),
+                DateUtils.dateHourFormat.format(evento.getDataHora()),
+                EntidadeUtils.bandasToString(evento.getBandas())));
+        startActivity(Intent.createChooser(intent, getResources().getString(R.string.evento_compartilhar_via)));
+      }
+    });
 
     // Mapa
     SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

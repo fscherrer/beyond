@@ -66,4 +66,8 @@
     <string name="evento_localizacaoNaoDisponivel">Localização indisponível. Certifique-se de que um recurso de Localização, como GPS, está habilitado.</string>
     <string name="evento_minhaLocalizacao">Minha Localização</string>
     <string name="evento_configurar">Configurar</string>
+    <string name="evento_compartilhar">Compartilhar</string>
+    <string name="evento_compartilhar_via">Compartilhar via</string>
+    <string name="evento_compartilhar_assunto">%1$s apresenta %2$s</string>
+    <string name="evento_compartilhar_texto">Evento "%1$s", %2$s, apresentando %3$s</string>
 </resources>
