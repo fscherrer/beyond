@@ -22,149 +22,149 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class EventoDetalheActivity extends FragmentActivity {
 
-	private CheckBox checkloc;
-	private MarkerOptions markerOptions;
-	private GoogleMap googleMap;
+  private CheckBox checkloc;
+  private MarkerOptions markerOptions;
+  private GoogleMap googleMap;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_evento_detalhe);
-		checkloc = (CheckBox) findViewById(R.id.check_loc);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_evento_detalhe);
+    checkloc = (CheckBox) findViewById(R.id.check_loc);
 
-		EventoDetalhadoDTO evento = (EventoDetalhadoDTO) getIntent().getExtras().getSerializable(
-				"evento");
+    EventoDetalhadoDTO evento = (EventoDetalhadoDTO) getIntent().getExtras()
+        .getSerializable("evento");
 
-		Resources resources = getResources();
+    Resources resources = getResources();
 
-		((TextView) findViewById(R.id.evento_texto_titulo)).setText(evento
-				.getNome());
+    ((TextView) findViewById(R.id.evento_texto_titulo)).setText(evento
+        .getNome());
 
-		CasaDTO casa = evento.getCasa();
+    CasaDTO casa = evento.getCasa();
 
-		((TextView) findViewById(R.id.evento_texto_casa)).setText(casa
-				.getNome());
+    ((TextView) findViewById(R.id.evento_texto_casa)).setText(casa.getNome());
 
-		((TextView) findViewById(R.id.evento_texto_local_logradouro))
-				.setText(resources.getString(R.string.evento_local_logradouro,
-						casa.getLogradouro(), casa.getNumero(),
-						casa.getBairro()));
+    ((TextView) findViewById(R.id.evento_texto_local_logradouro))
+        .setText(resources.getString(R.string.evento_local_logradouro,
+            casa.getLogradouro(), casa.getNumero(), casa.getBairro()));
 
-		((TextView) findViewById(R.id.evento_texto_local_cidade))
-				.setText(resources.getString(R.string.evento_local_cidade,
-				    evento.getCidade(), evento.getSiglaUf(), casa.getCep()));
-		
-		((TextView) findViewById(R.id.evento_texto_banda)).setText(resources
-				.getString(R.string.evento_banda,
-						EntidadeUtils.bandasToString(evento.getBandas())));
+    ((TextView) findViewById(R.id.evento_texto_local_cidade)).setText(resources
+        .getString(R.string.evento_local_cidade, evento.getCidade(),
+            evento.getSiglaUf(), casa.getCep()));
 
-		((TextView) findViewById(R.id.evento_texto_data)).setText(resources
-				.getString(R.string.evento_data,
-						DateUtils.dateHourFormat.format(evento.getDataHora())));
+    ((TextView) findViewById(R.id.evento_texto_banda)).setText(resources
+        .getString(R.string.evento_banda,
+            EntidadeUtils.bandasToString(evento.getBandas())));
 
-		((TextView) findViewById(R.id.evento_texto_valor)).setText(resources
-				.getString(R.string.evento_valor, evento.getValor()));
+    ((TextView) findViewById(R.id.evento_texto_data)).setText(resources
+        .getString(R.string.evento_data,
+            DateUtils.dateHourFormat.format(evento.getDataHora())));
 
-		// Mapa
+    ((TextView) findViewById(R.id.evento_texto_valor)).setText(resources
+        .getString(R.string.evento_valor, evento.getValor()));
 
-		// localizaï¿½ï¿½o
-		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+    // Mapa
 
-		markerOptions = new MarkerOptions();
+    // localizaï¿½ï¿½o
+    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		Log.i("loc", "Rodando");
-		locationManager.requestLocationUpdates(
-				LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
+    markerOptions = new MarkerOptions();
 
-					@Override
-					public void onLocationChanged(Location location) {
-						Log.i("loc", "Location: " + location.getLatitude()
-								+ ", " + location.getLongitude());
-						markerOptions.position(new LatLng(location
-								.getLatitude(), location.getLongitude()));
-					}
+    Log.i("loc", "Rodando");
+    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0,
+        0, new LocationListener() {
 
-					@Override
-					public void onProviderDisabled(String provider) {
-						Log.i("loc", "Provider desabilitado: " + provider);
+          @Override
+          public void onLocationChanged(Location location) {
+            Log.i("loc", "Location: " + location.getLatitude() + ", "
+                + location.getLongitude());
+            markerOptions.position(new LatLng(location.getLatitude(), location
+                .getLongitude()));
+          }
 
-					}
+          @Override
+          public void onProviderDisabled(String provider) {
+            Log.i("loc", "Provider desabilitado: " + provider);
 
-					@Override
-					public void onProviderEnabled(String provider) {
-						Log.i("loc", "Provider habilitado: " + provider);
+          }
 
-					}
+          @Override
+          public void onProviderEnabled(String provider) {
+            Log.i("loc", "Provider habilitado: " + provider);
 
-					@Override
-					public void onStatusChanged(String provider, int status,
-							Bundle extras) {
-						Log.i("loc", "Status: " + status);
+          }
 
-					}
+          @Override
+          public void onStatusChanged(String provider, int status, Bundle extras) {
+            Log.i("loc", "Status: " + status);
 
-				});
+          }
 
-		SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.evento_mapa);
+        });
 
-		boolean exibirMapa = false;
+    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        .findFragmentById(R.id.evento_mapa);
 
-		String coordenada = casa.getCoordenada();
+    boolean exibirMapa = false;
 
-		if (coordenada != null && coordenada.trim().length() > 0) {
-			String[] partesCoordenada = casa.getCoordenada().split(",");
+    String coordenada = casa.getCoordenada();
 
-			try {
-				LatLng latLng = new LatLng(
-						Double.parseDouble(partesCoordenada[0]),
-						Double.parseDouble(partesCoordenada[1]));
+    if (coordenada != null && coordenada.trim().length() > 0) {
+      String[] partesCoordenada = casa.getCoordenada().split(",");
 
-				googleMap = mapFragment.getMap();
-				googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+      try {
+        LatLng latLng = new LatLng(Double.parseDouble(partesCoordenada[0]),
+            Double.parseDouble(partesCoordenada[1]));
 
-				googleMap.addMarker(new MarkerOptions().position(latLng)
-						.title(casa.getNome()).snippet(evento.getNome()));
+        googleMap = mapFragment.getMap();
+        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
-				googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-				googleMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+        googleMap.addMarker(new MarkerOptions().position(latLng)
+            .title(casa.getNome()).snippet(evento.getNome()));
 
-				exibirMapa = true;
-			} catch (NumberFormatException nfe) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(16));
 
-			}
-			// seleciona localização atual
-			checkloc.setOnClickListener(new OnClickListener() {
+        exibirMapa = true;
+      } catch (NumberFormatException nfe) {
 
-				@Override
-				public void onClick(View v) {
-					if (checkloc.isChecked()) {
-						Log.i("loc", "Adicionado marcador");
-						googleMap.addMarker(markerOptions.title("Minha Localização"));						
+      }
+      // seleciona localização atual
+      checkloc.setOnClickListener(new OnClickListener() {
 
-					} else
-						remove();
-				}
+        private Marker marker;
 
-				private void remove() {
-					Log.i("loc", "Removido marcador");
-					googleMap.clear();
-					}
+        @Override
+        public void onClick(View v) {
+          if (checkloc.isChecked()) {
+            Log.i("loc", "Adicionado marcador");
+            marker = googleMap.addMarker(markerOptions
+                .title("Minha Localização"));
 
-			});
+          } else
+            remove();
+        }
 
-		}
-		
-		// vai exibir "Mapa nÃ£o definido"
-		if (!exibirMapa) {
-			((LinearLayout) findViewById(R.id.evento_linearLayout_mapa))
-					.setVisibility(View.INVISIBLE);
-			((TextView) findViewById(R.id.evento_texto_mapaNaoDefinido))
-					.setVisibility(View.VISIBLE);
-		}
-	}
+        private void remove() {
+          Log.i("loc", "Removido marcador");
+          marker.remove();
+        }
+
+      });
+
+    }
+
+    // vai exibir "Mapa nÃ£o definido"
+    if (!exibirMapa) {
+      ((LinearLayout) findViewById(R.id.evento_linearLayout_mapa))
+          .setVisibility(View.INVISIBLE);
+      ((TextView) findViewById(R.id.evento_texto_mapaNaoDefinido))
+          .setVisibility(View.VISIBLE);
+    }
+  }
 }
