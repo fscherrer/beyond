@@ -98,6 +98,9 @@ public class EventoDAO {
   public List<EventoSimplificadoDTO> listar(Context context, int[] idsCasas, int[] idsBandas) {
     DataBaseHelper dataBaseHelper = new DataBaseHelper(context);
     SQLiteDatabase readableDatabase = dataBaseHelper.getReadableDatabase();
+    
+    // Log.w(Constantes.TAG, "casas: " + (idsCasas == null ? "null" : idsCasas.length));
+    // Log.w(Constantes.TAG, "bandas: " + (idsBandas == null ? "null" : idsBandas.length));
 
     StringBuilder where = new StringBuilder();
 
@@ -124,7 +127,7 @@ public class EventoDAO {
       where.insert(0, " where ");
     }
 
-    Cursor cursor = readableDatabase.rawQuery("" +
+    String query = "" +
         " select distinct " +
         "   evento._id, " +
         "   evento.nome, " +
@@ -135,7 +138,12 @@ public class EventoDAO {
         "       on eventobanda.eventoid = evento._id " +
         " " + where.toString() +
         " order by " +
-        "   datahora ", null);
+        "   datahora ";
+    
+    // DEBUG
+    // Log.i(Constantes.TAG, query);
+
+    Cursor cursor = readableDatabase.rawQuery(query, null);
 
     List<EventoSimplificadoDTO> dtos = new ArrayList<EventoSimplificadoDTO>();
 

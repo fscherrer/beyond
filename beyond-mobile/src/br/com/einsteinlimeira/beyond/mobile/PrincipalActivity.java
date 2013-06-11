@@ -125,7 +125,7 @@ public class PrincipalActivity extends GlobalActivity {
           idsBandasFiltrar = CollectionUtilities.getArrayPrimitivo(idsBandasFiltradas);
         }
         // bandas filtradas indiretamente através dos Estilos filtrados
-        else if(!idsCidadesFiltradas.isEmpty()){
+        else if(!estilosFiltrados.isEmpty()){
           idsBandasFiltrar = EntidadeUtils.getIDs(new BandaServices().listar(
               PrincipalActivity.this, estilosFiltrados));
         }

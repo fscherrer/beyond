@@ -1,5 +1,7 @@
 package br.com.einsteinlimeira.beyond.mobile;
 
+import java.security.Provider;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -130,6 +132,23 @@ public class EventoDetalheActivity extends FragmentActivity {
       LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
       markerOptions = new MarkerOptions();
+
+      Location ultimaLocationConhecida = null;
+
+      if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        ultimaLocationConhecida =
+            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+      }
+      else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+        ultimaLocationConhecida =
+            locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+      }
+
+      if (ultimaLocationConhecida != null) {
+        markerOptions.position(new LatLng(
+            ultimaLocationConhecida.getLatitude(),
+            ultimaLocationConhecida.getLongitude()));
+      }
 
       locationListener = new LocationListener() {
 
